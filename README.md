@@ -25,7 +25,7 @@ uv venv
 .venv\Scripts\activate
 
 # Install in development mode with dev dependencies
-uv pip install -e ".[dev]"
+uv pip install -e .
 
 # Setup pre-commit hooks
 pre-commit install
