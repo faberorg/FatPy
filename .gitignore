@@ -1,0 +1,36 @@
+# Python virtual environment
+.venv/
+
+# VS Code settings
+.vscode/
+
+# Python cache directories
+__pycache__/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Egg info directories
+*.egg-info/
+
+# Lock files
+uv.lock
+
+# Compiled Python files
+*.pyc
+*.pyo
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Environment variables file
+.env
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+
+# Distribution / packaging
+dist/
+build/

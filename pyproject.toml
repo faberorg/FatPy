@@ -1,0 +1,60 @@
+[project]
+name = "FatPy"
+version = "0.1.0"
+description = "Python implementations of various life algorithms"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "matplotlib>=3.10.0",
+    "numpy>=2.2.2",
+    "pandas>=2.2.3",
+    "pre-commit>=4.1.0",
+    "scipy>=1.15.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "line-profiler>=4.2.0",
+    "mock>=5.1.0",
+    "pre-commit>=4.1.0",
+    "pytest>=8.3.4",
+    "pytest-cov>=6.0.0",
+    "pytest-mock>=3.14.0",
+    "pytest-ruff>=0.4.1",
+    "ruff>=0.9.6",
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = [
+    # =====================| Default settings |==================== #
+    "-rfE", # show extra test summary info for all tests
+    "-vv",  # verbose output
+    # "-s", # do not capture output
+    "--no-header", # do not show header
+    # ===========================| PDB |=========================== #
+    # "--pdb", # enter python debugger on failure
+    "--pdbcls=IPython.terminal.debugger:TerminalPdb",
+    # ==========================| SCOPE |========================== #
+    # "-k", "read_op2",
+    # "tests/views/", # run view tests
+    # "-m", "selected", # run selected tests
+    # ====================| Coverage settings |==================== #
+    "--no-cov",                  # skip Coverage report
+    "--cov=evaluation_defaults",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    # =========================| Plugins |========================= #
+    "--ruff",
+    "--mypy",
+    # =========================| Logging |========================= #
+    "--log-level=DEBUG",
+]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = ["selected: selected tests"]
+
+[tool.ruff]
+line-length = 120
