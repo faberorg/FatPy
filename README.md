@@ -1,4 +1,4 @@
-# FatPy 
+# FatPy
 
 FatPy is a Python package for fatigue life evaluation of materials.
 
@@ -59,7 +59,7 @@ pytest
 
 ### Code Coverage
 ```bash
-pytest --cov=fatigue_evaluation_bm
+pytest --cov=src/fatpy
 ```
 
 ## Contributing
@@ -78,4 +78,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Your Name - jan.vyborny2@gmail.com
 Project Link: [FatPy](https://github.com/vybornak2/fatpy)
-```
