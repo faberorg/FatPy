@@ -13,20 +13,21 @@ graph TB
         PreProcessing[Pre-Processing]
         PostProcessing[Post-Processing]
         Utils[Utilities]
+
       end
 
       Main --> MainComponents
 
       subgraph CoreComponents[Core Components]
         direction LR
-        StressLife[Stress-Life 6]
-        StrainLife[Strain-Life 7]
-        EnergyLife[Energy-Life 8]
+        StressLife[Stress-Life]
+        StrainLife[Strain-Life]
+        EnergyLife[Energy-Life]
       end
 
       Core --> CoreComponents
 
-      subgraph SubComponents1[Sub-Components]
+      subgraph SubComponents1[Stress-Life Components]
         direction LR
         BaseMethods1[Base Methods]
         CorrectionMethod1[Correction Method]
@@ -34,7 +35,7 @@ graph TB
         DamageParam1[Damage Parameters]
       end
 
-      subgraph SubComponents2[Sub-Components]
+      subgraph SubComponents2[Strain-Life Components]
         direction LR
         BaseMethods2[Base Methods]
         CorrectionMethod2[Correction Method]
@@ -42,7 +43,7 @@ graph TB
         DamageParam2[Damage Parameters]
       end
 
-      subgraph SubComponents3[Sub-Components]
+      subgraph SubComponents3[Energy-Life Components]
         direction LR
         BaseMethods3[Base Methods]
         CorrectionMethod3[Correction Method]
@@ -65,7 +66,7 @@ graph TB
 
       subgraph UtilComponents[Util-Components]
         direction LR
-        Transformation[Transformation 4]
+        Transformation[Transformation]
       end
 
       Utils --> UtilComponents
