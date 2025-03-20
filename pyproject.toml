@@ -8,20 +8,19 @@ dependencies = [
     "matplotlib>=3.10.0",
     "numpy>=2.2.2",
     "pandas>=2.2.3",
-    "pre-commit>=4.1.0",
     "scipy>=1.15.1",
 ]
 
-
-[dependency-groups]
-dev = [
-    "ruff>=0.9.6",
+[tool.uv]
+dev-dependencies = [
     "mypy>=1.15.0",
-    "pre-commit>=4.1.0",
-    "pytest-ruff>=0.4.1",
-    "pytest>=8.3.4",
+    "ruff>=0.11.0",
+    "pre-commit>=4.2.0",
+    "pytest>=8.3.5",
     "pytest-cov>=6.0.0",
     "pytest-mock>=3.14.0",
+    "pytest-mypy>=0.10.3",
+    "pytest-ruff>=0.4.1",
 ]
 
 [tool.pytest.ini_options]
@@ -41,7 +40,7 @@ addopts = [
     # "-m", "selected", # run selected tests
     # ====================| Coverage settings |==================== #
     "--no-cov",                  # skip Coverage report
-    "--cov=evaluation_defaults",
+    "--cov=src/fatpy",
     "--cov-report=term-missing",
     "--cov-report=html",
     # =========================| Plugins |========================= #
@@ -58,3 +57,17 @@ markers = ["selected: selected tests"]
 
 [tool.ruff]
 line-length = 120
+
+[tool.mypy]
+files = "src"
+ignore_missing_imports = true
+strict = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+check_untyped_defs = true
+disallow_subclassing_any = true
+disallow_incomplete_defs = true
+show_error_context = true
+show_column_numbers = true
