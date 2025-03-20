@@ -5,6 +5,7 @@ FatPy is a Python package for fatigue life evaluation of materials.
 ## Features
 
 - Feature 1
+- Feature 2
 
 ## Installation
 
