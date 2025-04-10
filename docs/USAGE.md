@@ -1,41 +1,46 @@
 # Usage Guide
 
-## Running the Application
+## Development Tools
 
-To run the application, use the following command:
+### Running Tests
+
 ```bash
-python main.py  # Adjust this command to your project's entry point
-```
-
-## Running Tests
-
-To run the tests, use the following command:
-```bash
+# Run all tests
 pytest
+
+# Run tests with coverage report
+pytest --cov=src/fatpy
 ```
 
-## Running Type Checks
+### Code Quality Tools
 
-To run the type checks, use the following command:
 ```bash
+# Run type checks
 mypy .
+
+# Run linter
+ruff check
+
+# Format code
+ruff format
 ```
 
-## Running the Linter
+### Pre-commit Hooks
 
-To run the linter, use the following command:
 ```bash
-ruff .
+# Install pre-commit hooks
+pre-commit install
+
+# Run pre-commit hooks manually
+pre-commit run --all-files
 ```
 
-## Examples
+## Getting Started with FatPy
 
-### Example 1: Running a simple task
-```python
-# Example code snippet
-```
+This section will be expanded as the package develops. Currently, the package provides tools for fatigue life evaluation using different approaches:
 
-### Example 2: Using a specific feature
-```python
-# Example code snippet
-```
+- Stress-Life methods
+- Strain-Life methods
+- Energy-Life methods
+
+Refer to the [project structure](../README.md#project-structure) for more details on the available modules.

@@ -1,38 +1,43 @@
 # Troubleshooting Guide
 
-## Common Issues
+## Development Issues
 
-### Issue 1: Installation Error
-
-**Symptoms**:
-- Error message during installation
-
-**Solution**:
-- Ensure that you have the correct version of Python installed.
-- Verify that `pip` is up to date.
-- Check for any missing dependencies.
-
-### Issue 2: Tests Failing
+### Environment Setup Problems
 
 **Symptoms**:
-- Tests fail with error messages
+- Error when creating virtual environment
+- Dependency installation fails
 
 **Solution**:
-- Ensure that all dependencies are installed.
-- Check the test cases for any incorrect assumptions.
-- Review the error messages for specific details.
+- Ensure you have Python 3.13 or higher installed
+- Try using uv for dependency management: `pip install uv`
+- Check your internet connection when installing packages
 
-### Issue 3: Linter Warnings
+### Code Quality Checks Failing
 
 **Symptoms**:
-- Linter reports warnings or errors
+- Pre-commit hooks fail
+- CI tests fail
 
 **Solution**:
-- Review the linter messages and fix the reported issues.
-- Ensure that the code follows the project's coding standards.
+- Run `ruff check --fix .` to automatically fix style issues
+- Ensure all functions have type hints: `mypy .`
+- Check test failures locally: `pytest -v`
+
+### Import Errors
+
+**Symptoms**:
+- ModuleNotFoundError when running tests or application
+
+**Solution**:
+- Install the package in development mode: `uv pip install -e .`
+- Check your Python path settings
+- Verify the package structure matches [project structure](../README.md#project-structure)
 
 ## Getting Help
 
-If you encounter issues that are not covered in this guide, you can seek help by:
-- Creating an issue in the repository's issue tracker.
-- Reaching out to the project maintainers via the contact information provided in the [Code of Conduct](../CODE_OF_CONDUCT.md).
+If you encounter issues not covered here:
+- [Create an issue](https://github.com/vybornak2/fatpy/issues/new/choose) in the repository
+- Contact the project maintainer via email at jan.vyborny2@gmail.com
+
+For contribution guidelines, see [CONTRIBUTING.md](../CONTRIBUTING.md).

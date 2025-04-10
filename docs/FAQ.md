@@ -1,21 +1,40 @@
 # Frequently Asked Questions
 
-## How do I set up the project?
+## How do I set up the development environment?
 
-Refer to the [Installation Guide](INSTALL.md) for detailed setup instructions.
+See the [Contributing Guide](../CONTRIBUTING.md) for detailed setup instructions.
 
-## How do I run the tests?
+## How do I run tests?
 
-You can run the tests using `pytest`. See the [Usage Guide](USAGE.md) for more information.
+```bash
+# Run all tests
+pytest
+
+# Run with coverage report
+pytest --cov=src/fatpy
+```
+
+## How do I check code quality?
+
+```bash
+# Run type checking
+mypy .
+
+# Run linting
+ruff check .
+
+# Format code
+ruff format .
+```
 
 ## How do I report a bug?
 
-You can report bugs by creating an issue in the repository's issue tracker.
+Create an issue in the GitHub repository with:
+- Steps to reproduce the bug
+- Expected behavior
+- Actual behavior
+- Environment information (Python version, OS, etc.)
 
-## How can I contribute to the project?
+## How can I contribute?
 
-Refer to the [Contribution Guidelines](../CONTRIBUTING.md) for information on how to contribute.
-
-## Where can I find the documentation for the CI/CD process?
-
-The CI/CD process is documented in the [CI/CD Guide](CI_CD.md).
+See the [Contributing Guide](../CONTRIBUTING.md) for information on how to contribute.

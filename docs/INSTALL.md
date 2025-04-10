@@ -2,63 +2,61 @@
 
 ## Prerequisites
 
-Before you begin, ensure you have met the following requirements:
-- You have a Windows/Linux/Mac machine.
-- You have Python 3.x installed.
+- Python 3.13 or higher
+- pip or uv package manager
 
-## Installation Steps
+## Installation Options
 
-### Option 1: Using pip
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/Vybornak2/FatPy.git
-   cd FatPy
-   ```
-
-2. **Create a virtual environment:**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-   ```
-
-3. **Install the dependencies:**
-   ```bash
-   pip install --upgrade pip
-   pip install -r requirements.txt
-   ```
-
-### Option 2: Using uv
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/Vybornak2/FatPy.git
-   cd FatPy
-   ```
-
-2. **Install the uv package manager:**
-   ```bash
-   pip install uv
-   ```
-
-3. **Create a virtual environment using uv:**
-   ```bash
-   uv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-   ```
-
-4. **Synchronize the dependencies using uv:**
-   ```bash
-   uv sync
-   ```
-
-## Running the Application
+### Standard Installation
 
 ```bash
-python main.py  # Adjust this command to your project's entry point
+pip install fatpy
 ```
 
-## Additional Setup
+### Development Installation
 
-- **Database setup**: (if applicable)
-- **Environment variables**: (if applicable)
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/vybornak2/fatpy.git
+   cd fatpy
+   ```
+
+2. **Setup using uv (recommended):**
+   ```bash
+   # Create and activate virtual environment
+   uv venv
+   .venv\Scripts\activate  # On Unix: source .venv/bin/activate
+
+   # Install dependencies
+   uv sync
+
+   # Install in development mode
+   uv pip install -e .
+
+   # Setup pre-commit hooks
+   pre-commit install
+   ```
+
+3. **Alternative setup using pip:**
+   ```bash
+   # Create and activate virtual environment
+   python -m venv venv
+   venv\Scripts\activate  # On Unix: source venv/bin/activate
+
+   # Install dependencies
+   pip install -r requirements.txt
+   pip install -r requirements-dev.txt
+
+   # Install in development mode
+   pip install -e .
+   ```
+
+## Verifying Installation
+
+Run a simple test to verify the installation:
+
+```bash
+pytest -xvs
+```
+
+For more information, see the [Contributing Guide](../CONTRIBUTING.md) and [Usage Guide](USAGE.md).

@@ -1,29 +1,58 @@
 # Contributing to FatPy
 
-Thank you for considering contributing to FatPy! Here are some guidelines to help you get started.
+Thank you for considering contributing to FatPy!
 
-## How to Contribute
+## Quick Start
 
-1. Fork the repository.
+1. Fork the repository
 2. Clone your fork: `git clone https://github.com/your-username/FatPy.git`
-3. Create a new branch for your changes: `git checkout -b my-feature-branch`
-4. Make your changes.
-5. Commit your changes: `git commit -m 'Add some feature'`
-6. Push to the branch: `git push origin my-feature-branch`
-7. Create a pull request.
+3. Create a branch: `git checkout -b my-feature-branch`
+4. Make your changes
+5. Submit a pull request
 
-## Code of Conduct
+## Development Setup
 
-Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project, you agree to abide by its terms.
+For detailed setup instructions, see the [Installation Guide](docs/INSTALL.md).
 
-## Reporting Issues
+## Coding Standards
 
-If you find a bug, please create an issue with details about how to reproduce it. 
+This project uses:
+
+- **Ruff** - Linting and formatting
+- **MyPy** - Type checking
+- **Pre-commit** - Automated quality checks
+
+All code should be typed, documented, and follow PEP 8.
 
 ## Testing
 
-Please ensure that your changes pass all tests before submitting a pull request. You can run tests using `pytest`:
-
 ```sh
+# Run all tests
 pytest
+
+# Test with coverage
+pytest --cov=src/fatpy
 ```
+
+## Documentation
+
+- Update docs for API changes
+- Add docstrings to new code
+- Include examples where helpful
+
+## Pull Request Process
+
+1. Ensure tests pass and code quality checks succeed
+2. Update relevant documentation
+3. Link any related issues
+4. Wait for review feedback
+
+## Code of Conduct
+
+All contributors must follow our [Code of Conduct](CODE_OF_CONDUCT.md).
+
+## Questions?
+
+Create an issue or email jan.vyborny2@gmail.com.
+
+Thank you for contributing to FatPy!
