@@ -3,7 +3,7 @@ name = "FatPy"
 version = "0.1.0"
 description = "Python implementations of various life algorithms"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dependencies = [
     "matplotlib>=3.10.0",
     "numpy>=2.2.2",
