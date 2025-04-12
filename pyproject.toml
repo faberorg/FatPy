@@ -1,15 +1,35 @@
 [project]
 name = "FatPy"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Python implementations of various life algorithms"
 readme = "README.md"
 requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Jan Vyborny", email = "jan.vyborny2@gmail.com" }]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+
 dependencies = [
     "matplotlib>=3.10.0",
     "numpy>=2.2.2",
     "pandas>=2.2.3",
     "scipy>=1.15.1",
 ]
+
+[project.urls]
+"Homepage" = "https://github.com/vybornak2/FatPy"
+"Bug Tracker" = "https://github.com/vybornak2/FatPy/issues"
+"Documentation" = "https://vybornak2.github.io/FatPy/"
+"FABER" = "https://faber-cost.eu/"
+"LinkedIn" = "https://www.linkedin.com/company/faber-cost/about/"
 
 [tool.uv]
 dev-dependencies = [
@@ -72,5 +92,8 @@ show_error_context = true
 show_column_numbers = true
 
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=61.0", "setuptools_scm[toml]>=6.2", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+write_to = "src/fatpy/_version.py"

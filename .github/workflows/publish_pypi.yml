@@ -21,23 +21,6 @@ jobs:
         run: |
           pip install build twine tomli
 
-      - name: Check version matches tag
-        run: |
-          # Extract version from tag (remove 'v' prefix)
-          TAG_VERSION="${GITHUB_REF#refs/tags/v}"
-          echo "Tag version: $TAG_VERSION"
-
-          # Extract version from pyproject.toml
-          PROJECT_VERSION=$(python -c "import tomli; print(tomli.load(open('pyproject.toml', 'rb'))['project']['version'])")
-          echo "Project version: $PROJECT_VERSION"
-
-          # Compare versions
-          if [ "$TAG_VERSION" != "$PROJECT_VERSION" ]; then
-            echo "Error: Tag version ($TAG_VERSION) does not match project version ($PROJECT_VERSION)"
-            exit 1
-          fi
-          echo "✅ Versions match!"
-
       - name: Build package
         run: |
           python -m build

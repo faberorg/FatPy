@@ -1,3 +1,7 @@
-# File: /fatigue-evaluation-bm/fatigue-evaluation-bm/src/fatigue_evaluation_bm/core/__init__.py
+"""FatPy - A Python package for fatigue life evaluation of materials."""
 
-# This file is intentionally left blank.
+try:
+    from ._version import __version__
+except ImportError:
+    # Default version during development
+    __version__ = "0.0.0.dev0"
