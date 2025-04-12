@@ -4,7 +4,7 @@
 [![Documentation](https://img.shields.io/github/actions/workflow/status/vybornak2/FatPy/deploy_docs.yml?label=Documentation)](https://vybornak2.github.io/FatPy/)
 [![Code Coverage](https://codecov.io/gh/vybornak2/FatPy/branch/main/graph/badge.svg)](https://codecov.io/gh/vybornak2/FatPy)
 [![PyPI Version](https://img.shields.io/pypi/v/fatpy.svg?label=PyPI)](https://pypi.org/project/FatPy/)
-[![Python Version](https://img.shields.io/pypi/pyversions/fatpy.svg?label=Python)](https://pypi.org/project/FatPy/)
+[![Python Version](https://img.shields.io/pypi/pyversions/FatPy.svg?label=Python)](https://pypi.org/project/FatPy/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A Python package for fatigue life evaluation of materials.
