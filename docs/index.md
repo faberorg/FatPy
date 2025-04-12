@@ -23,7 +23,7 @@ material science.
 pip install fatpy
 ```
 
-For detailed installation options, see the [Installation Guide](INSTALL.md).
+For detailed installation options, see the [Installation Guide](development/install.md).
 
 ---
 
@@ -53,7 +53,7 @@ interested in coding, testing, documentation, or providing feedback, your partic
 ### Getting Involved
 
 - **Explore the Repository**: Visit our [GitHub repository](https://github.com/vybornak2/fatpy) to access the source code
-- **Contribute**: Follow our [Contribution Guidelines](CONTRIBUTING.md) to help improve FatPy
+- **Contribute**: Follow our [Contribution Guidelines](development/index.md) to help improve FatPy
 - **Collaborate**: [Report issues](https://github.com/vybornak2/fatpy/issues) or join [discussions](https://github.com/vybornak2/fatpy/discussions)
 
 By participating, you'll be part of a collaborative effort to advance the field of material fatigue analysis.

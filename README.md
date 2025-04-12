@@ -76,8 +76,7 @@ pytest --cov=src/fatpy
 
 ## The FABER Project
 
-FatPy is a key initiative of Working Group 6 (WG6) within the FABER (Fatigue Benchmark Repository) project,
-operating under COST Action CA23109.
+FatPy is a key initiative of Working Group 6 (WG6) within the [FABER](https://faber-cost.eu/) (Fatigue Benchmark Repository) project, operating under COST Action CA23109.
 
 ## License
 
