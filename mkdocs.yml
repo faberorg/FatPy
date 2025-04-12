@@ -1,0 +1,134 @@
+site_name: FatPy
+site_description: A Python package for fatigue life evaluation of materials
+site_url: https://vybornak2.github.io/FatPy/
+repo_url: https://github.com/vybornak2/FatPy
+repo_name: vybornak2/FatPy
+
+theme:
+  name: material
+  palette:
+    # Dark mode (default)
+    - scheme: slate
+      primary: indigo
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    # Light mode option
+    - scheme: default
+      primary: indigo
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - navigation.top
+    - toc.follow
+    - content.code.copy
+    - content.tabs.link
+    - search.suggest
+    - search.highlight
+    - header.autohide
+    - navigation.tabs.sticky
+  icon:
+    repo: fontawesome/brands/github
+  font:
+    text: Roboto
+    code: Roboto Mono
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+            members_order: source
+  - autorefs
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.arithmatex:
+      generic: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/vybornak2/fatpy
+      name: FatPy on GitHub
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/company/faber-cost/
+      name: FABER on LinkedIn
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/fatpy/
+      name: FatPy on PyPI
+    - icon: material/web
+      link: https://faber-cost.eu/
+      name: FABER Website
+
+nav:
+  - Home: index.md
+  - API Reference:
+      - Overview: api/index.md
+      - Core:
+          - Overview: api/core/index.md
+          - Stress Life: api/core/stress_life.md
+          - Strain Life: api/core/strain_life.md
+          - Energy Life: api/core/energy_life.md
+      - Data Parsing: api/data_parsing.md
+      - Utilities: api/utilities.md
+  - Theory Reference:
+      - Overview: theory/index.md
+      - Stress Life: theory/stress_life.md
+      - Strain Life: theory/strain_life.md
+      - Energy Life: theory/energy_life.md
+  - Development:
+      - Overview: development/index.md
+      - Installation: development/install.md
+      - Contributing: development/contributing.md
+      - Code of Conduct: development/code_of_conduct.md
+      - Testing: development/testing.md
+      - Code Style: development/code_style.md
+      - Documentation: development/documentation.md
+      - CI/CD: development/ci_cd.md
+      - License: development/license.md

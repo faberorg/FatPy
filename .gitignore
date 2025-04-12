@@ -34,3 +34,8 @@ htmlcov/
 # Distribution / packaging
 dist/
 build/
+
+# Test coverage
+coverage.xml
+.coverage
+htmlcov/

@@ -1,0 +1,100 @@
+/* Page headers */
+.md-typeset h1 {
+    color: var(--md-primary-fg-color);
+    font-size: 2.2em;
+    font-weight: 400;
+    margin-bottom: 1rem;
+}
+
+/* Section headers */
+.md-typeset h2 {
+    font-weight: 500;
+    color: var(--md-primary-fg-color--dark);
+    border-bottom: 1px solid var(--md-primary-fg-color--light);
+    padding-bottom: 0.2em;
+    margin-top: 1.5em;
+}
+
+/* Documentation headers */
+h2.doc-heading {
+    font-weight: 500;
+    color: var(--md-primary-fg-color--dark);
+    border-bottom: none;
+}
+
+/* Code blocks */
+.md-typeset pre {
+    border-radius: 0.2rem;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12), 0 3px 1px -2px rgba(0,0,0,.2);
+}
+
+/* Table of contents */
+.md-nav__title {
+    font-weight: 500;
+}
+
+/* Navigation items */
+.md-nav__item--nested > .md-nav__link {
+    font-weight: 500;
+}
+
+/* Admonition blocks */
+.md-typeset .admonition,
+.md-typeset details {
+    border-radius: 0.2rem;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12), 0 3px 1px -2px rgba(0,0,0,.2);
+    font-size: 0.8rem;
+}
+
+/* Content tabs */
+.md-typeset .tabbed-set {
+    border-radius: 0.2rem;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12), 0 3px 1px -2px rgba(0,0,0,.2);
+}
+
+/* Add padding to tab content area */
+.md-typeset .tabbed-content {
+    padding: 0.8rem;
+}
+
+/* Improve table appearance */
+.md-typeset table:not([class]) {
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12), 0 3px 1px -2px rgba(0,0,0,.2);
+    border-radius: 0.2rem;
+}
+
+/* Improve annotations in API docs */
+.doc-contents .doc-function > h3,
+.doc-contents .doc-class > h3,
+.doc-contents .doc-module > h3 {
+    color: var(--md-primary-fg-color--dark);
+    font-weight: 500;
+}
+
+/* Make parameter names stand out */
+.doc-contents .doc-param-name {
+    font-weight: 500;
+}
+
+/* Equation display */
+.md-typeset .arithmatex {
+    margin: 1em 0;
+}
+
+/* Navigation scrollbar - more subtle */
+.md-nav__list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.md-nav__list::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+/* Mobile improvements */
+@media screen and (max-width: 76.1875em) {
+    .md-nav--primary .md-nav__title {
+        font-size: 1.2rem;
+        padding: 1rem;
+    }
+}

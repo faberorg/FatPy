@@ -21,6 +21,10 @@ dev-dependencies = [
     "pytest-mock>=3.14.0",
     "pytest-mypy>=1.0.1",
     "pytest-ruff>=0.4.1",
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.5.15",
+    "mkdocstrings[python]>=0.29.1",
+    "mkdocs-autorefs>=1.0.0",
 ]
 
 [tool.pytest.ini_options]
@@ -38,11 +42,6 @@ addopts = [
     # "-k", "read_op2",
     # "tests/views/", # run view tests
     # "-m", "selected", # run selected tests
-    # ====================| Coverage settings |==================== #
-    "--no-cov",                  # skip Coverage report
-    "--cov=src/fatpy",
-    "--cov-report=term-missing",
-    "--cov-report=html",
     # =========================| Plugins |========================= #
     "--ruff",
     "--mypy",
@@ -71,3 +70,7 @@ disallow_subclassing_any = true
 disallow_incomplete_defs = true
 show_error_context = true
 show_column_numbers = true
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
