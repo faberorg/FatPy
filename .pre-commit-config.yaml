@@ -17,7 +17,6 @@ repos:
     rev: v1.15.0
     hooks:
       - id: mypy
-        args: ["--explicit-package-bases"]
 
   # - repo: https://github.com/hhatto/autopep8
   #   rev: v2.3.2
