@@ -78,6 +78,7 @@ markers = ["selected: selected tests"]
 line-length = 120
 
 [tool.mypy]
+mypy_path = "src"
 files = "src"
 ignore_missing_imports = true
 strict = true
