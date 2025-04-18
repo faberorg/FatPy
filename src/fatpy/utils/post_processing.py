@@ -6,7 +6,7 @@ fatigue analysis results, including result processing and formatting.
 
 
 def addition(a: float, b: float) -> float:
-    """Add two numbers.
+    r"""Add two numbers.
 
     This function takes two float numbers and returns their sum.
 
@@ -24,6 +24,7 @@ def addition(a: float, b: float) -> float:
         result = addition(2.0, 3.0)
         print(result)  # Output: 5.0
         ```
+
     """
     return a + b
 
@@ -39,11 +40,12 @@ class SomeClass:
 
         Args:
             value: A float value to initialize the class.
+
         """
         self.value = value
 
     def multiply(self, factor: float) -> float:
-        """Multiply the stored value by a factor.
+        r"""Multiply the stored value by a factor.
 
         $$ result = self.value \\cdot factor $$
 
@@ -59,5 +61,6 @@ class SomeClass:
             result = instance.multiply(2.0)
             print(result)
             ```
+
         """
         return self.value * factor
