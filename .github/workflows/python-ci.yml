@@ -16,6 +16,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Set up Python
+      if: ${{ env.SKIP_SETUP_PYTHON != 'true' }}
       uses: actions/setup-python@v4
       with:
         python-version: '3.12'
