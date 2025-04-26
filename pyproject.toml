@@ -48,33 +48,30 @@ dev-dependencies = [
 ]
 
 [tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
 minversion = "6.0"
 addopts = [
-    # =====================| Default settings |==================== #
-    "-rfE", # show extra test summary info for all tests
-    "-vv",  # verbose output
-    # "-s", # do not capture output
-    "--no-header", # do not show header
-    # ===========================| PDB |=========================== #
-    # "--pdb", # enter python debugger on failure
-    "--pdbcls=IPython.terminal.debugger:TerminalPdb",
-    # ==========================| SCOPE |========================== #
-    # "-k", "read_op2",
-    # "tests/views/", # run view tests
-    # "-m", "selected", # run selected tests
-    # =========================| Plugins |========================= #
-    "--ruff",
-    "--mypy",
-    # =========================| Logging |========================= #
-    "--log-level=DEBUG",
+    "-rfEP",  # show failures, errors, and passed with output
+    "-vv",    # verbose output
+    "--ruff", # run ruff on all tests
+    "--mypy", # run mypy on all tests
+    # "--no-header",                                    # do not show header
+    # "-s",                                             # do not capture output
+
+    # "--pdb",                                          # enter python debugger on failure
+    # "--pdbcls=IPython.terminal.debugger:TerminalPdb", # use IPython debugger
+    # "--log-level=DEBUG",                              # set log level to DEBUG
+
+    # "-k", "pattern",                                  # run only tests matching this pattern
+    # "tests/test_mod.py::TestClass::test_method",      # run only this test
+    # "-m", "mark",                                     # run only tests with this mark
 ]
-testpaths = ["tests"]
-python_files = ["test_*.py"]
-python_classes = ["Test*"]
-python_functions = ["test_*"]
-markers = ["selected: selected tests"]
 
 [tool.ruff]
+line-length = 88
+indent-width = 4
+target-version = "py311"
 exclude = [
     ".bzr",
     ".direnv",
@@ -104,13 +101,6 @@ exclude = [
     "venv",
 ]
 
-# Same as Black.
-line-length = 88
-indent-width = 4
-
-# Assume Python 3.9
-target-version = "py312"
-
 [tool.ruff.lint]
 select = [
     "E", # pycodestyle
@@ -121,11 +111,8 @@ select = [
     "S", # bandit
 ]
 ignore = []
-
-# Allow fix for all enabled rules (when `--fix`) is provided.
 fixable = ["ALL"]
 unfixable = []
-
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
@@ -133,30 +120,11 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 convention = "google"
 
 [tool.ruff.format]
-# Like Black, use double quotes for strings.
 quote-style = "double"
-
-# Like Black, indent with spaces, rather than tabs.
 indent-style = "space"
-
-# Like Black, respect magic trailing commas.
 skip-magic-trailing-comma = false
-
-# Like Black, automatically detect the appropriate line ending.
 line-ending = "auto"
-
-# Enable auto-formatting of code examples in docstrings. Markdown,
-# reStructuredText code/literal blocks and doctests are all supported.
-#
-# This is currently disabled by default, but it is planned for this
-# to be opt-out in the future.
 docstring-code-format = false
-
-# Set the line length limit used when formatting code snippets in
-# docstrings.
-#
-# This only has an effect when the `docstring-code-format` setting is
-# enabled.
 docstring-code-line-length = "dynamic"
 
 [tool.ruff.lint.per-file-ignores]
