@@ -9,7 +9,3 @@ Utility modules provide supporting functionality for fatigue analysis.
 ## Post-Processing
 
 ::: fatpy.utils.post_processing
-
-## Transformation
-
-::: fatpy.utils.transformation

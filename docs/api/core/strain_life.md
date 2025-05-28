@@ -10,10 +10,6 @@ The Strain Life module provides methods for fatigue analysis based on strain dat
 
 ::: fatpy.core.strain_life.correction_methods
 
-## Decompositions
-
-::: fatpy.core.strain_life.decompositions
-
 ## Damage Parameters
 
 ::: fatpy.core.strain_life.demage_parameters

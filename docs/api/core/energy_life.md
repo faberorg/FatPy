@@ -10,10 +10,6 @@ The Energy Life module provides methods for fatigue analysis based on energy dat
 
 ::: fatpy.core.energy_life.correction_methods
 
-## Decompositions
-
-::: fatpy.core.energy_life.decompositions
-
 ## Damage Parameters
 
 ::: fatpy.core.energy_life.demage_parameters

@@ -38,6 +38,6 @@ Following Test-Driven Development (TDD) principles:
 If you encounter issues or need assistance with development, you can:
 
 - Create an issue in the [GitHub repository](https://github.com/vybornak2/fatpy/issues)
-- Contact the maintainers at jan.vyborny2@gmail.com
+- Contact the maintainers at <jan.vyborny2@gmail.com>
 
 Thank you for contributing to FatPy!

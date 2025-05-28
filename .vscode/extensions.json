@@ -10,6 +10,7 @@
         "github.vscode-github-actions",
         "bierner.markdown-mermaid",
         "alexcvzz.vscode-sqlite",
-        "njpwerner.autodocstring"
+        "njpwerner.autodocstring",
+        "redhat.vscode-yaml",
     ]
 }
