@@ -1,4 +1,4 @@
-    """Structural mechanics module.
+"""Structural mechanics module.
 
-    This module contains the classes and functions for structural mechanics analysis.
-    """
+This module contains the classes and functions for structural mechanics analysis.
+"""

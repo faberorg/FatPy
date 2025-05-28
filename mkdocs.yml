@@ -133,17 +133,11 @@ extra:
       name: Contact Jan Vyborny
 
 nav:
-  - Home: index.md
-  - API Reference:
-      - Overview: api/index.md
-      - Core:
-          - Overview: api/core/index.md
-          - Stress Life: api/core/stress_life.md
-          - Strain Life: api/core/strain_life.md
-          - Energy Life: api/core/energy_life.md
-      - Data Parsing: api/data_parsing.md
-      - Utilities: api/utilities.md
-      - Examples: api/examples.md
+  - Home: 
+    - Overview: index.md
+    - FABER COST: faber_cost.md
+    - License: development/license.md
+  - API Reference: api/index.md
   - Theory Reference:
       - Overview: theory/index.md
       - Stress Life: theory/stress_life.md
