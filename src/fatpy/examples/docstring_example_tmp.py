@@ -102,6 +102,7 @@ class ExampleClass:
         return self.value
 
     def example_method_with_docstring(self, a: int, b: int) -> int:
+        # ruff: noqa: E501
         """Docstring with a cross-reference to the example function.
 
         This method demonstrates how to reference another function's docstring.

@@ -1,1 +1,1 @@
-""" Contains the function to calculate equivalent stresses.  """
+"""Contains the function to calculate equivalent stresses."""

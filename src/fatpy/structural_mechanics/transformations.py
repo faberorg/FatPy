@@ -1,1 +1,1 @@
-""" Contains the functions for tensor and other transformations. """
+"""Contains the functions for tensor and other transformations."""

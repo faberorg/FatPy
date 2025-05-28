@@ -75,7 +75,7 @@ markdown_extensions:
   - def_list
   - abbr
 
-  - pymdownx.superfences: 
+  - pymdownx.superfences:
       custom_fences:
         - name: mermaid
           class: mermaid
@@ -133,7 +133,7 @@ extra:
       name: Contact Jan Vyborny
 
 nav:
-  - Home: 
+  - Home:
     - Overview: index.md
     - FABER COST: faber_cost.md
     - License: development/license.md
