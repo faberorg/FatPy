@@ -16,4 +16,4 @@ FatPy implements several fundamental approaches to fatigue life prediction:
 
 ## API Reference
 
-For more details on implementation, see the [API Reference](../api/core/index.md).
+For more details on implementation, see the [API Reference](../api/index.md).

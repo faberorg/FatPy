@@ -7,33 +7,38 @@ repo_name: vybornak2/FatPy
 theme:
   name: material
   palette:
-    # Dark mode (default)
-    - scheme: slate
-      primary: indigo
-      accent: blue
+    - media: "(prefers-color-scheme)"
       toggle:
-        icon: material/brightness-4
+        icon: material/link
         name: Switch to light mode
-    # Light mode option
-    - scheme: default
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
       primary: indigo
       accent: blue
       toggle:
-        icon: material/brightness-7
+        icon: material/toggle-switch
         name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: blue
+      toggle:
+        icon: material/toggle-switch-off
+        name: Switch to system preference
   features:
+    - header.autohide
+    - navigation.instant
+    - navigation.tracking
     - navigation.tabs
-    - navigation.sections
-    - navigation.expand
-    - navigation.indexes
-    - navigation.top
-    - toc.follow
-    - content.code.copy
-    - content.tabs.link
+    - navigation.tabs.sticky
     - search.suggest
     - search.highlight
-    - header.autohide
-    - navigation.tabs.sticky
+    - toc.follow
+    - content.code.copy
+    - content.code.select
+    - content.tabs.link
+    - content.footnote.tooltips
+    - content.tooltips
   icon:
     repo: fontawesome/brands/github
   font:
@@ -42,54 +47,72 @@ theme:
 
 plugins:
   - search
+  - tags
+  - autorefs
   - mkdocstrings:
       handlers:
         python:
           paths: [src]
           options:
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
             docstring_style: google
             show_source: true
             show_root_heading: true
             members_order: source
-  - autorefs
 
 markdown_extensions:
-  - pymdownx.highlight:
-      anchor_linenums: true
-      line_spans: __span
-      pygments_lang_class: true
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.betterem
+  - pymdownx.blocks.caption
+  - tables
+  - footnotes
+  - md_in_html
+  - def_list
+  - abbr
+
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
-  - pymdownx.arithmatex:
-      generic: true
-  - admonition
-  - pymdownx.details
+
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+
   - pymdownx.tabbed:
       alternate_style: true
-  - tables
-  - toc:
-      permalink: true
-      toc_depth: 3
-  - attr_list
-  - md_in_html
+
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
-  - pymdownx.inlinehilite
-  - pymdownx.snippets
+
   - pymdownx.tasklist:
       custom_checkbox: true
 
+  - pymdownx.arithmatex:
+      generic: true
+
+  - toc:
+      permalink: true
+      toc_depth: 3
+
 extra_javascript:
-  - javascripts/mathjax.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - javascripts/mathjax.js
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  - javascripts/tablesort.js
+  - https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js
 
 extra_css:
   - stylesheets/extra.css
+
 
 extra:
   social:
@@ -105,18 +128,16 @@ extra:
     - icon: material/web
       link: https://faber-cost.eu/
       name: FABER Website
+    - icon: material/email
+      link: mailto:jan.vyborny2@gmail.com
+      name: Contact Jan Vyborny
 
 nav:
-  - Home: index.md
-  - API Reference:
-      - Overview: api/index.md
-      - Core:
-          - Overview: api/core/index.md
-          - Stress Life: api/core/stress_life.md
-          - Strain Life: api/core/strain_life.md
-          - Energy Life: api/core/energy_life.md
-      - Data Parsing: api/data_parsing.md
-      - Utilities: api/utilities.md
+  - Home:
+    - Overview: index.md
+    - FABER COST: faber_cost.md
+    - License: development/license.md
+  - API Reference: api/index.md
   - Theory Reference:
       - Overview: theory/index.md
       - Stress Life: theory/stress_life.md

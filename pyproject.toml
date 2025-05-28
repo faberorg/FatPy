@@ -1,7 +1,7 @@
 [project]
 name = "FatPy"
 dynamic = ["version"]
-description = "Python implementations of various life algorithms"
+description = "Python implementations of various fatigue life algorithms"
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }
@@ -42,7 +42,7 @@ dev-dependencies = [
     "pytest-mypy>=1.0.1",
     "pytest-ruff>=0.4.1",
     "mkdocs>=1.6.1",
-    "mkdocs-material>=9.5.15",
+    "mkdocs-material[imaging]>=9.5.15",
     "mkdocstrings[python]>=0.29.1",
     "mkdocs-autorefs>=1.0.0",
 ]
