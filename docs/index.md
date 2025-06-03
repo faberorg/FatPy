@@ -1,3 +1,7 @@
+---
+title: Home
+---
+
 # FatPy
 
 A Python package for fatigue life evaluation of materials.
@@ -70,8 +74,9 @@ This project is licensed under the MIT License.
 
 ## Contact
 
-Jan Vyborny - jan.vyborny2@gmail.com
+Jan Vyborny - <jan.vyborny2@gmail.com>
 Project Link: [github.com/vybornak2/fatpy](https://github.com/vybornak2/fatpy)
 
 ## Special Thanks
+
 [Gooby](https://github.com/jakubda1) - for his help with the documentation and the project in general.
