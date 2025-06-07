@@ -1,9 +1,14 @@
-# Installation Guide
+---
+title: Installation Guide
+---
 
-## Prerequisites
+# :fontawesome-solid-download: Installation Guide
+
+## :fontawesome-solid-list-check: Prerequisites
 
 === "General"
     - Python 3.12 or higher
+    - Git
     - pip or uv package manager
 
 === "Windows"
@@ -31,7 +36,16 @@
     curl -LsSf https://astral.sh/uv/install.sh | sh
     ```
 
-## Standard Installation
+??? tip
+    Verify that the prerequisites are installed before setting up FatPy, by running following commands:
+    ```bash
+    uv --version
+    uv python list
+    git --version
+    ```
+
+## :material-cloud-download: Standard Installation
+
 The easiest way to install FatPy is from PyPI:
 
 ```bash
@@ -40,10 +54,12 @@ pip install fatpy
 
 This installs the latest stable release with all dependencies.
 
-## Development Installation
+## :material-tools: Development Installation
+
 For contributing or customizing FatPy:
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/vybornak2/fatpy.git
    cd fatpy
@@ -88,7 +104,7 @@ For contributing or customizing FatPy:
 
     The standard pip approach works on all systems with Python installed.
 
-## Verifying Installation
+## :material-check-circle: Verifying Installation
 
 Run a simple test to verify the installation:
 
@@ -104,4 +120,6 @@ Run a simple test to verify the installation:
     pytest -xvs
     ```
 
-For more information, see the [Contributing Guide](contributing.md).
+For next steps, see:
+
+[:fontawesome-solid-handshake: Contributing Guide](contributing.md){.md-button}
