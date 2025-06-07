@@ -1,3 +1,8 @@
+---
+title: Code Style
+---
+
+
 # Code Style Guide
 
 This guide outlines the coding standards and style guidelines for the FatPy project.
@@ -26,9 +31,9 @@ FatPy follows [PEP 8](https://www.python.org/dev/peps/pep-0008/) with some speci
 - Line length: 120 characters maximum
 - Indentation: 4 spaces (no tabs)
 - Blank lines:
-    - 2 between top-level functions and classes
-    - 1 between methods in a class
-    - Use blank lines to separate logical sections within functions
+  - 2 between top-level functions and classes
+  - 1 between methods in a class
+  - Use blank lines to separate logical sections within functions
 
 ### Imports
 

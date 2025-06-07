@@ -1,3 +1,7 @@
+---
+title: Documentation
+---
+
 # Documentation Guide
 
 Good documentation is crucial for the usability and maintainability of FatPy. This guide outlines our documentation standards and practices.
@@ -107,3 +111,41 @@ Documentation is automatically deployed using GitHub Actions when changes are pu
 - Test documentation examples to ensure they work
 - Review documentation for clarity and correctness
 - Consider the reader's perspective and knowledge level
+
+## Documentation Resources
+
+<div class="grid cards" markdown>
+
+- :fontawesome-brands-markdown:{ .lg .middle } **Markdown**
+
+    ---
+
+    Markdown, the simple and easy-to-use markup language you can use to format virtually any document.
+
+    [:octicons-arrow-right-24: Cheat Sheet](https://www.markdownguide.org/cheat-sheet/) &emsp;&emsp;&emsp; [:octicons-arrow-right-24: Basic Syntax](https://www.markdownguide.org/basic-syntax/)
+
+- :material-file-document-multiple:{ .lg .middle } **Markdown DocsString**
+
+    ---
+
+    In code documentation written in Markdown and automatically extracted into documentation.
+
+    [:octicons-arrow-right-24: mkdocstring](https://mkdocstrings.github.io)
+
+- :material-script-text-outline:{ .lg .middle } **MkDocs**
+
+    ---
+
+    MkDocs is a fast and simple static site generator that's geared towards building project documentation.
+
+    [:octicons-arrow-right-24: MkDocs](https://www.mkdocs.org)
+
+- :simple-materialformkdocs:{ .lg .middle } **Material for MkDocs**
+
+    ---
+
+    MkDocs Extension with various functionality including search, annotations, buttons and more!
+
+    [:octicons-arrow-right-24: Materials for MkDocs](https://squidfunk.github.io/mkdocs-material/)
+
+</div>

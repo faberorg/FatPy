@@ -1,3 +1,8 @@
+---
+title: CI/CD
+---
+
+
 # CI/CD Process for FatPy
 
 ## Overview
@@ -9,6 +14,7 @@ FatPy uses GitHub Actions to automate testing, validation, documentation buildin
 ### 1. Python CI
 
 **Triggered by:**
+
 - Pushes to `main` branch
 - Pull requests to `main` branch
 
@@ -27,6 +33,7 @@ FatPy uses GitHub Actions to automate testing, validation, documentation buildin
 ### 2. Documentation Deployment
 
 **Triggered by:**
+
 - Pushes to `documentation` branch
 - Manual trigger via workflow_dispatch
 
@@ -42,6 +49,7 @@ FatPy uses GitHub Actions to automate testing, validation, documentation buildin
 ### 3. PyPI Publication
 
 **Triggered by:**
+
 - Release tags (v*.*.*)
 
 **Configuration file:** `.github/workflows/publish_pypi.yml`
@@ -57,6 +65,7 @@ FatPy uses GitHub Actions to automate testing, validation, documentation buildin
 ### 4. GitHub Release Creation
 
 **Triggered by:**
+
 - Release tags (v*.*.*)
 
 **Configuration file:** `.github/workflows/github_release.yml`
@@ -75,6 +84,7 @@ FatPy uses GitHub Actions to automate testing, validation, documentation buildin
 5. **Push tag**: `git push origin v0.1.0`
 
 Pushing the tag automatically triggers:
+
 - Package publishing to PyPI
 - GitHub release creation
 
@@ -100,6 +110,7 @@ Status badges are displayed in the README.md:
 ### Common Issues and Solutions
 
 #### Failed Tests
+
 - **Issue**: Tests failing in CI but passing locally
 - **Solutions**:
   - Check Python version differences
@@ -107,6 +118,7 @@ Status badges are displayed in the README.md:
   - Review test logs for environment-specific issues
 
 #### Type Errors
+
 - **Issue**: Mypy reports type errors
 - **Solutions**:
   - Run `mypy` locally: `mypy .`
@@ -114,6 +126,7 @@ Status badges are displayed in the README.md:
   - Add appropriate type stubs if needed
 
 #### Style Violations
+
 - **Issue**: Ruff reports style issues
 - **Solutions**:
   - Run `ruff check .` locally
@@ -121,6 +134,7 @@ Status badges are displayed in the README.md:
   - Format code: `ruff format .`
 
 #### Documentation Build Failures
+
 - **Issue**: MkDocs build fails
 - **Solutions**:
   - Run `mkdocs build --strict` locally
