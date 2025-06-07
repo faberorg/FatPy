@@ -1,20 +1,35 @@
-# Contributing to FatPy
+# :handshake: Contributing to FatPy
 
-Thank you for considering contributing to FatPy! This document provides guidelines and instructions for contributing to the project.
+Thank you for considering contributing to FatPy, a Python package for fatigue life evaluation of materials, part of the FABER project! Your contributions help improve open source tools for fatigue analysis. Start with these steps to make an impact.
 
-## Quick Start
+**[:mag: Learn About FABER](https://vybornak2.github.io/FatPy/faber_cost/)**
 
-1. Fork the repository
-2. Clone your fork: `git clone https://github.com/your-username/FatPy.git`
-3. Create a branch: `git checkout -b my-feature-branch`
-4. Write tests for your feature (following TDD principles)
-5. Implement the feature
-6. Run tests and make sure they pass
-7. Submit a pull request
+## :rocket: Quick Start
 
-## Development Setup
+Get started contributing to FatPy in a few simple steps:
 
-For detailed setup instructions, see the [Installation Guide](https://vybornak2.github.io/FatPy/development/install/).
+1. **Fork the Repository**  
+Create a personal copy on GitHub.
+2. **Clone Your Fork**  
+
+```bash
+git clone https://github.com/your-username/FatPy.git  # Clone your fork
+```
+
+3. **Create a Branch**  
+
+```bash
+git checkout -b my-feature-branch  # Create a new branch for your feature
+```
+
+4. **Write Tests for Your Feature**  
+Define expected behavior first.
+5. **Implement the Feature**  
+Write code to pass your tests.
+6. **Submit a Pull Request**  
+Share your changes for review.
+
+## :hammer_and_wrench: Development Setup
 
 ### Setting Up Your Environment
 
@@ -39,27 +54,47 @@ pip install -e .
 pre-commit install
 ```
 
-## Test-Driven Development
+For detailed instructions to configure your development environment, see the **[Installation Guide :arrow_right:](https://vybornak2.github.io/FatPy/development/install/#installation-guide)**.
 
-FatPy follows Test-Driven Development (TDD) principles:
+## :test_tube: Test-Driven Development
 
-1. Write tests that define expected behavior
-2. Verify tests fail (red phase)
-3. Implement code to make tests pass (green phase)
-4. Refactor while maintaining test coverage
-5. Repeat
+### FatPy follows Test-Driven Development (TDD) principles
 
-For more details, see the [Testing Guide](https://vybornak2.github.io/FatPy/development/testing/).
+  1. **Write Tests**  
+  Define expected behavior.
+  2. **Verify Tests Fail**  
+  Confirm tests fail (red phase).
+  3. **Implement Code**  
+  Write code to pass tests (green phase).
+  4. **Refactor**  
+  Improve code while maintaining coverage.
+  5. **Repeat**  
+  Iterate for each feature.
 
-## Coding Standards
+For more details, see the **[Testing Guide :arrow_right:](https://vybornak2.github.io/FatPy/development/testing/)**.
 
-This project uses:
+### Run tests regularly
 
-- **Ruff** - Linting and formatting
-- **MyPy** - Type checking
-- **Pre-commit** - Automated quality checks
+```bash
+# Run all tests
+pytest
 
-All code should be typed, documented, and follow the [Code Style Guide](https://vybornak2.github.io/FatPy/development/code_style/).
+# Run specific test file
+pytest tests/core/test_specific_module.py
+
+# Test with coverage
+pytest --cov=src/fatpy --cov-report=html
+```
+
+## :computer: Coding Standards
+
+FatPy aims for high code quality utilizing these tools:
+
+- **Ruff**  - Linting and formatting for consistent code style.
+- **MyPy**  - Static type checking for reliability.
+- **Pre-commit** - Automated checks before commits.
+
+Follow our coding standards for contributions, see **[Code Style Guide :arrow_right:](https://vybornak2.github.io/FatPy/development/code_style/)**  
 
 ### Running Code Quality Checks
 
@@ -80,46 +115,62 @@ mypy .
 pre-commit run --all-files
 ```
 
-## Testing
+## :memo: Documentation
 
-```bash
-# Run all tests
-pytest
+Keep FatPy’s documentation clear and up-to-date with these guidelines:
 
-# Run specific test file
-pytest tests/core/test_specific_module.py
+- **API Changes**  
+Update documentation for any API modifications.
+- **Docstrings**  
+Add docstrings following Google style to all new code.
+- **Examples**  
+Include examples and mathematical formulas where helpful to aid users.
 
-# Test with coverage
-pytest --cov=src/fatpy --cov-report=html
-```
-
-## Documentation
-
-- Update documentation for API changes
-- Add docstrings following Google style to all new code
-- Include examples and mathematical formulas where helpful
-- For detailed guidelines, see the [Documentation Guide](https://vybornak2.github.io/FatPy/development/documentation/)
+Learn best practices and guidelines for documentation, see [Documentation Guide :arrow_right:](https://vybornak2.github.io/FatPy/development/documentation/)
 
 ### Building Documentation
 
 ```bash
+# Activate project environment
+.\{environment_name}\Scripts\activate
+
 # Build and serve documentation locally
 mkdocs serve
 ```
 
-## Pull Request Process
+## :arrows_clockwise: Pull Request Process
 
-1. Ensure tests pass and code quality checks succeed
-2. Update relevant documentation
-3. Link any related issues
-4. Make sure your code follows the project's style guidelines
-5. Wait for review feedback
+Submit a high-quality pull request with these steps:
 
-## Questions?
+1. **Run Tests and Checks**  
+   Ensure tests pass and code quality checks succeed.
+2. **Update Documentation**  
+   Reflect changes in relevant docs.
+3. **Link Issues**  
+   Reference related GitHub issues.
+4. **Follow guidelines**  
+   Make sure your code follows the project's style guidelines.
+5. **Await Review**  
+   Respond to feedback from maintainers.
 
-If you encounter issues or need assistance with development, you can:
+## :book: Code of Conduct
 
-- Create an issue in the [GitHub repository](https://github.com/vybornak2/fatpy/issues)
-- Contact the maintainers at <jan.vyborny2@gmail.com>
+All contributors must follow our standards.
+
+Understand our expectations for collaboration, see **[Code of Conduct :arrow_right:](https://github.com/Vybornak2/FatPy/blob/main/CODE_OF_CONDUCT.md)**
+
+## :bulb: Ideas and Questions
+
+Join discussion, create an issue or reach out to maintainers:
+
+- :speech_balloon:  **[GitHub Discussions :arrow_right:](https://github.com/vybornak2/FatPy/discussions)**  
+    Join for community support.
+- :beetle: **[Report an Issue :arrow_right:](https://github.com/vybornak2/fatpy/issues)**  
+    Create an issue on our GitHub repository for bugs or questions.
+- **:envelope: Contact Maintainers :arrow_down:**  
+  
+| Maintainer        | Position        | Email                       |
+| ----------------- | --------------- | --------------------------- |
+| Jan Výborný       |                 | <jan.vyborny2@gmail.com>    |
 
 Thank you for contributing to FatPy!
