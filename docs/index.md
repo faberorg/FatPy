@@ -121,4 +121,4 @@ Feel free to share your ideas, use these channels to contact us:
 
 ## :material-account-heart: Special Thanks
 
-[Gooby](https://github.com/jakubda1) - for his help with the documentation and the project in general.
+[:fontawesome-brands-github: Gooby](https://github.com/jakubda1) - for his help with the documentation and the project in general.

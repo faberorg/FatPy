@@ -54,7 +54,7 @@ pip install -e .
 pre-commit install
 ```
 
-For detailed instructions to configure your development environment, see the **[Installation Guide :arrow_right:](https://vybornak2.github.io/FatPy/development/install/#installation-guide)**.
+For detailed instructions to configure your development environment, see the **[Installation Guide :arrow_right:](https://vybornak2.github.io/FatPy/development/install/#installation-guide)**
 
 ## :test_tube: Test-Driven Development
 
@@ -71,7 +71,7 @@ For detailed instructions to configure your development environment, see the **[
   5. **Repeat**  
   Iterate for each feature.
 
-For more details, see the **[Testing Guide :arrow_right:](https://vybornak2.github.io/FatPy/development/testing/)**.
+For more details, see the **[Testing Guide :arrow_right:](https://vybornak2.github.io/FatPy/development/testing/)**
 
 ### Run tests regularly
 
