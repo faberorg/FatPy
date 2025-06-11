@@ -10,28 +10,28 @@ Good documentation ensures FatPy is usable and maintainable for researchers, eng
 
 FatPy’s documentation is organized into the following sections to support diverse user needs:
 
-=== "**API Reference**"
+=== "**:fontawesome-solid-book-open: API Reference**"
     <div style="text-align: center;">
     Detailed documentation for modules, classes, and functions.  
     <br>&nbsp;
     [:fontawesome-solid-book-open: API Reference](../api/index.md){ .md-button }
     </div>
 
-=== "**Theory Reference**"
+=== "**:fontawesome-solid-square-root-variable: Theory Reference**"
     <div style="text-align: center;">
     Mathematical and physical background for implemented fatigue analysis methods.  
     <br>&nbsp;
     [:fontawesome-solid-square-root-variable: Theory Documentation](../theory/index.md){ .md-button }  
     </div>
 
-=== "**Development Guide**"  
+=== "**:material-tools: Development Guide**"  
     <div style="text-align: center;">
     Resources for contributors, including setup and contribution guidelines.  
     <br>&nbsp;
     [:material-tools: Development Guide](development/index.md){ .md-button }  
     </div>
 
-=== "**Tutorials and Examples**"  
+=== "**:fontawesome-solid-graduation-cap: Tutorials and Examples**"  
     <div style="text-align: center;">
     Practical guides and examples for using FatPy.  
     <br>&nbsp;
@@ -86,11 +86,11 @@ We use MkDocs with the Material theme and mkdocstrings for API documentation, se
 You can build and preview FatPy’s documentation locally using MkDocs commands:
 
 ```bash
-# Install documentation dependencies
-pip install mkdocs mkdocs-material mkdocstrings[python] mkdocs-autorefs
-
 # Activate project environment
 .\{environment_name}\Scripts\activate
+
+# Install documentation dependencies
+pip install mkdocs mkdocs-material mkdocstrings[python] mkdocs-autorefs
 
 # Build documentation locally
 mkdocs build
@@ -290,7 +290,7 @@ To add new documentation pages, follow these steps:
 - **Format Content**  
   Use headers, code blocks, and consistent Markdown formatting.
 
-!!! note "Documentation Deployment"
+??? note "Documentation Deployment"
 
     Documentation is automatically deployed via GitHub Actions when changes are pushed to the documentation branch. The workflow is defined in `.github/workflows/deploy_docs.yml`.
 
