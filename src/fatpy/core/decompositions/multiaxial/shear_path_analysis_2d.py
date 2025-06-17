@@ -39,5 +39,6 @@ def moment_of_inertia_method() -> None:
 
     This method evaluates the shear stress amplitude and mean using
     the momen tof inertia approach on a plane.
+    Please refer to papers by Meggiolaro and Castro for more details.
     """
     raise NotImplementedError

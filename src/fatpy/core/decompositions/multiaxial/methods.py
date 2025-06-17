@@ -1,4 +1,7 @@
-"""This module contains multiaxial stress/strain decomposition methods."""
+"""Provides methods for evaluating mean shear stress and shear stress amplitude.
+
+These computations are performed on a specified plane.
+"""
 
 
 def wang_brown_rainflow() -> None:

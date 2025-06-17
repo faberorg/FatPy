@@ -5,7 +5,7 @@ def rainflow_1d() -> None:
     """The method is part of decompositions methods.
 
     Method implements 1D signal decomposition method
-    implementingthe rainflow algorithm.
+    implementing the rainflow algorithm to stress or strain.
     """
     raise NotImplementedError
 
