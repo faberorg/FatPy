@@ -1,4 +1,4 @@
-"""FatPy - A Python package for fatigue life evaluation of materials."""
+"""A collection of general utility functions."""
 
 try:
     from ._version import __version__
