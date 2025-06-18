@@ -60,16 +60,18 @@ For detailed instructions to configure your development environment, see the **[
 
 ### FatPy follows Test-Driven Development (TDD) principles
 
-  1. **Write Tests**  
-  Define expected behavior.
-  2. **Verify Tests Fail**  
-  Confirm tests fail (red phase).
-  3. **Implement Code**  
-  Write code to pass tests (green phase).
-  4. **Refactor**  
-  Improve code while maintaining coverage.
-  5. **Repeat**  
-  Iterate for each feature.
+   1. **Write the test first**  
+       Define what the code should do before implementing it
+   2. **See the test fail**  
+       Run the test to confirm it fails without the implementation
+   3. **Write the minimal code**  
+       Implement just enough code to make the test pass
+   4. **Run the test**  
+       Verify the implementation meets the requirements
+   5. **Refactor**  
+       Clean up the code while ensuring tests still pass
+   6. **Repeat**  
+       Use the same principles for next feature
 
 For more details, see the **[Testing Guide :arrow_right:](https://vybornak2.github.io/FatPy/development/testing/)**
 
