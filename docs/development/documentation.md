@@ -197,34 +197,73 @@ Learn more about the naming conventions form our discussion page:
 
 ## :fontawesome-solid-square-root-variable: Mathematical Notation
 
-Use LaTeX for mathematical formulas. This allows for clear rendering of equations.
+Use LaTeX for mathematical formulas. This allows for clear rendering of equations. You can include math inline with text or as a separate display block.
 
-=== "Display Formula (One Line)"
-    This is typically used for important standalone equations.
+=== "Inline Math"
+
+    Inline blocks must be enclosed in `#!latex $...$`, and can be used within a sentence.
 
     **How to write it:**
-    ```markdown
-    $$ \sigma_{eq} = \sqrt{3J_2} = \sqrt{\frac{3}{2}s_{ij}s_{ij}} $$
+    ``` latex title="Inline syntax"
+    Hooke's Law can be expressed as $\sigma = E \cdot \epsilon$.
+    ```
+
+    **Rendered output:**  
+    Hooke's Law can be expressed as $\sigma = E \cdot \epsilon$.
+
+=== "Block Syntax"
+    This is typically used for important standalone equations. Blocks must be enclosed in `#!latex $$...$$`, and separated by empty lines form other text.
+
+    **How to write it:**
+    ``` latex title="Block syntax"
+    % This line is empty
+    $$ 
+    \sigma_{eq} = \sqrt{3J_2} = \sqrt{\frac{3}{2}s_{ij}s_{ij}}
+    $$
+    % This line is empty
     ```
 
     **Rendered output:**
-    $$ \sigma_{eq} = \sqrt{3J_2} = \sqrt{\frac{3}{2}s_{ij}s_{ij}} $$
 
-=== "Display Formula (Complex Expression)"
+    $$
+    \sigma_{eq} = \sqrt{3J_2} = \sqrt{\frac{3}{2}s_{ij}s_{ij}}
+    $$
+
+=== "Display Complex Expression"
     For more complex expressions, like summations, matrices, or a sequence of aligned equations.  
 
     This example shows Miner's rule for damage accumulation:
 
     **How to write it:**
-    ```markdown
-    $$ D = \sum_{i=1}^{k} \frac{n_i}{N_i} $$
+    ``` latex title="Sums or Integrals"
+    $$
+    \begin{gather}
+    D = \sum_{i=1}^{k} \frac{n_i}{N_i} \\[2mm]
+    \text{or} \\[2mm]
+    D = \int_{0}^{N} \frac{1}{N_f(\sigma(t))} \, dt
+    \end{gather}
+    $$
     ```
 
     **Rendered output:**
-    $$ D = \sum_{i=1}^{k} \frac{n_i}{N_i} $$
 
-    **How to write aligned equations:**
-    ```markdown
+    $$
+    \begin{gather}
+    D = \sum_{i=1}^{k} \frac{n_i}{N_i} \\[2mm]
+    \text{or} \\[2mm]
+    D = \int_{0}^{N} \frac{1}{N_f(\sigma(t))} \, dt
+    \end{gather}
+    $$
+
+    !!! tip "Multiple lines and spacing"
+        Use the `gather` environment to center equations, placing each on its own line. Separate lines with `\\`, and use `[2mm]` to adjust vertical spacing between them.
+
+    ---
+
+    **To achieve precise alignment** within equations, use aligned environment and the `&` character to mark alignment points:
+
+
+    ``` latex title="Aligned syntax"
     $$
     \begin{aligned}
     (a+b)^2 &= (a+b)(a+b) \\
@@ -234,37 +273,13 @@ Use LaTeX for mathematical formulas. This allows for clear rendering of equation
     ```
 
     **Rendered output:**
+
     $$
     \begin{aligned}
     (a+b)^2 &= (a+b)(a+b) \\
             &= a^2 + 2ab + b^2
     \end{aligned}
     $$
-
-=== "Inline vs. Display Math"
-    You can include math inline with text or as a separate display block.
-
-    **Inline Math (Single Equation):**
-    Use single dollar signs `$` for formulas within a sentence.
-
-    *How to write it:*
-    ```markdown
-    Hooke's Law can be expressed as $\sigma = E \cdot \epsilon$.
-    ```
-
-    *Rendered output:*
-    Hooke's Law can be expressed as $\sigma = E \cdot \epsilon$.
-
-    **Display Math:**
-    Use double dollar signs `$$` for formulas on their own line, centered.
-
-    *How to write it:*
-    ```markdown
-    $$ \sigma = E \cdot \epsilon $$
-    ```
-
-    *Rendered output:*
-    $$ \sigma = E \cdot \epsilon $$
 
 ## :fontawesome-solid-book-open: API Documentation
 
@@ -273,7 +288,8 @@ API documentation is automatically generated from docstrings using mkdocstrings.
 1. All public functions, classes, and modules must have Google-style docstrings.
 2. Type hints should be used for all function parameters and return values.
 3. Examples should be included in docstrings where appropriate.
-4. Mathematical formulas should use LaTeX syntax within docstrings, e.g., `$$ \sigma = \sqrt{x^2} $$`.
+4. Mathematical formulas should use LaTeX syntax within docstrings, e.g.:  
+    `$$ \sigma = \sqrt{x^2} $$`
 
 View the generated API documentation:
 
