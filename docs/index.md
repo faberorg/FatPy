@@ -91,7 +91,7 @@ interested in coding, testing, documentation, or providing feedback, your partic
 Visit our [:fontawesome-brands-github: GitHub repository](https://github.com/vybornak2/fatpy) to access the source code
 
 - **Contribute**:  
-Follow our [:fontawesome-solid-handshake: Contribution Guidelines](development/index.md) to help improve FatPy
+Follow our [:fontawesome-solid-handshake: Contribution Guidelines](development/contributing.md) to help improve FatPy
 
 - **Collaborate**:  
 [:fontawesome-solid-bug: Report issues](https://github.com/vybornak2/fatpy/issues) or join [:fontawesome-solid-comment-dots: discussions](https://github.com/vybornak2/fatpy/discussions)
@@ -114,7 +114,7 @@ Feel free to share your ideas, use these channels to contact us:
 
 <div class="grid cards" markdown>
 
-- [Jan Výborný :fontawesome-solid-paper-plane:](<jan.vyborny2@gmail.com>)
+- [Jan Výborný :fontawesome-solid-paper-plane:](<mailto:jan.vyborny2@gmail.com>)
 - [:fontawesome-brands-github: Project GitHub repository](https://github.com/vybornak2/fatpy)
 
 </div>

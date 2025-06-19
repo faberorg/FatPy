@@ -28,14 +28,14 @@ FatPy’s documentation is organized into the following sections to support dive
     <div style="text-align: center;">
     Resources for contributors, including setup and contribution guidelines.  
     <br>&nbsp;
-    [:material-tools: Development Guide](development/index.md){ .md-button }  
+    [:material-tools: Development Guide](index.md){ .md-button }  
     </div>
 
 === "**:fontawesome-solid-graduation-cap: Tutorials and Examples**"  
     <div style="text-align: center;">
     Practical guides and examples for using FatPy.  
     <br>&nbsp;
-    [:fontawesome-solid-graduation-cap: Tutorials](tutorials/index.md){ .md-button }  
+    [:fontawesome-solid-graduation-cap: Tutorials](#){ .md-button }  
     </div>
 
 ## :material-code-equal: Docstrings
