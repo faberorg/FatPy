@@ -135,7 +135,3 @@ Run a simple test to verify the installation:
     # Run the test suite
     pytest -xvs
     ```
-
-For next steps, see:
-
-[:fontawesome-solid-handshake: Contributing Guide](contributing.md){.md-button}

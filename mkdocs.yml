@@ -137,6 +137,7 @@ nav:
     - Overview: index.md
     - FABER COST: faber_cost.md
     - License: development/license.md
+    - Contact: contact.md
   - API Reference: api/index.md
   - Theory Reference:
       - Overview: theory/index.md

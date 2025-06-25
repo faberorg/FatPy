@@ -22,8 +22,6 @@ material science.
 - **Energy-Life**  
     Methods for assessing fatigue life based on energy data
 
----
-
 ## :fontawesome-solid-download: Installation
 
 === "Using pip"
@@ -49,8 +47,6 @@ material science.
         ```
 
 For detailed installation options, see the [Installation Guide :octicons-arrow-right-24:](development/install.md)
-
----
 
 ## The FABER Project
 
@@ -78,7 +74,6 @@ a flagship product of this endeavor.
 - **[More about FABER :octicons-arrow-right-24:](faber_cost.md)**
 
 </div>
----
 
 ## :fontawesome-solid-handshake: Join Our Efforts
 
@@ -88,25 +83,21 @@ interested in coding, testing, documentation, or providing feedback, your partic
 ### Getting Involved
 
 - **Explore the Repository**:  
-Visit our [:fontawesome-brands-github: GitHub repository](https://github.com/vybornak2/fatpy) to access the source code
+Visit our [:fontawesome-brands-github: GitHub repository](https://github.com/vybornak2/fatpy) to access the source code.
 
 - **Contribute**:  
-Follow our [:fontawesome-solid-handshake: Contribution Guidelines](development/contributing.md) to help improve FatPy
+Follow our [:fontawesome-solid-handshake: Contribution Guidelines](development/contributing.md) to help improve FatPy.
 
 - **Collaborate**:  
-[:fontawesome-solid-bug: Report issues](https://github.com/vybornak2/fatpy/issues) or join [:fontawesome-solid-comment-dots: discussions](https://github.com/vybornak2/fatpy/discussions)
+Join our [:fontawesome-solid-comment-dots: Discussions](https://github.com/vybornak2/fatpy/discussions) or [:fontawesome-solid-bug: Report issues](https://github.com/vybornak2/fatpy/issues).
 
 By participating, you'll be part of a collaborative effort to advance the field of material fatigue analysis.
 Stay tuned to the FatPy documentation for regular updates, tutorials, and community news as we work together
 to push the boundaries of fatigue research.
 
----
-
 ## :material-scale-balance: License
 
-This project is licensed under the MIT License.
-
----
+This project is licensed under the [MIT License](development/license.md).
 
 ## :fontawesome-solid-envelope: Contact
 
@@ -114,7 +105,7 @@ Feel free to share your ideas, use these channels to contact us:
 
 <div class="grid cards" markdown>
 
-- [Jan Výborný :fontawesome-solid-paper-plane:](<mailto:jan.vyborny2@gmail.com>)
+- [:fontawesome-solid-envelope: Contact page](contact.md)
 - [:fontawesome-brands-github: Project GitHub repository](https://github.com/vybornak2/fatpy)
 
 </div>

@@ -10,33 +10,33 @@ Good documentation ensures FatPy is usable and maintainable for researchers, eng
 
 FatPy’s documentation is organized into the following sections to support diverse user needs:
 
-=== "**:fontawesome-solid-book-open: API Reference**"
-    <div style="text-align: center;">
-    Detailed documentation for modules, classes, and functions.  
-    <br>&nbsp;
-    [:fontawesome-solid-book-open: API Reference](../api/index.md){ .md-button }
-    </div>
+<div class="grid cards" markdown>
 
-=== "**:fontawesome-solid-square-root-variable: Theory Reference**"
-    <div style="text-align: center;">
-    Mathematical and physical background for implemented fatigue analysis methods.  
-    <br>&nbsp;
-    [:fontawesome-solid-square-root-variable: Theory Documentation](../theory/index.md){ .md-button }  
-    </div>
+- [:fontawesome-solid-book-open:{ .lg .middle } **API Reference**](../api/index.md)
 
-=== "**:material-tools: Development Guide**"  
-    <div style="text-align: center;">
-    Resources for contributors, including setup and contribution guidelines.  
-    <br>&nbsp;
-    [:material-tools: Development Guide](index.md){ .md-button }  
-    </div>
+    ---
 
-=== "**:fontawesome-solid-graduation-cap: Tutorials and Examples**"  
-    <div style="text-align: center;">
-    Practical guides and examples for using FatPy.  
-    <br>&nbsp;
-    [:fontawesome-solid-graduation-cap: Tutorials](#){ .md-button }  
-    </div>
+    Detailed documentation for modules, classes, and functions.
+
+- [:fontawesome-solid-square-root-variable:{ .lg .middle } **Theory Reference**](../theory/index.md)
+
+    ---
+
+    Mathematical and physical background for implemented fatigue analysis methods.
+
+- [:material-tools:{ .lg .middle } **Development Guide**](index.md)
+
+    ---
+
+    Resources for contributors, including setup and contribution guidelines.
+
+- [:fontawesome-solid-graduation-cap:{ .lg .middle } **Tutorials and Examples**](#)
+
+    ---
+
+    Practical guides and examples for using FatPy.
+
+</div>
 
 ## :material-code-equal: Docstrings
 
@@ -99,7 +99,7 @@ mkdocs build
 mkdocs serve
 ```
 
-The `#!bash mkdocs serve` command will provide you with link `http://127.0.0.1:8000` to view the documentation locally.
+The `mkdocs serve` command will provide you with link `http://127.0.0.1:8000` to view the documentation locally.
 
 ## :fontawesome-solid-pen-nib: Writing Documentation
 
@@ -181,9 +181,9 @@ Consistent naming is crucial for code readability and maintainability. Follow th
     !!! warning "Clarity First"
         If an abbreviation makes the code harder to understand for someone new to the specific module or fatigue in general, prefer the full name. Document any project-specific abbreviations clearly.
 
-Learn more about the naming conventions form our discussion page:
+Learn more about the naming conventions form our discussion page:  
 
-[:simple-github::fontawesome-solid-comment-dots: Naming Conventions for FatPy Functions & Parameters #18](https://github.com/Vybornak2/FatPy/discussions/18){ .md-button }
+[:simple-github::fontawesome-solid-comment-dots: Naming Conventions for FatPy Functions & Parameters #18](https://github.com/Vybornak2/FatPy/discussions/18)
 
 ---
 
@@ -291,9 +291,7 @@ API documentation is automatically generated from docstrings using mkdocstrings.
 4. Mathematical formulas should use LaTeX syntax within docstrings, e.g.:  
     `$$ \sigma = \sqrt{x^2} $$`
 
-View the generated API documentation:
-
-**[:fontawesome-solid-book-open: API Reference](../api/index.md)**{.md-button}
+View the generated API documentation: **[:fontawesome-solid-book-open: API Reference](../api/index.md)**
 
 ## :material-file-plus: Adding New Pages
 

@@ -9,10 +9,10 @@ This guide defines coding standards and style to ensure readable and consistent 
 
 ## :fontawesome-solid-lightbulb: General Principles
 
-- [x] **Readability** - Code should be easy to read and to understand
-- [x] **Consistency** - Follow established patterns and conventions
-- [x] **Simplicity** - Prefer simple solutions over complex ones
-- [x] **Documentation** - Code should be well-documented
+- **Readability** - Code should be easy to read and to understand
+- **Consistency** - Follow established patterns and conventions
+- **Simplicity** - Prefer simple solutions over complex ones
+- **Documentation** - Code should be well-documented
 
 ## :simple-python: Python Style Guidelines
 
@@ -93,7 +93,7 @@ See more [examples :octicons-arrow-down-24:](#examples)
 
 FatPy uses several tools to enforce code quality:
 
-[:simple-ruff: Ruff](https://docs.astral.sh/ruff/){ .md-button }
+**[:simple-ruff: Ruff](https://docs.astral.sh/ruff/)**
 
 Handles linting and formatting.
 
@@ -110,7 +110,7 @@ ruff format .
 
 ---
 
-[:simple-python: MyPy](https://mypy.readthedocs.io/){ .md-button }
+**[:simple-python: MyPy](https://mypy.readthedocs.io/)**
 
 Enforces static type checking.
 
@@ -121,7 +121,7 @@ mypy .
 
 ---
 
-[:simple-precommit: Pre-commit](https://pre-commit.com/){ .md-button }
+**[:simple-precommit: Pre-commit](https://pre-commit.com/)**
 
 Automates and run code checks before commits.
 
@@ -142,11 +142,15 @@ pre-commit run --all-files
 - Use appropriate error handling and validation
 - Write self-documenting code (clear variable names, logical structure)
 
+---
+
 ### Performance
 
 - Consider the computational complexity of your code
 - Use vectorized operations with NumPy when working with numerical data
 - Avoid premature optimization
+
+---
 
 ### Testing
 

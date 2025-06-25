@@ -27,9 +27,7 @@ FatPy follows the principles of Test-Driven Development (TDD):
 ## :simple-pytest: Testing Framework
 
 !!! info
-    FatPy uses **pytest** for testing. The testing configuration can be found in the `pyproject.toml` file.
-
-    [:simple-pytest: pytest :octicons-arrow-right-24:](https://docs.pytest.org/){.md-button}
+    FatPy uses **[pytest](https://docs.pytest.org/)** for testing. The testing configuration can be found in the `pyproject.toml` file.
 
 ## :fontawesome-solid-folder-tree: Test Structure
 
@@ -88,9 +86,11 @@ def test_some_class_multiply():
     - Test functions should be named `test_*`
     - Test classes should be named `Test*`
 
+---
+
 ### Fixtures
 
-Use fixtures for setup and teardown:
+Use [fixtures](https://docs.pytest.org/en/stable/reference/fixtures.html) for setup and teardown:
 
 ```python
 import pytest
@@ -112,8 +112,7 @@ def test_function_with_fixture(sample_data):
     assert result > 0
 ```
 
-Learn more about fixtures:  
-[pytest Fixtures :octicons-arrow-right-24:](https://docs.pytest.org/en/stable/reference/fixtures.html){.md-button}
+---
 
 ### Parameterized Tests
 
@@ -132,6 +131,8 @@ import pytest
 def test_square_function(input_value, expected_output):
     assert square(input_value) == expected_output
 ```
+
+---
 
 ### Testing Exceptions
 
@@ -157,11 +158,15 @@ def test_division_by_zero():
 - Mock dependencies
 - Should be fast and isolated
 
+---
+
 ### Integration Tests
 
 - Test interactions between components
 - Use fewer mocks
 - Verify that components work together correctly
+
+---
 
 ### Numerical Tests
 
@@ -221,5 +226,4 @@ Open `htmlcov/index.html` to view the coverage report.
 
 ## :material-sync-circle: Continuous Integration
 
-Tests are automatically run on GitHub Actions when code is pushed or a pull request is created. See the FatPy’s CI/CD setup for more information.  
-[:material-cogs: CI/CD guide](ci_cd.md){.md-button}
+Tests are automatically run on GitHub Actions when code is pushed or a pull request is created. See the FatPy’s [CI/CD](ci_cd.md) setup for more information.

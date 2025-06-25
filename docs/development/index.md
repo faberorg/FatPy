@@ -50,9 +50,7 @@ FatPy is organized into several core modules:
 - **Data Parsing** - Tools for handling input/output operations
 - **Utilities** - Supporting functionality and helper methods
 
-Get a detailed overview of FatPy’s modules and functions:
-
-**[:fontawesome-solid-book-open: API Reference](../api/index.md)**{.md-button}
+Get a detailed overview of FatPy’s modules and functions, visit **[API Reference](../api/index.md)**.
 
 ## :fontawesome-solid-code-branch: Development Workflow
 
@@ -85,10 +83,7 @@ Need assistance with FatPy development? Reach out through these channels:
     Join for community support.
 - :fontawesome-solid-bug: **[Report an Issue](https://github.com/vybornak2/fatpy/issues)**  
     Create an issue on our GitHub repository for bugs or questions.
-- **:fontawesome-solid-envelope: Contact Maintainers**  
-  
-| Maintainer        | Position        | Email                       |
-| ----------------- | --------------- | --------------------------- |
-| Jan Výborný       |                 | <jan.vyborny2@gmail.com>    |
+- :fontawesome-solid-envelope: **[Contact our Team](../contact.md)**  
+    Visit our contact page.
 
 Thank you for contributing to FatPy!

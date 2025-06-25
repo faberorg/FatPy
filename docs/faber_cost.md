@@ -36,7 +36,7 @@ FABER COST offers significant benefits by creating a centralized fatigue data re
 
 ## Main Contacts and Leadership
 
-Our team of researchers, engineers, and collaborators is dedicated to advancing fatigue research
+Our team of researchers, engineers, and collaborators is dedicated to advancing fatigue research.
 
 <div class="grid cards" markdown>
 
