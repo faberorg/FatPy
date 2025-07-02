@@ -2,7 +2,7 @@
 title: Home
 ---
 
-# :pie: FatPy
+# FatPy
 
 Welcome to FatPy, an open-source Python package for fatigue life evaluation of materials.
 
@@ -97,7 +97,7 @@ to push the boundaries of fatigue research.
 
 ## :material-scale-balance: License
 
-This project is licensed under the [MIT License](development/license.md).
+This project is licensed under the [MIT License](license.md).
 
 ## :fontawesome-solid-envelope: Contact
 

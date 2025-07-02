@@ -46,9 +46,6 @@ You can also contact our team directly! Here is a list of active members:
 | Oleh              | Contributor     |                             |                                  |
 | Tomáš Karas       | Contributor     | <tomas.karas@fs.cvut.cz>    |                                  |
 
-!!! tip
-    There are also various helpful links available in the bottom panel of each page!
-
 ---
 
 Thank you for reaching out and contributing your ideas!  
