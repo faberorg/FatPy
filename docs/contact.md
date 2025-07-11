@@ -43,8 +43,8 @@ You can also contact our team directly! Here is a list of active members:
 | Name              | Position        | Email                       | Github                           |
 | ----------------- | --------------- | --------------------------- | -------------------------------- |
 | Jan Výborný       | Maintainer      | <jan.vyborny2@gmail.com>    | <https://github.com/Vybornak2>   |
-| Oleh              | Contributor     |                             |                                  |
-| Tomáš Karas       | Contributor     | <tomas.karas@fs.cvut.cz>    |                                  |
+| Oleh Venhryniuk   | Contributor     | <olehvenhryniuk@gmail.com>  | <https://github.com/justOleh>    |
+| Tomáš Karas       | Contributor     | <tomas.karas@fs.cvut.cz>    | <https://github.com/KarasTomas>  |
 
 ---
 
