@@ -1,59 +1,70 @@
-# Code Style Guide
+---
+title: Code Style
+---
 
-This guide outlines the coding standards and style guidelines for the FatPy project.
 
-## General Principles
+# :fontawesome-solid-code: Code Style Guide
 
-- **Readability** - Code should be easy to read and understand
+This guide defines coding standards and style to ensure readable and consistent code for FatPy project.
+
+## :fontawesome-solid-lightbulb: General Principles
+
+- **Readability** - Code should be easy to read and to understand
 - **Consistency** - Follow established patterns and conventions
 - **Simplicity** - Prefer simple solutions over complex ones
 - **Documentation** - Code should be well-documented
 
-## Python Style Guidelines
+## :simple-python: Python Style Guidelines
 
 FatPy follows [PEP 8](https://www.python.org/dev/peps/pep-0008/) with some specific adaptations:
 
-### Naming Conventions
+=== "**Naming Conventions**"
 
-- **Functions and variables**: `lowercase_with_underscores`
-- **Classes**: `CamelCase`
-- **Constants**: `UPPERCASE_WITH_UNDERSCORES`
-- **Private attributes/methods**: `_leading_underscore`
-- **"Magic" methods**: `__double_underscores__`
+    - **Functions and variables**: `lowercase_with_underscores`
+    - **Classes**: `CamelCase`
+    - **Constants**: `UPPERCASE_WITH_UNDERSCORES`
+    - **Private attributes/methods**: `_leading_underscore`
+    - **"Magic" methods**: `__double_underscores__`
 
-### Code Layout
+=== "**Code Layout**"
 
-- Line length: 120 characters maximum
-- Indentation: 4 spaces (no tabs)
-- Blank lines:
-    - 2 between top-level functions and classes
-    - 1 between methods in a class
-    - Use blank lines to separate logical sections within functions
+    - Line length: 120 characters maximum
+    - Indentation: 4 spaces (no tabs)
+    - Blank lines:
+      - 2 between top-level functions and classes
+      - 1 between methods in a class
+      - Use blank lines to separate logical sections within functions
 
-### Imports
+=== "**Imports**"
 
-- Standard library imports first, followed by third-party imports, followed by local application imports
-- Each group should be separated by a blank line
-- Within each group, imports should be alphabetized
+    - Organize imports as follows:
+      - Standard library imports
+      - Third-party imports
+      - Local application imports
+    - Each group should be separated by a blank line
+    - Within each group, imports should be alphabetized
 
-```python
-# Standard library
-import os
-import sys
-from typing import Dict, List, Optional
+    ```python
+    # Standard library
+    import os
+    import sys
+    from typing import Dict, List, Optional
 
-# Third-party libraries
-import numpy as np
-import pandas as pd
+    # Third-party libraries
+    import numpy as np
+    import pandas as pd
 
-# Local modules
-from fatpy.core import analysis
-from fatpy.utilities import helpers
-```
+    # Local modules
+    from fatpy.core import analysis
+    from fatpy.utilities import helpers
+    ```
 
-## Type Annotations
+## :material-head-dots-horizontal: Type Annotations
 
-FatPy uses type hints extensively. All functions should include type annotations:
+!!! note
+    FatPy uses type hints extensively. All functions should include type annotations to enhance code clarity
+
+**Example:**
 
 ```python
 def calculate_stress(force: float, area: float) -> float:
@@ -69,20 +80,22 @@ def calculate_stress(force: float, area: float) -> float:
     return force / area
 ```
 
-## Comments and Documentation
+See more [examples :octicons-arrow-down-24:](#examples)
 
-- Use docstrings for all modules, classes, and functions
-- Use inline comments sparingly and only for complex or non-obvious code
-- Keep comments up-to-date with code changes
-- Follow Google's docstring style (see [Documentation Guide](documentation.md))
+## :fontawesome-solid-comment-dots: Comments and Documentation
 
-## Code Quality Tools
+- **Docstrings** - Use Google-style for all modules, classes, and functions.
+- **Inline comments** - Use sparingly and only for complex or non-obvious code.
+- **Keep Updated** - Sync comments with code changes.
+- **Style Guide** -  **[:fontawesome-solid-file-pen: Follow Documentation Guide](documentation.md)**
+
+## :octicons-tools-16: Code Quality Tools
 
 FatPy uses several tools to enforce code quality:
 
-### Ruff
+**[:simple-ruff: Ruff](https://docs.astral.sh/ruff/)**
 
-[Ruff](https://docs.astral.sh/ruff/) is used for linting and formatting:
+Handles linting and formatting.
 
 ```bash
 # Run linting
@@ -95,18 +108,22 @@ ruff check --fix .
 ruff format .
 ```
 
-### MyPy
+---
 
-[MyPy](https://mypy.readthedocs.io/) is used for static type checking:
+**[:simple-python: MyPy](https://mypy.readthedocs.io/)**
+
+Enforces static type checking.
 
 ```bash
 # Run type checking
 mypy .
 ```
 
-### Pre-commit
+---
 
-[Pre-commit](https://pre-commit.com/) runs checks automatically before each commit:
+**[:simple-precommit: Pre-commit](https://pre-commit.com/)**
+
+Automates and run code checks before commits.
 
 ```bash
 # Install the pre-commit hooks
@@ -116,7 +133,7 @@ pre-commit install
 pre-commit run --all-files
 ```
 
-## Best Practices
+## :material-checkbox-marked-circle-outline: Best Practices
 
 ### General
 
@@ -125,19 +142,23 @@ pre-commit run --all-files
 - Use appropriate error handling and validation
 - Write self-documenting code (clear variable names, logical structure)
 
+---
+
 ### Performance
 
 - Consider the computational complexity of your code
 - Use vectorized operations with NumPy when working with numerical data
 - Avoid premature optimization
 
+---
+
 ### Testing
 
 - Write tests for all new functionality
 - Use descriptive test names that indicate what's being tested
-- See the [Testing Guide](testing.md) for more details
+- For more details, see: [:fontawesome-solid-vial: Testing Guide](testing.md)
 
-## Examples
+## :fontawesome-solid-graduation-cap: Examples
 
 ### Preferred Style
 

@@ -9,21 +9,21 @@ theme:
   palette:
     - media: "(prefers-color-scheme)"
       toggle:
-        icon: material/link
+        icon: material/brightness-auto
         name: Switch to light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
       primary: indigo
       accent: blue
       toggle:
-        icon: material/toggle-switch
+        icon: material/brightness-7
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: indigo
       accent: blue
       toggle:
-        icon: material/toggle-switch-off
+        icon: material/brightness-4
         name: Switch to system preference
   features:
     - header.autohide
@@ -136,7 +136,8 @@ nav:
   - Home:
     - Overview: index.md
     - FABER COST: faber_cost.md
-    - License: development/license.md
+    - License: license.md
+    - Contact: contact.md
   - API Reference: api/index.md
   - Theory Reference:
       - Overview: theory/index.md
@@ -152,4 +153,4 @@ nav:
       - Code Style: development/code_style.md
       - Documentation: development/documentation.md
       - CI/CD: development/ci_cd.md
-      - License: development/license.md
+
