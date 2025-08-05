@@ -1,6 +1,43 @@
+:root > * {
+/* Primary color shades */
+--md-primary-fg-color:               hsla(231, 48%, 48%,1);
+--md-primary-fg-color--light:        hsla(231, 48%, 35%, 1);
+--md-primary-fg-color--dark:         hsla(221, 75%, 60%, 1);
+--md-primary-bg-color:               hsla(0, 0%, 100%, 1);
+--md-primary-bg-color--light:        hsla(0, 0%, 100%, 0.7);
+
+/* Accent color shades */
+--md-accent-fg-color:                hsl(231, 100%, 75%);
+--md-accent-fg-color--transparent:   hsla(231, 100%, 75%, 0.1);
+--md-accent-bg-color:                hsl(0, 0%, 100%);
+--md-accent-bg-color--light:         hsla(0, 0%, 100%, 0.7);
+
+/* Define custom colors for headings */
+--fatpy-heading1-color: var(--md-primary-fg-color--light);
+--fatpy-heading2-color: var(--md-primary-fg-color--light);
+--fatpy-light-color:                 rgb(12, 123, 192);
+--fatpy-dark-color:                  rgb(70, 86, 168);
+
+/* Define custom colors and icons for admonitions */
+--custom-info-color: var(--fatpy-dark-color);
+--custom-tip-color: var(--fatpy-light-color);
+--md-admonition-icon--custom-info: var(--md-admonition-icon--info);
+--md-admonition-icon--custom-tip: var(--md-admonition-icon--tip);
+}
+
+/* Dark mode (Material for MkDocs uses "slate" as the dark scheme) */
+[data-md-color-scheme="slate"] {
+    --fatpy-heading1-color: var(--md-primary-fg-color--dark);
+    --fatpy-heading2-color: var(--md-primary-fg-color--dark);
+
+    /* Define Dark mode colors for admonitions */
+    --custom-info-color: var(--fatpy-dark-color);
+    --custom-tip-color: var(--fatpy-light-color);
+}
+
 /* Page headers */
 .md-typeset h1 {
-    color: var(--md-primary-fg-color);
+    color: var(--fatpy-heading1-color);
     font-size: 2.2em;
     font-weight: 400;
     margin-bottom: 1rem;
@@ -9,8 +46,8 @@
 /* Section headers */
 .md-typeset h2 {
     font-weight: 500;
-    color: var(--md-primary-fg-color--dark);
-    border-bottom: 1px solid var(--md-primary-fg-color--light);
+    color: var(--fatpy-heading2-color);
+    border-bottom: 1px solid var(--fatpy-heading2-color);
     padding-bottom: 0.2em;
     margin-top: 1.5em;
 }
@@ -18,7 +55,7 @@
 /* Documentation headers */
 h2.doc-heading {
     font-weight: 500;
-    color: var(--md-primary-fg-color--dark);
+    color: var(--fatpy-heading2-color);
     border-bottom: none;
 }
 
@@ -97,4 +134,40 @@ h2.doc-heading {
         font-size: 1.2rem;
         padding: 1rem;
     }
+}
+
+/* Custom admonition styles for info */
+.md-typeset .admonition.custom-info,
+.md-typeset details.custom-info {
+  border-color: var(--custom-info-color); 
+}
+
+.md-typeset .custom-info > .admonition-title,
+.md-typeset .custom-info > summary {
+    background-color: color-mix(in srgb, var(--custom-info-color) 10%, transparent);
+}
+
+.md-typeset .custom-info > .admonition-title::before,
+.md-typeset .custom-info > summary::before {
+  background-color: var(--custom-info-color); 
+  -webkit-mask-image: var(--md-admonition-icon--custom-info);
+          mask-image: var(--md-admonition-icon--custom-info);
+}
+
+/* Custom admonition styles for Tip */
+.md-typeset .admonition.custom-tip,
+.md-typeset details.custom-tip {
+  border-color: var(--custom-tip-color); 
+}
+
+.md-typeset .custom-tip > .admonition-title,
+.md-typeset .custom-tip > summary {
+    background-color: color-mix(in srgb, var(--custom-tip-color) 10%, transparent);
+}
+
+.md-typeset .custom-tip > .admonition-title::before,
+.md-typeset .custom-tip > summary::before {
+  background-color: var(--custom-tip-color); 
+  -webkit-mask-image: var(--md-admonition-icon--custom-tip);
+          mask-image: var(--md-admonition-icon--custom-tip);
 }

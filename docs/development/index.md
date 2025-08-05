@@ -8,7 +8,7 @@ This section provides comprehensive resources to help you contribute to FatPy, a
 
 [:material-search-web: Learn About FABER](../faber_cost.md)
 
-!!! note
+!!! custom-info "About"
     FatPy follows Test-Driven Development (TDD) principles, emphasizing code quality, thorough documentation, and rigorous testing. Whether you're fixing bugs or adding features, this guide will help you become a successful contributor.
 
 ## :fontawesome-solid-rocket: Getting Started
@@ -35,7 +35,7 @@ Deepen your understanding of FatPy development with these resources:
 - :material-cogs: **[CI/CD Process](ci_cd.md)**  
   Explore our continuous integration and deployment workflow.
 
-??? tip "Additional Resources"
+??? custom-tip "Additional resources"
     - Join our [GitHub Discussions](https://github.com/vybornak2/FatPy/discussions) for community support.
     - Find contribution ideas in our [GitHub Issues](https://github.com/vybornak2/FatPy/issues).
 
