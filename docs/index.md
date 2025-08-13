@@ -50,7 +50,7 @@ For detailed installation options, see the [Installation Guide :octicons-arrow-r
 
 ## The FABER Project
 
-!!! Background
+!!! abstract "Background"
     FatPy is a key initiative of Working Group 6 (WG6) within the FABER (Fatigue Benchmark Repository) project,
     operating under COST Action CA23109. The FABER project aims to create a comprehensive database of
     experimental fatigue data to enhance the accuracy of fatigue life predictions.

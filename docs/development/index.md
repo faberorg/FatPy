@@ -8,8 +8,76 @@ This section provides comprehensive resources to help you contribute to FatPy, a
 
 [:material-search-web: Learn About FABER](../faber_cost.md)
 
-!!! custom-info "About"
+!!! abstract "About"
     FatPy follows Test-Driven Development (TDD) principles, emphasizing code quality, thorough documentation, and rigorous testing. Whether you're fixing bugs or adding features, this guide will help you become a successful contributor.
+
+## Test of admonitions - will be removed before merge
+
+### Edited colors
+
+???+ note
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et
+    euismod nulla. Curabitur feugiat, tortor non consequat finibus, justo
+    purus auctor massa, nec semper lorem quam in massa.
+
+???+ abstract
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et
+    euismod nulla. Curabitur feugiat, tortor non consequat finibus, justo
+    purus auctor massa, nec semper lorem quam in massa.
+
+???+ info
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et
+    euismod nulla. Curabitur feugiat, tortor non consequat finibus, justo
+    purus auctor massa, nec semper lorem quam in massa.
+
+???+ tip
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et
+    euismod nulla. Curabitur feugiat, tortor non consequat finibus, justo
+    purus auctor massa, nec semper lorem quam in massa.
+
+???+ example
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et
+    euismod nulla. Curabitur feugiat, tortor non consequat finibus, justo
+    purus auctor massa, nec semper lorem quam in massa.
+
+---
+
+### Original colors
+
+!!! success
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et
+    euismod nulla. Curabitur feugiat, tortor non consequat finibus, justo
+    purus auctor massa, nec semper lorem quam in massa.
+
+!!! question
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et
+    euismod nulla. Curabitur feugiat, tortor non consequat finibus, justo
+    purus auctor massa, nec semper lorem quam in massa.
+
+!!! warning
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et
+    euismod nulla. Curabitur feugiat, tortor non consequat finibus, justo
+    purus auctor massa, nec semper lorem quam in massa.
+
+!!! failure
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et
+    euismod nulla. Curabitur feugiat, tortor non consequat finibus, justo
+    purus auctor massa, nec semper lorem quam in massa.
+
+!!! danger
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et
+    euismod nulla. Curabitur feugiat, tortor non consequat finibus, justo
+    purus auctor massa, nec semper lorem quam in massa.
+
+!!! bug
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et
+    euismod nulla. Curabitur feugiat, tortor non consequat finibus, justo
+    purus auctor massa, nec semper lorem quam in massa.
+
+!!! quote
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et
+    euismod nulla. Curabitur feugiat, tortor non consequat finibus, justo
+    purus auctor massa, nec semper lorem quam in massa.
 
 ## :fontawesome-solid-rocket: Getting Started
 
@@ -35,7 +103,7 @@ Deepen your understanding of FatPy development with these resources:
 - :material-cogs: **[CI/CD Process](ci_cd.md)**  
   Explore our continuous integration and deployment workflow.
 
-??? custom-tip "Additional resources"
+??? tip "Additional resources"
     - Join our [GitHub Discussions](https://github.com/vybornak2/FatPy/discussions) for community support.
     - Find contribution ideas in our [GitHub Issues](https://github.com/vybornak2/FatPy/issues).
 
