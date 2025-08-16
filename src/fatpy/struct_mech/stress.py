@@ -11,6 +11,20 @@ import numpy as np
 from numpy.typing import NDArray
 
 
+def _check_shape(stress_voigt: NDArray[np.float64]) -> None:
+    """Check the shape of the input stress array.
+
+    Args:
+        stress_voigt: Array of shape (n, 6). Each row is a stress vector in Voigt
+         notation.
+
+    Raises:
+        ValueError: If input is not a 2D array with 6 columns.
+    """
+    if stress_voigt.ndim != 2 or stress_voigt.shape[1] != 6:
+        raise ValueError("Input must be a n x 6 matrix in Voigt notation.")
+
+
 def calc_hydrostatic_stress(stress_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
     """Calculate the hydrostatic (mean normal) stress for each stress state.
 
@@ -24,8 +38,7 @@ def calc_hydrostatic_stress(stress_voigt: NDArray[np.float64]) -> NDArray[np.flo
     Raises:
         ValueError: If input is not a 2D array with 6 columns.
     """
-    if stress_voigt.ndim != 2 or stress_voigt.shape[1] != 6:
-        raise ValueError("Input must be a n x 6 matrix in Voigt notation.")
+    _check_shape(stress_voigt)
 
     return (stress_voigt[:, 0] + stress_voigt[:, 1] + stress_voigt[:, 2]) / 3.0
 
@@ -69,11 +82,11 @@ def calc_principal_stresses_and_directions(
     Raises:
         ValueError: If input is not a 2D array with 6 columns.
     """
-    if stress_voigt.ndim != 2 or stress_voigt.shape[1] != 6:
-        raise ValueError("Input must be a n x 6 matrix in Voigt notation.")
+    _check_shape(stress_voigt)
 
     tensor = _voigt_to_tensor(stress_voigt)
-    return np.linalg.eigh(tensor)
+    eigvals, eigvecs = np.linalg.eigh(tensor)
+    return eigvals, eigvecs
 
 
 def calc_principal_stresses(stress_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
@@ -89,8 +102,7 @@ def calc_principal_stresses(stress_voigt: NDArray[np.float64]) -> NDArray[np.flo
     Raises:
         ValueError: If input is not a 2D array with 6 columns.
     """
-    if stress_voigt.ndim != 2 or stress_voigt.shape[1] != 6:
-        raise ValueError("Input must be a n x 6 matrix in Voigt notation.")
+    _check_shape(stress_voigt)
 
     tensor = _voigt_to_tensor(stress_voigt)
     eigvals = np.linalg.eigvalsh(tensor)
@@ -111,8 +123,7 @@ def calc_principal_directions(stress_voigt: NDArray[np.float64]) -> NDArray[np.f
     Raises:
         ValueError: If input is not a 2D array with 6 columns.
     """
-    if stress_voigt.ndim != 2 or stress_voigt.shape[1] != 6:
-        raise ValueError("Input must be a n x 6 matrix in Voigt notation.")
+    _check_shape(stress_voigt)
 
     tensor = _voigt_to_tensor(stress_voigt)
     _, eigvecs = np.linalg.eigh(tensor)
@@ -133,8 +144,7 @@ def calc_stress_invariants(stress_voigt: NDArray[np.float64]) -> NDArray[np.floa
     Raises:
         ValueError: If input is not a 2D array with 6 columns.
     """
-    if stress_voigt.ndim != 2 or stress_voigt.shape[1] != 6:
-        raise ValueError("Input must be a n x 6 matrix in Voigt notation.")
+    _check_shape(stress_voigt)
 
     tensor = _voigt_to_tensor(stress_voigt)
     i1 = np.trace(tensor, axis1=1, axis2=2)
@@ -157,12 +167,16 @@ def calc_von_mises_stress(stress_voigt: NDArray[np.float64]) -> NDArray[np.float
     Raises:
         ValueError: If input is not a 2D array with 6 columns.
     """
-    if stress_voigt.ndim != 2 or stress_voigt.shape[1] != 6:
-        raise ValueError("Input must be a n x 6 matrix in Voigt notation.")
+    _check_shape(stress_voigt)
 
-    sx, sy, sz, syz, sxz, sxy = stress_voigt.T
+    sx = stress_voigt[:, 0]
+    sy = stress_voigt[:, 1]
+    sz = stress_voigt[:, 2]
+    syz = stress_voigt[:, 3]
+    sxz = stress_voigt[:, 4]
+    sxy = stress_voigt[:, 5]
 
-    return np.sqrt(  # type: ignore[no-any-return]
+    return np.sqrt(
         0.5
         * (
             (sx - sy) ** 2
@@ -239,12 +253,12 @@ if __name__ == "__main__":
         ]
     )
     print("Stress:", stress_example)
-    # print("Principal Stresses:", calc_principal_stresses(stress_example))
-    # print("Hydrostatic Stress:", calc_hydrostatic_stress(stress_example))
-    # print("Von Mises Stress:", calc_von_mises_stress(stress_example))
-    # print("Tresca Stress:", calc_tresca_stress(stress_example))
-
+    print("Principal Stresses:", calc_principal_stresses(stress_example))
+    print("Hydrostatic Stress:", calc_hydrostatic_stress(stress_example))
+    print("Von Mises Stress:", calc_von_mises_stress(stress_example))
+    print("signed Von Mises Stress:", calc_signed_von_mises(stress_example))
+    print("Tresca Stress:", calc_tresca_stress(stress_example))
+    print("signed Tresca Stress:", calc_signed_tresca(stress_example))
     eigvals, eigvecs = calc_principal_stresses_and_directions(stress_example)
-
     print("Principal Stresses:", eigvals)
     print("Principal Directions:", eigvecs)
