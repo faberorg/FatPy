@@ -267,7 +267,7 @@ def calc_signed_tresca_by_max_abs_principal(
 
     Args:
         stress_voigt: Array of shape (n, 6). Each row is a stress vector in
-        Voigt notation.
+            Voigt notation.
 
     Returns:
         Array of shape (n,). Signed Tresca stress for each row.
