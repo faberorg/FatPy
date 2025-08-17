@@ -1,36 +1,30 @@
 """Calculate fundamental stress metrics and invariants.
 
-These tools provide principal stresses, maximum shear stress, hydrostatic stress,
-von Mises equivalent stress, and invariants of the stress tensor. They are
-essential for strength, fatigue, and fracture analyses under both uniaxial and
-multiaxial loading conditions.
+These functions provide principal stresses, maximum shear (Tresca) stress,
+hydrostatic stress, von Mises equivalent stress, and invariants of the stress
+tensor. They are essential for strength, fatigue, and fracture analyses under
+both uniaxial and multiaxial loading conditions.
+
+Conventions:
+- Principal stresses are ordered in descending order throughout the module:
+    σ1 ≥ σ2 ≥ σ3.
+- Principal directions (eigenvectors) are aligned to this ordering
+    (columns correspond to σ1, σ2, σ3).
 
 """
 
 import numpy as np
 from numpy.typing import NDArray
 
-
-def _check_shape(stress_voigt: NDArray[np.float64]) -> None:
-    """Check the shape of the input stress array.
-
-    Args:
-        stress_voigt: Array of shape (n, 6). Each row is a stress vector in Voigt
-         notation.
-
-    Raises:
-        ValueError: If input is not a 2D array with 6 columns.
-    """
-    if stress_voigt.ndim != 2 or stress_voigt.shape[1] != 6:
-        raise ValueError("Input must be a n x 6 matrix in Voigt notation.")
+from fatpy.utils import voigt
 
 
 def calc_hydrostatic_stress(stress_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
     """Calculate the hydrostatic (mean normal) stress for each stress state.
 
     Args:
-        stress_voigt: Array of shape (n, 6). Each row is a stress vector in Voigt
-         notation.
+        stress_voigt: Array of shape (n, 6). Each row is a stress vector in
+            Voigt notation.
 
     Returns:
         Array of shape (n,). Hydrostatic stress for each input state.
@@ -38,105 +32,90 @@ def calc_hydrostatic_stress(stress_voigt: NDArray[np.float64]) -> NDArray[np.flo
     Raises:
         ValueError: If input is not a 2D array with 6 columns.
     """
-    _check_shape(stress_voigt)
+    voigt.check_shape(stress_voigt)
 
     return (stress_voigt[:, 0] + stress_voigt[:, 1] + stress_voigt[:, 2]) / 3.0
-
-
-def _voigt_to_tensor(stress_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
-    """Convert Voigt stress vectors to symmetric 3x3 tensors.
-
-    Args:
-        stress_voigt: Array of shape (n, 6). Each row is a stress vector in Voigt
-         notation.
-
-    Returns:
-        Array of shape (n, 3, 3). Symmetric stress tensors.
-    """
-    n = stress_voigt.shape[0]
-    tensor = np.zeros((n, 3, 3), dtype=np.float64)
-    tensor[:, 0, 0] = stress_voigt[:, 0]
-    tensor[:, 1, 1] = stress_voigt[:, 1]
-    tensor[:, 2, 2] = stress_voigt[:, 2]
-    tensor[:, 1, 2] = tensor[:, 2, 1] = stress_voigt[:, 3]
-    tensor[:, 0, 2] = tensor[:, 2, 0] = stress_voigt[:, 4]
-    tensor[:, 0, 1] = tensor[:, 1, 0] = stress_voigt[:, 5]
-    return tensor
 
 
 def calc_principal_stresses_and_directions(
     stress_voigt: NDArray[np.float64],
 ) -> tuple[NDArray[np.float64], NDArray[np.float64]]:
-    """Compute principal stresses and principal directions for each stress state.
+    """Calculate principal stresses and principal directions for each state.
 
     Args:
-        stress_voigt: Array of shape (n, 6). Each row is a stress vector in Voigt
-         notation.
+        stress_voigt: Array of shape (n, 6). Each row is a stress vector in
+            Voigt notation.
 
     Returns:
         Tuple (eigvals, eigvecs):
-        - eigvals: Array of shape (n, 3). Principal stresses (ascending order).
+        - eigvals: Array of shape (n, 3). Principal stresses (descending: σ1 ≥ σ2 ≥ σ3)
         - eigvecs: Array of shape (n, 3, 3). Principal directions (columns are
-          eigenvectors).
+            eigenvectors) aligned with eigvals in the same order.
 
     Raises:
         ValueError: If input is not a 2D array with 6 columns.
     """
-    _check_shape(stress_voigt)
+    voigt.check_shape(stress_voigt)
 
-    tensor = _voigt_to_tensor(stress_voigt)
-    eigvals, eigvecs = np.linalg.eigh(tensor)
-    return eigvals, eigvecs
+    tensor = voigt.voigt_to_tensor(stress_voigt)
+    eigvals, eigvecs = np.linalg.eigh(tensor)  # ascending by default
+
+    # Reorder to descending and keep eigenvectors aligned with eigenvalues
+    idx = np.argsort(eigvals, axis=1)[:, ::-1]  # (n,3)
+    eigvals_sorted = np.take_along_axis(eigvals, idx, axis=1)
+    eigvecs_sorted = np.take_along_axis(eigvecs, idx[:, None, :], axis=2)
+
+    return eigvals_sorted, eigvecs_sorted
 
 
 def calc_principal_stresses(stress_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
-    """Compute principal stresses for each stress state.
+    """Calculate principal stresses for each stress state.
 
     Args:
-        stress_voigt: Array of shape (n, 6). Each row is a stress vector in Voigt
-         notation.
+        stress_voigt: Array of shape (n, 6). Each row is a stress vector in
+            Voigt notation.
 
     Returns:
-        Array of shape (n, 3). Principal stresses (sorted descending for each row).
+        Array of shape (n, 3). Principal stresses (descending: σ1 ≥ σ2 ≥ σ3).
 
     Raises:
         ValueError: If input is not a 2D array with 6 columns.
     """
-    _check_shape(stress_voigt)
+    voigt.check_shape(stress_voigt)
 
-    tensor = _voigt_to_tensor(stress_voigt)
+    tensor = voigt.voigt_to_tensor(stress_voigt)
     eigvals = np.linalg.eigvalsh(tensor)
 
     return np.sort(eigvals, axis=1)[:, ::-1]
 
 
 def calc_principal_directions(stress_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
-    """Compute principal directions (eigenvectors) for each stress state.
+    """Calculate principal directions (eigenvectors) for each stress state.
 
     Args:
-        stress_voigt: Array of shape (n, 6). Each row is a stress vector in Voigt
-         notation.
+        stress_voigt: Array of shape (n, 6). Each row is a stress vector in
+            Voigt notation.
 
     Returns:
-        Array of shape (n, 3, 3). Principal directions (columns are eigenvectors).
+        Array of shape (n, 3, 3). Principal directions (columns are eigenvectors)
+            aligned with descending principal stresses: σ1, σ2, σ3.
 
     Raises:
         ValueError: If input is not a 2D array with 6 columns.
     """
-    _check_shape(stress_voigt)
+    voigt.check_shape(stress_voigt)
 
-    tensor = _voigt_to_tensor(stress_voigt)
-    _, eigvecs = np.linalg.eigh(tensor)
-
+    # Reuse the ordering logic from the combined function to ensure consistency
+    _, eigvecs = calc_principal_stresses_and_directions(stress_voigt)
     return eigvecs
 
 
 def calc_stress_invariants(stress_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
-    """Compute the first, second, and third invariants for each stress state.
+    """Calculate the first, second, and third invariants for each stress state.
 
     Args:
-        stress_voigt: Array of shape (n, 6). Each row is a stress vector in Voigt
-         notation.
+        stress_voigt: Array of shape (n, 6). Each row is a stress vector in
+            Voigt notation.
 
     Returns:
         Array of shape (n, 3). Columns are (I1, I2, I3) for each row.
@@ -144,22 +123,24 @@ def calc_stress_invariants(stress_voigt: NDArray[np.float64]) -> NDArray[np.floa
     Raises:
         ValueError: If input is not a 2D array with 6 columns.
     """
-    _check_shape(stress_voigt)
+    voigt.check_shape(stress_voigt)
 
-    tensor = _voigt_to_tensor(stress_voigt)
-    i1 = np.trace(tensor, axis1=1, axis2=2)
-    i2 = 0.5 * (i1**2 - np.trace(np.matmul(tensor, tensor), axis1=1, axis2=2))
-    i3 = np.linalg.det(tensor)
+    tensor = voigt.voigt_to_tensor(stress_voigt)
+    invariant_1 = np.trace(tensor, axis1=1, axis2=2)
+    invariant_2 = 0.5 * (
+        invariant_1**2 - np.trace(np.matmul(tensor, tensor), axis1=1, axis2=2)
+    )
+    invariant_3 = np.linalg.det(tensor)
 
-    return np.stack((i1, i2, i3), axis=1)
+    return np.stack((invariant_1, invariant_2, invariant_3), axis=1)
 
 
 def calc_von_mises_stress(stress_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
-    """Compute von Mises equivalent stress for each stress state.
+    """Calculate von Mises equivalent stress for each stress state.
 
     Args:
-        stress_voigt: Array of shape (n, 6). Each row is a stress vector in Voigt
-         notation.
+        stress_voigt: Array of shape (n, 6). Each row is a stress vector in
+            Voigt notation.
 
     Returns:
         Array of shape (n,). Von Mises equivalent stress for each row.
@@ -167,7 +148,7 @@ def calc_von_mises_stress(stress_voigt: NDArray[np.float64]) -> NDArray[np.float
     Raises:
         ValueError: If input is not a 2D array with 6 columns.
     """
-    _check_shape(stress_voigt)
+    voigt.check_shape(stress_voigt)
 
     sx = stress_voigt[:, 0]
     sy = stress_voigt[:, 1]
@@ -187,78 +168,139 @@ def calc_von_mises_stress(stress_voigt: NDArray[np.float64]) -> NDArray[np.float
     )
 
 
-def calc_signed_von_mises(stress_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
-    """Compute signed von Mises stress for each stress state.
+def calc_signed_von_mises_by_hydrostatic(
+    stress_voigt: NDArray[np.float64],
+) -> NDArray[np.float64]:
+    """Calculate signed von Mises stress for each stress state.
+
+    Sign is determined by the hydrostatic stress.
 
     Args:
-        stress_voigt: Array of shape (n, 6). Each row is a stress vector in Voigt
-         notation.
+        stress_voigt: Array of shape (n, 6). Each row is a stress vector in
+            Voigt notation.
 
     Returns:
-        Array of shape (n,). Signed von Mises stress for each row (sign from hydrostatic
-         part).
+        Array of shape (n,). Signed von Mises stress for each row.
 
     Raises:
         ValueError: If input is not a 2D array with 6 columns.
     """
-    vm = calc_von_mises_stress(stress_voigt)
+    von_mises = calc_von_mises_stress(stress_voigt)
     sign = np.sign(calc_hydrostatic_stress(stress_voigt))
-    return sign * vm
+    return sign * von_mises
+
+
+def calc_signed_von_mises_by_max_abs_principal(
+    stress_voigt: NDArray[np.float64],
+) -> NDArray[np.float64]:
+    """Calculate signed von Mises stress for each stress state.
+
+    Sign is determined by the maximum absolute principal stress value.
+
+    Args:
+        stress_voigt: Array of shape (n, 6). Each row is a stress vector in
+            Voigt notation.
+
+    Returns:
+        Array of shape (n,). Signed von Mises stress for each row.
+
+    Raises:
+        ValueError: If input is not a 2D array with 6 columns.
+    """
+    von_mises = calc_von_mises_stress(stress_voigt)
+    principals = calc_principal_stresses(stress_voigt)
+
+    # Find the principal stress with maximum absolute value and get its sign
+    indices = np.argmax(np.abs(principals), axis=1)
+    max_abs_values = np.take_along_axis(principals, indices[:, None], axis=1)[:, 0]
+    sign = np.sign(max_abs_values).astype(np.float64, copy=False)
+
+    return sign * von_mises
 
 
 def calc_tresca_stress(stress_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
-    """Compute Tresca (maximum shear) stress for each stress state.
+    """Calculate Tresca (maximum shear) stress for each stress state.
 
     Args:
-        stress_voigt: Array of shape (n, 6). Each row is a stress vector in Voigt
-         notation.
+        stress_voigt: Array of shape (n, 6). Each row is a stress vector in
+            Voigt notation.
 
     Returns:
-        Array of shape (n,). Tresca stress for each row.
+        Array of shape (n,). Tresca stress for each row. For principal stresses
+        σ1 ≥ σ2 ≥ σ3, Tresca = (σ1 − σ3)/2.
 
     Raises:
         ValueError: If input is not a 2D array with 6 columns.
     """
-    principal = calc_principal_stresses(stress_voigt)
-    return 0.5 * (principal[:, 0] - principal[:, 2])
+    principals = calc_principal_stresses(stress_voigt)
+    return 0.5 * (principals[:, 0] - principals[:, 2])
 
 
-def calc_signed_tresca(stress_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
-    """Compute signed Tresca stress for each stress state.
+def calc_signed_tresca_by_hydrostatic(
+    stress_voigt: NDArray[np.float64],
+) -> NDArray[np.float64]:
+    """Calculate signed Tresca stress for each stress state.
+
+    Sign is determined by the hydrostatic stress.
 
     Args:
-        stress_voigt: Array of shape (n, 6). Each row is a stress vector in Voigt
-         notation.
+        stress_voigt: Array of shape (n, 6). Each row is a stress vector in
+            Voigt notation.
 
     Returns:
-        Array of shape (n,). Signed Tresca stress for each row (sign from hydrostatic
-         part).
+        Array of shape (n,). Signed Tresca stress for each row.
 
     Raises:
         ValueError: If input is not a 2D array with 6 columns.
     """
-    t = calc_tresca_stress(stress_voigt)
+    tresca = calc_tresca_stress(stress_voigt)
     sign = np.sign(calc_hydrostatic_stress(stress_voigt))
-    return sign * t
+    return sign * tresca
+
+
+def calc_signed_tresca_by_max_abs_principal(
+    stress_voigt: NDArray[np.float64],
+) -> NDArray[np.float64]:
+    """Calculate signed Tresca stress for each stress state.
+
+    Sign is determined by the maximum absolute principal stress value.
+
+    Args:
+        stress_voigt: Array of shape (n, 6). Each row is a stress vector in
+        Voigt notation.
+
+    Returns:
+        Array of shape (n,). Signed Tresca stress for each row.
+
+    Raises:
+        ValueError: If input is not a 2D array with 6 columns.
+    """
+    tresca = calc_tresca_stress(stress_voigt)
+    principals = calc_principal_stresses(stress_voigt)
+
+    # Find the principal stress with maximum absolute value and get its sign
+    indices = np.argmax(np.abs(principals), axis=1)
+    max_abs_values = np.take_along_axis(principals, indices[:, None], axis=1)[:, 0]
+    sign = np.sign(max_abs_values).astype(np.float64, copy=False)
+
+    return sign * tresca
 
 
 if __name__ == "__main__":
     # Example usage
     stress_example = np.array(
         [
-            [100, 50, 25, 0, 0, 0],
-            [-50, 50, 0, 0, 0, 0],
-            [0, 0, 0, 50, 0, 0],
-            [100, 0, 0, 0, 0, 0],
+            [10, 20, 30, 0, 0, 0],
+            [50, -50, 0, 0, 0, 10],
+            [0, 0, 1000, 0, 0, -50],
         ]
     )
-    print("Stress:", stress_example)
-    print("Principal Stresses:", calc_principal_stresses(stress_example))
-    print("Hydrostatic Stress:", calc_hydrostatic_stress(stress_example))
-    print("Von Mises Stress:", calc_von_mises_stress(stress_example))
-    print("signed Von Mises Stress:", calc_signed_von_mises(stress_example))
-    print("Tresca Stress:", calc_tresca_stress(stress_example))
-    print("signed Tresca Stress:", calc_signed_tresca(stress_example))
-    eigvals, eigvecs = calc_principal_stresses_and_directions(stress_example)
-    print("Principal Stresses:", eigvals)
-    print("Principal Directions:", eigvecs)
+    # print("Principal Stresses:", calc_principal_stresses(stress_example))
+    # print("Hydrostatic Stress:", calc_hydrostatic_stress(stress_example))
+    # print("Von Mises Stress:", calc_von_mises_stress(stress_example))
+    # print("signed Von Mises Stress:", calc_signed_von_mises(stress_example))
+    # print("Tresca Stress:", calc_tresca_stress(stress_example))
+    # print("signed Tresca Stress:", calc_signed_tresca(stress_example))
+    # eigvals, eigvecs = calc_principal_stresses_and_directions(stress_example)
+    # print("Principal Stresses:", eigvals)
+    # print("Principal Directions:", eigvecs)
