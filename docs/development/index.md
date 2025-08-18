@@ -1,43 +1,89 @@
-# Development Guide
+---
+title: Development Guide
+---
 
-Welcome to the FatPy development guide. This section provides resources to help you contribute to the FatPy project effectively.
+# :material-tools: Development Guide
 
-## Getting Started
+This section provides comprehensive resources to help you contribute to FatPy, a Python package for fatigue life evaluation of materials, part of the FABER project.
 
-If you're new to FatPy development, we recommend starting with these resources:
+[:material-search-web: Learn About FABER](../faber_cost.md)
 
-- [Installation Guide](install.md) - Set up your development environment
-- [Contributing Guide](contributing.md) - Learn how to contribute to the project
-- [Code of Conduct](code_of_conduct.md) - Understand our community standards
+!!! note
+    FatPy follows Test-Driven Development (TDD) principles, emphasizing code quality, thorough documentation, and rigorous testing. Whether you're fixing bugs or adding features, this guide will help you become a successful contributor.
 
-## Development Resources
+## :fontawesome-solid-rocket: Getting Started
 
-- [Code Style](code_style.md) - Coding standards and style guidelines
-- [Documentation](documentation.md) - Documentation best practices and guidelines
-- [Testing](testing.md) - How to write and run tests
-- [CI/CD Process](ci_cd.md) - Information about our continuous integration workflow
+New to FatPy? Start with these resources to set up your environment and understand how to contribute effectively:
 
-## Project Structure
+- :fontawesome-solid-download: **[Installation Guide](install.md)**  
+  Set up your development environment for FatPy.
+- :fontawesome-solid-handshake: **[Contributing Guide](contributing.md)**  
+  Learn how to contribute code, documentation, or ideas to the project.
+- :fontawesome-solid-book: **[Code of Conduct](code_of_conduct.md)**  
+  Understand our community standards for respectful collaboration.
 
-For a detailed overview of the project structure, see the [API Reference](../api/index.md).
+## :fontawesome-solid-code: Development Resources
 
-## Development Workflow
+Deepen your understanding of FatPy development with these resources:
 
-Following Test-Driven Development (TDD) principles:
+- :fontawesome-solid-code: **[Code Style](code_style.md)**  
+  Follow our coding standards for consistent, high-quality code.
+- :fontawesome-solid-file-pen: **[Documentation](documentation.md)**  
+  Learn best practices for writing and maintaining FatPy documentation.
+- :fontawesome-solid-vial: **[Testing](testing.md)**  
+  Understand how to write and run tests to ensure code reliability.
+- :material-cogs: **[CI/CD Process](ci_cd.md)**  
+  Explore our continuous integration and deployment workflow.
 
-1. **Write tests first** - Define the expected behavior before implementing
-2. **Set up your environment** - Follow the [installation guide](install.md)
-3. **Create a feature branch** - `git checkout -b feature-name`
-4. **Implement the feature** - Follow the [code style guide](code_style.md)
-5. **Run and refine tests** - See the [testing guide](testing.md)
-6. **Document your changes** - Update the [documentation](documentation.md)
-7. **Submit a pull request** - See the [contributing guide](contributing.md)
+??? tip "Additional Resources"
+    - Join our [GitHub Discussions](https://github.com/vybornak2/FatPy/discussions) for community support.
+    - Find contribution ideas in our [GitHub Issues](https://github.com/vybornak2/FatPy/issues).
 
-## Getting Help
+## :fontawesome-solid-sitemap: Project Structure
 
-If you encounter issues or need assistance with development, you can:
+FatPy is organized into several core modules:
 
-- Create an issue in the [GitHub repository](https://github.com/vybornak2/fatpy/issues)
-- Contact the maintainers at <jan.vyborny2@gmail.com>
+- **Core** - Contains the fundamental analytical methods:
+  - Stress-Life: Methods for stress-based fatigue analysis
+  - Strain-Life: Methods for strain-based fatigue analysis
+  - Energy-Life: Methods for energy-based fatigue analysis
+- **Data Parsing** - Tools for handling input/output operations
+- **Utilities** - Supporting functionality and helper methods
+
+Get a detailed overview of FatPy’s modules and functions, visit **[API Reference](../api/index.md)**.
+
+## :fontawesome-solid-code-branch: Development Workflow
+
+Follow our Test-Driven Development (TDD) workflow:
+
+1. **Write Tests First**  
+   Define expected behavior before coding.
+2. **Set Up Your Environment**  
+   :fontawesome-solid-download: [Installation Guide](install.md)
+3. **Create a Feature Branch**  
+
+    ```bash
+    git checkout -b feature-name
+    ```
+
+4. **Implement the Feature**  
+    Follow the [Code Style Guide](code_style.md).
+5. **Run and Refine Tests**  
+    :fontawesome-solid-vial: [Testing Guide](testing.md)
+6. **Document your Changes**  
+    Use [Documentation](documentation.md) resources!
+7. **Submit a pull request**  
+    :fontawesome-solid-handshake: [Contributing Guide](contributing.md)
+
+## :material-help-box-outline: Getting Help
+
+Need assistance with FatPy development? Reach out through these channels:
+
+- :simple-github:  **[GitHub Discussions](https://github.com/vybornak2/FatPy/discussions)**  
+    Join for community support.
+- :fontawesome-solid-bug: **[Report an Issue](https://github.com/vybornak2/fatpy/issues)**  
+    Create an issue on our GitHub repository for bugs or questions.
+- :fontawesome-solid-envelope: **[Contact our Team](../contact.md)**  
+    Visit our contact page.
 
 Thank you for contributing to FatPy!
