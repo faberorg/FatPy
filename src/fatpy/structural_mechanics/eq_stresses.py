@@ -5,23 +5,17 @@ from numpy.typing import NDArray
 
 
 def calc_von_mises_stress[T: NDArray[np.floating]](stress_vector: T) -> T:
-    """Calculates equivalent stress according to von Mises.
+    """
+    Calculates the equivalent stress according to von Mises.
 
-    Parameters
-    ----------
-    stress_vector : numpy.ndarray
-        Voight stress tensor of shape [N, 6], where N is the number of points.
-        Expected format of stress_vector: [s11, s22, s33, s23, s13, s12].
+    Args:
+        stress_vector (numpy.ndarray): 
+            Voigt stress tensor of shape [N, 6], where N is the number of points. 
+            Expected format of `stress_vector`: [s11, s22, s33, s23, s13, s12].
 
     Returns:
-    -------
-    numpy.ndarray
-        Von Mises equivalent stress of shape [N].
-
-    Raises:
-    ------
-        None
-
+        numpy.ndarray:  Von Mises equivalent stress of shape [N].
+        
     """
 
     mises_stress = np.sqrt(
