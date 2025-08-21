@@ -24,11 +24,7 @@
 --custom-example-color: #6a5acd; 
 
 /* Define custom icons for admonitions - set to existing standard icons */
---md-admonition-icon--custom-note: var(--md-admonition-icon--note);
---md-admonition-icon--custom-abstract: var(--md-admonition-icon--abstract);
---md-admonition-icon--custom-info: var(--md-admonition-icon--info);
---md-admonition-icon--custom-tip: var(--md-admonition-icon--tip);
---md-admonition-icon--custom-example: var(--md-admonition-icon--example);
+/* --md-admonition-icon--custom-note: var(--md-admonition-icon--note); */
 
 }
 
@@ -138,13 +134,6 @@ h2.doc-heading {
     border-radius: 4px;
 }
 
-/* Mobile improvements */
-/* @media screen and (max-width: 76.1875em) {
-    .md-nav--primary .md-nav__title {
-        font-size: 1.2rem;
-        padding: 1rem;
-    }
-} */
 
 /* Modified admonition styles for Abstract */
 .md-typeset .admonition.abstract,
@@ -160,8 +149,8 @@ h2.doc-heading {
 .md-typeset .abstract > .admonition-title::before,
 .md-typeset .abstract > summary::before {
   background-color: var(--custom-abstract-color); 
-  -webkit-mask-image: var(--md-admonition-icon--custom-abstract);
-          mask-image: var(--md-admonition-icon--custom-abstract);
+  /* -webkit-mask-image: var(--md-admonition-icon--custom-abstract);
+          mask-image: var(--md-admonition-icon--custom-abstract); */
 }
 
 .md-typeset .abstract > .admonition-title::after,
@@ -183,8 +172,6 @@ h2.doc-heading {
 .md-typeset .note > .admonition-title::before,
 .md-typeset .note > summary::before {
   background-color: var(--custom-note-color); 
-  -webkit-mask-image: var(--md-admonition-icon--custom-note);
-          mask-image: var(--md-admonition-icon--custom-note);
 }
 
 .md-typeset .note > .admonition-title::after,
@@ -206,8 +193,6 @@ h2.doc-heading {
 .md-typeset .info > .admonition-title::before,
 .md-typeset .info > summary::before {
   background-color: var(--custom-info-color); 
-  -webkit-mask-image: var(--md-admonition-icon--custom-info);
-          mask-image: var(--md-admonition-icon--custom-info);
 }
 
 .md-typeset .info > .admonition-title::after,
@@ -229,8 +214,6 @@ h2.doc-heading {
 .md-typeset .tip > .admonition-title::before,
 .md-typeset .tip > summary::before {
   background-color: var(--custom-tip-color); 
-  -webkit-mask-image: var(--md-admonition-icon--custom-tip);
-          mask-image: var(--md-admonition-icon--custom-tip);
 }
 
 .md-typeset .tip > .admonition-title::after,
@@ -252,8 +235,6 @@ h2.doc-heading {
 .md-typeset .example > .admonition-title::before,
 .md-typeset .example > summary::before {
   background-color: var(--custom-example-color); 
-  -webkit-mask-image: var(--md-admonition-icon--custom-example);
-          mask-image: var(--md-admonition-icon--custom-example);
 }
 
 .md-typeset .example > .admonition-title::after,
