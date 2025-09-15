@@ -20,7 +20,13 @@ from fatpy.utils import voigt
 
 
 def calc_hydrostatic_stress(stress_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
-    """Calculate the hydrostatic (mean normal) stress for each stress state.
+    r"""Calculate the hydrostatic (mean normal) stress for each stress state.
+
+    ??? abstract "Math Equation"
+        $$
+        \sigma_H = \frac{1}{3} tr(\sigma) =
+        \frac{1}{3} (\sigma_{xx} + \sigma_{yy} + \sigma_{zz})
+        $$
 
     Args:
         stress_voigt: Array of shape (n, 6). Each row is a stress vector in
@@ -40,7 +46,7 @@ def calc_hydrostatic_stress(stress_voigt: NDArray[np.float64]) -> NDArray[np.flo
 def calc_principal_stresses_and_directions(
     stress_voigt: NDArray[np.float64],
 ) -> tuple[NDArray[np.float64], NDArray[np.float64]]:
-    """Calculate principal stresses and principal directions for each state.
+    r"""Calculate principal stresses and principal directions for each state.
 
     Args:
         stress_voigt: Array of shape (n, 6). Each row is a stress vector in
@@ -69,7 +75,17 @@ def calc_principal_stresses_and_directions(
 
 
 def calc_principal_stresses(stress_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
-    """Calculate principal stresses for each stress state.
+    r"""Calculate principal stresses for each stress state.
+
+    .. math::
+
+        Ai(z) = \frac{1}{\\pi \\sqrt{3}} K_{1/3}(t)
+
+        Ai'(z) = -\frac{z}{\\pi \\sqrt{3}} K_{2/3}(t)
+
+        Bi(z) = \\sqrt{\frac{z}{3}} \\left(I_{-1/3}(t) + I_{1/3}(t) \right)
+
+        Bi'(z) = \frac{z}{\\sqrt{3}} \\left(I_{-2/3}(t) + I_{2/3}(t)\right)
 
     Args:
         stress_voigt: Array of shape (n, 6). Each row is a stress vector in
@@ -111,7 +127,16 @@ def calc_principal_directions(stress_voigt: NDArray[np.float64]) -> NDArray[np.f
 
 
 def calc_stress_invariants(stress_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
-    """Calculate the first, second, and third invariants for each stress state.
+    r"""Calculate the first, second, and third invariants for each stress state.
+
+    ??? abstract "Math Equations"
+        $$
+        \begin{align*}
+        I_1 &=  tr(\sigma), \\
+        I_2 &= \frac{1}{2}(I_1^{2} - tr(\sigma^{2})), \\
+        I_3 &= \det(\sigma)
+        \end{align*}
+        $$
 
     Args:
         stress_voigt: Array of shape (n, 6). Each row is a stress vector in
@@ -302,5 +327,7 @@ if __name__ == "__main__":
     # print("Tresca Stress:", calc_tresca_stress(stress_example))
     # print("signed Tresca Stress:", calc_signed_tresca(stress_example))
     # eigvals, eigvecs = calc_principal_stresses_and_directions(stress_example)
+    # print("Principal Stresses:", eigvals)
+    # print("Principal Directions:", eigvecs)
     # print("Principal Stresses:", eigvals)
     # print("Principal Directions:", eigvecs)
