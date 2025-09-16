@@ -22,10 +22,10 @@ from fatpy.utils import voigt
 def calc_hydrostatic_stress(stress_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
     r"""Calculate the hydrostatic (mean normal) stress for each stress state.
 
-    ??? abstract "Math Equation"
+    ??? abstract "Math Equations"
         $$
         \sigma_H = \frac{1}{3} tr(\sigma) =
-        \frac{1}{3} (\sigma_{xx} + \sigma_{yy} + \sigma_{zz})
+        \frac{1}{3} (\sigma_{11} + \sigma_{22} + \sigma_{33})
         $$
 
     Args:
@@ -47,6 +47,12 @@ def calc_principal_stresses_and_directions(
     stress_voigt: NDArray[np.float64],
 ) -> tuple[NDArray[np.float64], NDArray[np.float64]]:
     r"""Calculate principal stresses and principal directions for each state.
+
+    ??? abstract "Math Equations"
+        Principal stresses and directions are found by solving the eigenvalue problem
+        for the stress tensor:
+
+        $$ \sigma \mathbf{v} = \lambda \mathbf{v} $$
 
     Args:
         stress_voigt: Array of shape (n, 6). Each row is a stress vector in
@@ -77,15 +83,11 @@ def calc_principal_stresses_and_directions(
 def calc_principal_stresses(stress_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
     r"""Calculate principal stresses for each stress state.
 
-    .. math::
+    ??? abstract "Math Equations"
+        Principal stresses are found by solving the eigenvalue problem
+        for the stress tensor:
 
-        Ai(z) = \frac{1}{\\pi \\sqrt{3}} K_{1/3}(t)
-
-        Ai'(z) = -\frac{z}{\\pi \\sqrt{3}} K_{2/3}(t)
-
-        Bi(z) = \\sqrt{\frac{z}{3}} \\left(I_{-1/3}(t) + I_{1/3}(t) \right)
-
-        Bi'(z) = \frac{z}{\\sqrt{3}} \\left(I_{-2/3}(t) + I_{2/3}(t)\right)
+        $$ \sigma \mathbf{v} = \lambda \mathbf{v} $$
 
     Args:
         stress_voigt: Array of shape (n, 6). Each row is a stress vector in
@@ -106,7 +108,13 @@ def calc_principal_stresses(stress_voigt: NDArray[np.float64]) -> NDArray[np.flo
 
 
 def calc_principal_directions(stress_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
-    """Calculate principal directions (eigenvectors) for each stress state.
+    r"""Calculate principal directions (eigenvectors) for each stress state.
+
+    ??? abstract "Math Equations"
+        Principal directions are found by solving the eigenvalue problem
+        for the stress tensor:
+
+        $$ \sigma \mathbf{v} = \lambda \mathbf{v} $$
 
     Args:
         stress_voigt: Array of shape (n, 6). Each row is a stress vector in
@@ -161,7 +169,16 @@ def calc_stress_invariants(stress_voigt: NDArray[np.float64]) -> NDArray[np.floa
 
 
 def calc_von_mises_stress(stress_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
-    """Calculate von Mises equivalent stress for each stress state.
+    r"""Calculate von Mises equivalent stress for each stress state.
+
+    ??? abstract "Math Equations"
+        $$
+        \sigma_{vM} = \tfrac{\sqrt{2}}{2}\sqrt{
+        (\sigma_{11}-\sigma_{22})^2
+        +(\sigma_{22}-\sigma_{33})^2
+        +(\sigma_{33}-\sigma_{11})^2
+        + 3(\sigma_{12}^2+\sigma_{23}^2+\sigma_{13}^2)}
+        $$
 
     Args:
         stress_voigt: Array of shape (n, 6). Each row is a stress vector in
@@ -196,9 +213,12 @@ def calc_von_mises_stress(stress_voigt: NDArray[np.float64]) -> NDArray[np.float
 def calc_signed_von_mises_by_hydrostatic(
     stress_voigt: NDArray[np.float64],
 ) -> NDArray[np.float64]:
-    """Calculate signed von Mises stress for each stress state.
+    r"""Calculate signed von Mises stress for each stress state.
 
     Sign is determined by the hydrostatic stress.
+
+    ??? abstract "Math Equations"
+        $$\sigma_{SvM} = sgn(\sigma_H) \cdot \sigma_{vM}$$
 
     Args:
         stress_voigt: Array of shape (n, 6). Each row is a stress vector in
@@ -218,9 +238,12 @@ def calc_signed_von_mises_by_hydrostatic(
 def calc_signed_von_mises_by_max_abs_principal(
     stress_voigt: NDArray[np.float64],
 ) -> NDArray[np.float64]:
-    """Calculate signed von Mises stress for each stress state.
+    r"""Calculate signed von Mises stress for each stress state.
 
     Sign is determined by the maximum absolute principal stress value.
+
+    ??? abstract "Math Equations"
+        $$\sigma_{SvM} = sgn(\frac{\sigma_{1}+\sigma_{3}}{2}) \cdot \sigma_{vM}$$
 
     Args:
         stress_voigt: Array of shape (n, 6). Each row is a stress vector in
@@ -235,16 +258,45 @@ def calc_signed_von_mises_by_max_abs_principal(
     von_mises = calc_von_mises_stress(stress_voigt)
     principals = calc_principal_stresses(stress_voigt)
 
-    # Find the principal stress with maximum absolute value and get its sign
-    indices = np.argmax(np.abs(principals), axis=1)
-    max_abs_values = np.take_along_axis(principals, indices[:, None], axis=1)[:, 0]
-    sign = np.sign(max_abs_values).astype(np.float64, copy=False)
+    avg_13 = 0.5 * (principals[:, 0] + principals[:, 2])
+    sign = np.sign(avg_13).astype(np.float64, copy=False)
+
+    return sign * von_mises
+
+
+def calc_signed_von_mises_by_first_invariant(
+    stress_voigt: NDArray[np.float64],
+) -> NDArray[np.float64]:
+    r"""Calculate signed von Mises stress for each stress state.
+
+    Sign is determined by the first invariant of the stress tensor.
+
+    ??? abstract "Math Equations"
+        $$\sigma_{SvM} = sgn(tr(\sigma)) \cdot \sigma_{vM}$$
+
+    Args:
+        stress_voigt: Array of shape (n, 6). Each row is a stress vector in
+            Voigt notation.
+
+    Returns:
+        Array of shape (n,). Signed von Mises stress for each row.
+
+    Raises:
+        ValueError: If input is not a 2D array with 6 columns.
+    """
+    von_mises = calc_von_mises_stress(stress_voigt)
+    invariant_1 = stress_voigt[:, 0] + stress_voigt[:, 1] + stress_voigt[:, 2]
+
+    sign = np.sign(invariant_1).astype(np.float64, copy=False)
 
     return sign * von_mises
 
 
 def calc_tresca_stress(stress_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
-    """Calculate Tresca (maximum shear) stress for each stress state.
+    r"""Calculate Tresca (maximum shear) stress for each stress state.
+
+    ??? abstract "Math Equations"
+        $$\sigma_{\tau_{max}} = \frac{\sigma_{1} - \sigma_{3}}{2}$$
 
     Args:
         stress_voigt: Array of shape (n, 6). Each row is a stress vector in
@@ -264,9 +316,12 @@ def calc_tresca_stress(stress_voigt: NDArray[np.float64]) -> NDArray[np.float64]
 def calc_signed_tresca_by_hydrostatic(
     stress_voigt: NDArray[np.float64],
 ) -> NDArray[np.float64]:
-    """Calculate signed Tresca stress for each stress state.
+    r"""Calculate signed Tresca stress for each stress state.
 
     Sign is determined by the hydrostatic stress.
+
+    ??? abstract "Math Equations"
+        $$\sigma_{S\tau_{max}} = sgn(\sigma_H) \cdot \sigma_{\tau_{max}}$$
 
     Args:
         stress_voigt: Array of shape (n, 6). Each row is a stress vector in
@@ -286,9 +341,15 @@ def calc_signed_tresca_by_hydrostatic(
 def calc_signed_tresca_by_max_abs_principal(
     stress_voigt: NDArray[np.float64],
 ) -> NDArray[np.float64]:
-    """Calculate signed Tresca stress for each stress state.
+    r"""Calculate signed Tresca stress for each stress state.
 
     Sign is determined by the maximum absolute principal stress value.
+
+    ??? abstract "Math Equations"
+        $$
+        \sigma_{S\tau_{max}} = sgn(\frac{\sigma_{1}+\sigma_{3}}{2})
+        \cdot \sigma_{\tau_{max}}
+        $$
 
     Args:
         stress_voigt: Array of shape (n, 6). Each row is a stress vector in
@@ -303,10 +364,8 @@ def calc_signed_tresca_by_max_abs_principal(
     tresca = calc_tresca_stress(stress_voigt)
     principals = calc_principal_stresses(stress_voigt)
 
-    # Find the principal stress with maximum absolute value and get its sign
-    indices = np.argmax(np.abs(principals), axis=1)
-    max_abs_values = np.take_along_axis(principals, indices[:, None], axis=1)[:, 0]
-    sign = np.sign(max_abs_values).astype(np.float64, copy=False)
+    avg_13 = 0.5 * (principals[:, 0] + principals[:, 2])
+    sign = np.sign(avg_13).astype(np.float64, copy=False)
 
     return sign * tresca
 
@@ -330,4 +389,5 @@ if __name__ == "__main__":
     # print("Principal Stresses:", eigvals)
     # print("Principal Directions:", eigvecs)
     # print("Principal Stresses:", eigvals)
+    # print("Principal Directions:", eigvecs)
     # print("Principal Directions:", eigvecs)
