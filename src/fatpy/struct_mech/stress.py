@@ -370,6 +370,33 @@ def calc_signed_tresca_by_max_abs_principal(
     return sign * tresca
 
 
+def calc_stress_deviator(
+    stress_voigt: NDArray[np.float64],
+) -> NDArray[np.float64]:
+    r"""Calculate stress deviator for each stress state.
+
+    ??? abstract "Math Equations"
+        $$ \mathbf{s} = \sigma - \frac{1}{3} tr(\sigma) $$
+
+    Args:
+        stress_voigt: Array of shape (n, 6). Each row is a stress vector in
+            Voigt notation.
+
+    Returns:
+        Array of shape (n,). Signed Tresca stress for each row.
+
+    Raises:
+        ValueError: If input is not a 2D array with 6 columns.
+    """
+    voigt.check_shape(stress_voigt)
+    hydrostatic = calc_hydrostatic_stress(stress_voigt)
+
+    deviator = stress_voigt.copy()
+    deviator[:, :3] -= hydrostatic[:, None]
+
+    return deviator
+
+
 if __name__ == "__main__":
     # Example usage
     stress_example = np.array(
@@ -389,5 +416,7 @@ if __name__ == "__main__":
     # print("Principal Stresses:", eigvals)
     # print("Principal Directions:", eigvecs)
     # print("Principal Stresses:", eigvals)
+    # print("Principal Directions:", eigvecs)
+    # print("Principal Directions:", eigvecs)
     # print("Principal Directions:", eigvecs)
     # print("Principal Directions:", eigvecs)
