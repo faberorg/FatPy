@@ -50,14 +50,15 @@ def calc_principal_stresses_and_directions(
     Returns:
         Tuple (eigvals, eigvecs):
         - eigvals: Array of shape (n, 3, ...). Principal stresses
-            (descending: σ_1 ≥ σ_2 ≥ σ_3) with trailing dims preserved.
+        (descending: σ_1 ≥ σ_2 ≥ σ_3) with trailing dims preserved.
         - eigvecs: Array of shape (n, 3, 3, ...). Principal directions (columns are
-            eigenvectors) aligned with eigvals in the same order. The last two
-            axes of this array are the 3x3 eigenvector matrix for each input.
+        eigenvectors) aligned with eigvals in the same order. The last two
+        axes of this array are the 3x3 eigenvector matrix for each input.
 
     Raises:
         ValueError: If input is not a 2D array with 6 columns.
     """
+    # TODO: check docsrtring agains `MkDocs` formatting
     voigt.check_shape(stress_voigt)
 
     tensor = voigt.voigt_to_tensor(stress_voigt)
