@@ -1,38 +1,80 @@
-"""Helper functions for handling vectors using Voigt notation."""
+"""Helper functions for handling vectors using Voigt notation.
+
+All functions accept arrays with shape (n, 6, ...) where any trailing
+dimensions after the 6-component Voigt axis are allowed. The 3x3 tensor
+representation uses the last two axes for matrix indices, i.e.
+returned tensors have shape (n, ..., 3, 3).
+"""
+
+# TODO: N-Dimensional support for trailing dims
+#  - voigt, tensor dimensions have to be the last axes
+#  - (..., 6), (..., 3, 3)
 
 import numpy as np
 from numpy.typing import NDArray
 
+VOIGT_COMPONENTS_COUNT = 6
+MIN_VECTOR_DIMS = 2
 
-def check_shape(voigt_vec: NDArray[np.float64]) -> None:
-    """Check the shape of the input Voigt array.
+
+def check_shape(vector: NDArray[np.float64]) -> None:
+    """Validate the Voigt vector shape.
 
     Args:
-        voigt_vec: Array of shape (n, 6). Each row is a vector in Voigt notation.
+        vector: Array with shape (n, 6, ...) where axis=1 has length 6.
 
     Raises:
-        ValueError: If input is not a 2D array with 6 columns.
+        ValueError: If input does not have at least two dimensions or the
+            second dimension is not 6.
     """
-    if voigt_vec.ndim != 2 or voigt_vec.shape[1] != 6:
-        raise ValueError("Input must be a n x 6 matrix in Voigt notation.")
+    if vector.ndim < MIN_VECTOR_DIMS:
+        raise ValueError("Input must be at least a 2D array (n, 6, ...).")
+
+    if vector.shape[1] != VOIGT_COMPONENTS_COUNT:
+        raise ValueError(
+            "Second dimension must correspond to 6 Voigt "
+            "stress/strain components (n, 6, ...)."
+        )
 
 
-def voigt_to_tensor(voigt_vec: NDArray[np.float64]) -> NDArray[np.float64]:
+def voigt_to_tensor(vector: NDArray[np.float64]) -> NDArray[np.float64]:
     """Convert Voigt vectors to symmetric 3x3 tensors.
 
     Args:
-        voigt_vec: Array of shape (n, 6). Each row is a vector in Voigt notation.
-            (σ11, σ22, σ33, σ23, σ13, σ12)
+        vector: Array of shape (n, 6, ...) where axis=1 contains the Voigt
+            components (σ_xx, σ_yy, σ_zz, σ_yz, σ_xz, σ_xy).
 
     Returns:
-        Array of shape (n, 3, 3). Symmetric tensors.
+        Array with shape (n, ..., 3, 3). The last two axes are the symmetric
+        3x3 tensor for each input index. Trailing dimensions from the input
+        are preserved before the final two matrix axes.
     """
-    n = voigt_vec.shape[0]
-    tensor = np.zeros((n, 3, 3), dtype=np.float64)
-    tensor[:, 0, 0] = voigt_vec[:, 0]
-    tensor[:, 1, 1] = voigt_vec[:, 1]
-    tensor[:, 2, 2] = voigt_vec[:, 2]
-    tensor[:, 1, 2] = tensor[:, 2, 1] = voigt_vec[:, 3]
-    tensor[:, 0, 2] = tensor[:, 2, 0] = voigt_vec[:, 4]
-    tensor[:, 0, 1] = tensor[:, 1, 0] = voigt_vec[:, 5]
+    check_shape(vector)
+
+    # Move the Voigt component axis to the end for easy broadcasting, then
+    # construct tensors with matrix axes as the last two dims.
+    # Input shape: (n, 6, d1, d2, ...)
+    # We'll output shape: (n, d1, d2, ..., 3, 3)
+    leading = vector.shape[0]
+    trailing = vector.shape[2:]
+
+    out_shape = (leading,) + trailing + (3, 3)
+    tensor = np.zeros(out_shape, dtype=vector.dtype)
+
+    # Helper to index into input with preserved trailing dims
+    # Normal components
+    tensor[(..., 0, 0)] = vector[:, 0].reshape((leading,) + trailing)
+    tensor[(..., 1, 1)] = vector[:, 1].reshape((leading,) + trailing)
+    tensor[(..., 2, 2)] = vector[:, 2].reshape((leading,) + trailing)
+
+    # Off-diagonal: Voigt indices 3 -> σ_yz, 4 -> σ_xz, 5 -> σ_xy
+    tensor[(..., 1, 2)] = vector[:, 3].reshape((leading,) + trailing)
+    tensor[(..., 2, 1)] = tensor[(..., 1, 2)]
+
+    tensor[(..., 0, 2)] = vector[:, 4].reshape((leading,) + trailing)
+    tensor[(..., 2, 0)] = tensor[(..., 0, 2)]
+
+    tensor[(..., 0, 1)] = vector[:, 5].reshape((leading,) + trailing)
+    tensor[(..., 1, 0)] = tensor[(..., 0, 1)]
+
     return tensor
