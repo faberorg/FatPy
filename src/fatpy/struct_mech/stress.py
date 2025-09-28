@@ -46,10 +46,10 @@ def calc_principal_stresses_and_directions(
     Returns:
         Tuple (eigvals, eigvecs):
         - eigvals: Array of shape (..., 3). Principal stresses
-          (descending: σ_1 ≥ σ_2 ≥ σ_3) with leading dimensions preserved.
+        (descending: σ_1 ≥ σ_2 ≥ σ_3) with leading dimensions preserved.
         - eigvecs: Array of shape (..., 3, 3). Principal directions (columns are
-          eigenvectors) aligned with eigvals in the same order. The last two
-          dimensions are the 3x3 eigenvector matrix for each input.
+        eigenvectors) aligned with eigvals in the same order. The last two
+        dimensions are the 3x3 eigenvector matrix for each input.
 
     Raises:
         ValueError: If the last dimension is not of size 6.
