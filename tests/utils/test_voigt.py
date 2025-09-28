@@ -159,3 +159,35 @@ def test_voigt_to_tensor_4d(vector_4d: NDArray[np.float64]) -> None:
     )
     np.testing.assert_array_equal(tensor, expected)
     assert tensor.shape == (2, 2, 2, 3, 3)
+
+
+def test_tensor_to_voigt_1d(vector_1d: NDArray[np.float64]) -> None:
+    """Test conversion from 1D tensor to Voigt vector."""
+    tensor = voigt.voigt_to_tensor(vector_1d)
+    voigt_vector = voigt.tensor_to_voigt(tensor)
+    np.testing.assert_array_equal(voigt_vector, vector_1d)
+    assert voigt_vector.shape == (6,)
+
+
+def test_tensor_to_voigt_2d(vector_2d: NDArray[np.float64]) -> None:
+    """Test conversion from 2D tensor to Voigt vector."""
+    tensor = voigt.voigt_to_tensor(vector_2d)
+    voigt_vector = voigt.tensor_to_voigt(tensor)
+    np.testing.assert_array_equal(voigt_vector, vector_2d)
+    assert voigt_vector.shape == (2, 6)
+
+
+def test_tensor_to_voigt_3d(vector_3d: NDArray[np.float64]) -> None:
+    """Test conversion from 3D tensor to Voigt vector."""
+    tensor = voigt.voigt_to_tensor(vector_3d)
+    voigt_vector = voigt.tensor_to_voigt(tensor)
+    np.testing.assert_array_equal(voigt_vector, vector_3d)
+    assert voigt_vector.shape == (2, 2, 6)
+
+
+def test_tensor_to_voigt_4d(vector_4d: NDArray[np.float64]) -> None:
+    """Test conversion from 4D tensor to Voigt vector."""
+    tensor = voigt.voigt_to_tensor(vector_4d)
+    voigt_vector = voigt.tensor_to_voigt(tensor)
+    np.testing.assert_array_equal(voigt_vector, vector_4d)
+    assert voigt_vector.shape == (2, 2, 2, 6)
