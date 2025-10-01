@@ -1,20 +1,64 @@
 ---
 name: Documentation Improvement
 about: Suggest an improvement to the documentation
-title: ''
+title: '[DOCS] '
 labels: documentation
 assignees: ''
 
 ---
 
-**What needs to be improved?**
-A clear and concise description of what part of the documentation needs improvement.
+<!-- All comments do not appear in the rendered issue and does not need to be removed -->
 
-**Why is this improvement important?**
-Explain why this improvement would be beneficial to the project.
+## ℹ️ General Information
 
-**Suggested improvement**
-Provide a suggestion or example of how the documentation could be improved.
+**Documentation Section:**
 
-**Additional context**
-Add any other context or screenshots related to the documentation improvement here.
+**Affected Pages/Files:**
+
+**Target Audience:** <!-- Developers / End Users / Both -->
+
+**Priority:** (1-10 scale)
+
+---
+
+## 📚 Documentation Issue
+
+### Current State
+
+<!-- What needs to be improved? A clear description of the current documentation state -->
+
+### Problem Description
+
+<!-- Why is this improvement important? What problems does the current documentation cause? -->
+
+### Impact
+
+<!-- Who is affected by this documentation issue? -->
+
+## 💡 Proposed Improvement
+
+### Suggested Changes
+
+<!-- Provide specific suggestions for how the documentation could be improved -->
+
+### Content Structure
+
+<!-- If applicable, suggest how the content should be organized -->
+
+### Examples Needed
+
+<!-- What examples or code samples would help? -->
+
+## 📋 Additional Information
+
+### References
+
+<!-- Link to good documentation examples or standards -->
+
+### Related Documentation
+
+<!-- Links to related sections that might need updates -->
+
+### Additional Context
+
+<!-- Add any other context or screenshots related to the documentation improvement -->
