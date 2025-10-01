@@ -1,17 +1,69 @@
 ---
 name: Question
 about: Ask a question about this project
-title: ''
+title: '[QUESTION] '
 labels: question
 assignees: ''
 
 ---
 
-**What is your question?**
-A clear and concise question about the project.
+<!-- All comments do not appear in the rendered issue and does not need to be removed -->
 
-**Where did you look for an answer?**
-List any documentation or sources you consulted before asking.
+## ℹ️ General Information
 
-**Additional context**
-Add any other context or screenshots related to your question here.
+**Question Category:** <!-- Usage / Development / Theory / Installation -->
+
+**Related Component:**
+
+**Experience Level:** <!-- Beginner / Intermediate / Advanced -->
+
+---
+
+## ❓ Question Details
+
+### Your Question
+
+<!-- A clear and concise question about the project -->
+
+### Context
+
+<!-- Provide context about what you're trying to achieve -->
+
+### Expected Answer Format
+
+<!-- What type of answer would be most helpful? (explanation, code example, reference, etc.) -->
+
+## 🔍 Research Done
+
+### Documentation Consulted
+
+<!-- List any documentation or sources you consulted before asking -->
+
+-
+-
+
+### Attempted Solutions
+
+<!-- What have you already tried? -->
+
+## 📋 Additional Information
+
+### Code Sample
+
+```python
+# Include relevant code if applicable
+```
+
+### Environment Details
+
+<!-- If relevant to your question -->
+
+**Operating System:**
+
+**Python Version:**
+
+**FatPy Version:**
+
+### Additional Context
+
+<!-- Add any other context or screenshots related to your question -->
