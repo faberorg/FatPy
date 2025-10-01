@@ -41,6 +41,8 @@ theme:
     - content.tooltips
   icon:
     repo: fontawesome/brands/github
+  # logo: images/logo.png
+  # favicon: images/logo.png
   font:
     text: Roboto
     code: Roboto Mono
