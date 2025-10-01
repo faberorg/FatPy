@@ -36,8 +36,8 @@ Deepen your understanding of FatPy development with these resources:
   Explore our continuous integration and deployment workflow.
 
 ??? tip "Additional resources"
-    - Join our [GitHub Discussions](https://github.com/vybornak2/FatPy/discussions) for community support.
-    - Find contribution ideas in our [GitHub Issues](https://github.com/vybornak2/FatPy/issues).
+    - Join our [GitHub Discussions](https://github.com/faberorg/FatPy/discussions) for community support.
+    - Find contribution ideas in our [GitHub Issues](https://github.com/faberorg/FatPy/issues).
 
 ## :fontawesome-solid-sitemap: Project Structure
 
@@ -79,9 +79,9 @@ Follow our Test-Driven Development (TDD) workflow:
 
 Need assistance with FatPy development? Reach out through these channels:
 
-- :simple-github:  **[GitHub Discussions](https://github.com/vybornak2/FatPy/discussions)**  
+- :simple-github:  **[GitHub Discussions](https://github.com/faberorg/FatPy/discussions)**  
     Join for community support.
-- :fontawesome-solid-bug: **[Report an Issue](https://github.com/vybornak2/fatpy/issues)**  
+- :fontawesome-solid-bug: **[Report an Issue](https://github.com/faberorg/fatpy/issues)**  
     Create an issue on our GitHub repository for bugs or questions.
 - :fontawesome-solid-envelope: **[Contact our Team](../contact.md)**  
     Visit our contact page.

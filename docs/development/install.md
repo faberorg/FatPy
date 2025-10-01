@@ -77,7 +77,7 @@ For contributing or customizing FatPy:
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/vybornak2/fatpy.git
+   git clone https://github.com/faberorg/fatpy.git
    cd fatpy
    ```
 

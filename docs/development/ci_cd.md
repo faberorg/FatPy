@@ -106,8 +106,8 @@ Monitor CI/CD outcomes to ensure successful workflows:
 Status badges are displayed in the README.md:
 
 ```markdown
-![Python CI](https://github.com/vybornak2/fatpy/workflows/Python%20CI/badge.svg)
-![Documentation](https://github.com/vybornak2/fatpy/workflows/Deploy%20Documentation/badge.svg)
+![Python CI](https://github.com/faberorg/fatpy/workflows/Python%20CI/badge.svg)
+![Documentation](https://github.com/faberorg/fatpy/workflows/Deploy%20Documentation/badge.svg)
 ```
 
 ## :octicons-tools-24: Troubleshooting CI Failures

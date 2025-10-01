@@ -83,13 +83,13 @@ interested in coding, testing, documentation, or providing feedback, your partic
 ### Getting Involved
 
 - **Explore the Repository**:  
-Visit our [:fontawesome-brands-github: GitHub repository](https://github.com/vybornak2/fatpy) to access the source code.
+Visit our [:fontawesome-brands-github: GitHub repository](https://github.com/faberorg/fatpy) to access the source code.
 
 - **Contribute**:  
 Follow our [:fontawesome-solid-handshake: Contribution Guidelines](development/contributing.md) to help improve FatPy.
 
 - **Collaborate**:  
-Join our [:fontawesome-solid-comment-dots: Discussions](https://github.com/vybornak2/fatpy/discussions) or [:fontawesome-solid-bug: Report issues](https://github.com/vybornak2/fatpy/issues).
+Join our [:fontawesome-solid-comment-dots: Discussions](https://github.com/faberorg/fatpy/discussions) or [:fontawesome-solid-bug: Report issues](https://github.com/faberorg/fatpy/issues).
 
 By participating, you'll be part of a collaborative effort to advance the field of material fatigue analysis.
 Stay tuned to the FatPy documentation for regular updates, tutorials, and community news as we work together
@@ -106,7 +106,7 @@ Feel free to share your ideas, use these channels to contact us:
 <div class="grid cards" markdown>
 
 - [:fontawesome-solid-envelope: Contact page](contact.md)
-- [:fontawesome-brands-github: Project GitHub repository](https://github.com/vybornak2/fatpy)
+- [:fontawesome-brands-github: Project GitHub repository](https://github.com/faberorg/fatpy)
 
 </div>
 

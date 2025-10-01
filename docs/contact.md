@@ -29,20 +29,20 @@ Check out these resources:
 Use GitHub as a main way to collaborate, discuss and improve the FatPy package.
 
 - **Explore the Repository**:  
-Visit our [:fontawesome-brands-github: GitHub repository](https://github.com/vybornak2/fatpy) to access the source code.
+Visit our [:fontawesome-brands-github: GitHub repository](https://github.com/faberorg/fatpy) to access the source code.
 
 - **Contribute**:  
 Follow our [:fontawesome-solid-handshake: Contribution Guidelines](development/contributing.md) to help improve FatPy.
 
 - **Collaborate**:  
-Join our [:fontawesome-solid-comment-dots: Discussions](https://github.com/vybornak2/fatpy/discussions) or [:fontawesome-solid-bug: Report issues](https://github.com/vybornak2/fatpy/issues).
+Join our [:fontawesome-solid-comment-dots: Discussions](https://github.com/faberorg/fatpy/discussions) or [:fontawesome-solid-bug: Report issues](https://github.com/faberorg/fatpy/issues).
 
 ---
 You can also contact our team directly! Here is a list of active members:
 
 | Name              | Position        | Email                       | Github                           |
 | ----------------- | --------------- | --------------------------- | -------------------------------- |
-| Jan Výborný       | Maintainer      | <jan.vyborny2@gmail.com>    | <https://github.com/Vybornak2>   |
+| Jan Výborný       | Maintainer      | <jan.vyborny2@gmail.com>    | <https://github.com/faberorg>   |
 | Oleh Venhryniuk   | Contributor     | <olehvenhryniuk@gmail.com>  | <https://github.com/justOleh>    |
 | Tomáš Karas       | Contributor     | <tomas.karas@fs.cvut.cz>    | <https://github.com/KarasTomas>  |
 

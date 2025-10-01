@@ -25,9 +25,9 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/vybornak2/FatPy"
-"Bug Tracker" = "https://github.com/vybornak2/FatPy/issues"
-"Documentation" = "https://vybornak2.github.io/FatPy/"
+"Homepage" = "https://github.com/faberorg/FatPy"
+"Bug Tracker" = "https://github.com/faberorg/FatPy/issues"
+"Documentation" = "https://faberorg.github.io/FatPy/"
 "FABER" = "https://faber-cost.eu/"
 "LinkedIn" = "https://www.linkedin.com/company/faber-cost/about/"
 

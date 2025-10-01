@@ -1,8 +1,8 @@
 site_name: FatPy
 site_description: A Python package for fatigue life evaluation of materials
-site_url: https://vybornak2.github.io/FatPy/
-repo_url: https://github.com/vybornak2/FatPy
-repo_name: vybornak2/FatPy
+site_url: https://faberorg.github.io/FatPy/
+repo_url: https://github.com/faberorg/FatPy
+repo_name: faberorg/FatPy
 
 theme:
   name: material
@@ -119,7 +119,7 @@ extra_css:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/vybornak2/fatpy
+      link: https://github.com/faberorg/fatpy
       name: FatPy on GitHub
     - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/company/faber-cost/
