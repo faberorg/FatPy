@@ -45,17 +45,17 @@ assignees: ''
 
 #### Inputs
 <!-- List and describe all required inputs -->
-| Parameter | Type | Description | Units | Constraints |
-|-----------|------|-------------|-------|-------------|
-| | | | | |
-| | | | | |
+| Parameter | Symbol | Type | Description | Units | Constraints |
+|-----------|--------|------|-------------|-------|-------------|
+|           |        |      |             |       |             |
+|           |        |      |             |       |             |
 
 #### Outputs
 <!-- List and describe expected outputs -->
-| Parameter | Type | Description | Units | Range |
-|-----------|------|-------------|-------|-------|
-| | | | | |
-| | | | | |
+| Parameter | Symbol | Type | Description | Units | Range |
+|-----------|--------|------|-------------|-------|-------|
+|           |        |      |             |       |       |
+|           |        |      |             |       |       |
 
 #### Expected Behavior
 <!-- Describe the expected behavior, step-by-step process -->
