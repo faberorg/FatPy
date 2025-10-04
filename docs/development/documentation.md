@@ -183,7 +183,7 @@ Consistent naming is crucial for code readability and maintainability. Follow th
 
 Learn more about the naming conventions form our discussion page:  
 
-[:simple-github::fontawesome-solid-comment-dots: Naming Conventions for FatPy Functions & Parameters #18](https://github.com/Vybornak2/FatPy/discussions/18)
+[:simple-github::fontawesome-solid-comment-dots: Naming Conventions for FatPy Functions & Parameters #18](https://github.com/faberorg/FatPy/discussions/18)
 
 ---
 
