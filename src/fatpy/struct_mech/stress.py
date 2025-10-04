@@ -295,7 +295,7 @@ def calc_signed_von_mises_by_hydrostatic(
     hydrostatic_stress = calc_hydrostatic_stress(stress_vector_voigt)
 
     sign = np.sign(hydrostatic_stress).astype(np.float64, copy=False)
-    sign[np.isclose(hydrostatic_stress, 0)] = 1.0
+    sign = np.where(np.isclose(hydrostatic_stress, 0), 1.0, sign)
 
     return sign * von_mises
 
@@ -326,9 +326,11 @@ def calc_signed_von_mises_by_max_abs_principal(
     """
     von_mises = calc_von_mises_stress(stress_voigt)
     principals = calc_principal_stresses(stress_voigt)
+
     avg_13 = 0.5 * (principals[..., 0] + principals[..., 2])
     sign = np.sign(avg_13).astype(np.float64, copy=False)
-    sign[np.isclose(avg_13, 0)] = 1.0
+    sign = np.where(np.isclose(avg_13, 0), 1.0, sign)
+
     return sign * von_mises
 
 
@@ -361,7 +363,7 @@ def calc_signed_von_mises_by_first_invariant(
     )
 
     sign = np.sign(invariant_1).astype(np.float64, copy=False)
-    sign[np.isclose(invariant_1, 0)] = 1.0
+    sign = np.where(np.isclose(invariant_1, 0), 1.0, sign)
 
     return sign * von_mises
 
@@ -414,7 +416,7 @@ def calc_signed_tresca_by_hydrostatic(
     hydrostatic_stress = calc_hydrostatic_stress(stress_vector_voigt)
 
     sign = np.sign(hydrostatic_stress)
-    sign[np.isclose(hydrostatic_stress, 0)] = 1.0
+    sign = np.where(np.isclose(hydrostatic_stress, 0), 1.0, sign)
 
     return sign * tresca
 
@@ -448,6 +450,6 @@ def calc_signed_tresca_by_max_abs_principal(
 
     avg_13 = 0.5 * (principals[..., 0] + principals[..., 2])
     sign = np.sign(avg_13).astype(np.float64, copy=False)
-    sign[np.isclose(avg_13, 0)] = 1.0
+    sign = np.where(np.isclose(avg_13, 0), 1.0, sign)
 
     return sign * tresca
