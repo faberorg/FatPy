@@ -20,8 +20,6 @@ Conventions:
 
 """
 
-# TODO: implement atol, rtol to signed stress functions
-
 import numpy as np
 from numpy.typing import NDArray
 
@@ -95,35 +93,6 @@ def calc_principal_stresses(
 
     # eigvals shape: (n, ..., 3). Return sorted descending along last axis.
     return np.sort(eigvals, axis=-1)[..., ::-1]
-
-
-def calc_principal_directions(
-    stress_vector_voigt: NDArray[np.float64],
-) -> NDArray[np.float64]:
-    r"""Calculate principal directions (eigenvectors) for each stress state.
-
-    ??? abstract "Math Equations"
-        Principal directions are found by solving the eigenvalue problem
-        for the stress tensor:
-
-        $$ \sigma \mathbf{v} = \lambda \mathbf{v} $$
-
-    Args:
-        stress_vector_voigt: Array of shape (..., 6). The last dimension contains the
-            Voigt stress components. Leading dimensions are preserved.
-
-    Returns:
-        Array of shape (..., 3, 3). Principal directions (columns are eigenvectors)
-            aligned with descending principal stresses: σ1, σ2, σ3.
-
-    Raises:
-        ValueError: If the last dimension is not of size 6.
-    """
-    voigt.check_shape(stress_vector_voigt)
-
-    # Reuse the ordering logic from the combined function to ensure consistency
-    _, eigvecs = calc_principal_stresses_and_directions(stress_vector_voigt)
-    return eigvecs
 
 
 def calc_stress_invariants(
@@ -272,17 +241,37 @@ def calc_von_mises_stress(
 
 def calc_signed_von_mises_by_hydrostatic(
     stress_vector_voigt: NDArray[np.float64],
+    rtol: float = 1e-5,
+    atol: float = 1e-8,
 ) -> NDArray[np.float64]:
     r"""Calculate signed von Mises stress for each stress state.
 
     Sign is determined by the hydrostatic stress.
 
+    The sign assignment follows these rules:
+    - **Positive (+)**: When hydrostatic stress > 0 (tensile dominant state)
+    - **Negative (-)**: When hydrostatic stress < 0 (compressive dominant state)
+    - **Positive (+)**: When hydrostatic stress ≈ 0 (within tolerance, default fallback)
+
+    Tolerance parameters ensure numerical stability in edge cases where the
+    determining value is very close to zero, preventing erratic sign changes
+    that could occur due to floating-point precision limitations.
+
     ??? abstract "Math Equations"
-        $$\sigma_{SvM} = sgn(\sigma_H) \cdot \sigma_{vM}$$
+        $$
+        \sigma_{SvM} = \begin{cases}
+        +\sigma_{vM} & \text{if } \sigma_H \geq 0 \\
+        -\sigma_{vM} & \text{if } \sigma_H < 0
+        \end{cases}
+        $$
 
     Args:
         stress_vector_voigt: Array of shape (..., 6). The last dimension contains the
             Voigt stress components. Leading dimensions are preserved.
+        rtol: Relative tolerance for comparing hydrostatic stress to zero.
+            Default is 1e-5.
+        atol: Absolute tolerance for comparing hydrostatic stress to zero.
+            Default is 1e-8.
 
     Returns:
         Array of shape (...). Signed von Mises stress for each entry.
@@ -295,27 +284,44 @@ def calc_signed_von_mises_by_hydrostatic(
     hydrostatic_stress = calc_hydrostatic_stress(stress_vector_voigt)
 
     sign = np.sign(hydrostatic_stress).astype(np.float64, copy=False)
-    sign = np.where(np.isclose(hydrostatic_stress, 0), 1.0, sign)
+    sign = np.where(np.isclose(hydrostatic_stress, 0, rtol=rtol, atol=atol), 1.0, sign)
 
     return sign * von_mises
 
 
 def calc_signed_von_mises_by_max_abs_principal(
     stress_voigt: NDArray[np.float64],
+    rtol: float = 1e-5,
+    atol: float = 1e-8,
 ) -> NDArray[np.float64]:
     r"""Calculate signed von Mises stress for each stress state.
 
     Sign is determined by average of the maximum and minimum principal stresses.
-    In case the maximum absolute principal stress is zero, the sign is set to +1.
-    In case the maximum absolute principal stress is equal to negative value of
-    the minimum principal stress, the sign is set to +1 as well.
+
+    The sign assignment follows these rules:
+    - **Positive (+)**: When (σ₁ + σ₃)/2 > 0 (tension dominant)
+    - **Negative (-)**: When (σ₁ + σ₃)/2 < 0 (compression dominant)
+    - **Positive (+)**: When (σ₁ + σ₃)/2 ≈ 0 (within tolerance, default fallback)
+
+    Tolerance parameters ensure numerical stability in edge cases where the
+    determining value is very close to zero, preventing erratic sign changes
+    that could occur due to floating-point precision limitations.
 
     ??? abstract "Math Equations"
-        $$\sigma_{SvM} = sgn(\sigma_{max,abs}) \cdot \sigma_{vM}$$
+        $$
+        \sigma_{SvM} = \begin{cases}
+        +\sigma_{vM} & \text{if } \frac{\sigma_1 + \sigma_3}{2} \geq 0 \\
+        -\sigma_{vM} & \text{if } \frac{\sigma_1 + \sigma_3}{2} < 0
+        \end{cases}
+        $$
 
     Args:
         stress_voigt: Array of shape (..., 6). The last dimension contains the
             Voigt stress components. Leading dimensions are preserved.
+        rtol: Relative tolerance for comparing the average of maximum and minimum
+            principal stresses to zero. Default is 1e-5.
+        atol: Absolute tolerance for comparing the average of maximum and minimum
+            principal stresses to zero. Default is 1e-8.
 
     Returns:
         Array of shape (...). Signed von Mises stress for each entry.
@@ -329,24 +335,44 @@ def calc_signed_von_mises_by_max_abs_principal(
 
     avg_13 = 0.5 * (principals[..., 0] + principals[..., 2])
     sign = np.sign(avg_13).astype(np.float64, copy=False)
-    sign = np.where(np.isclose(avg_13, 0), 1.0, sign)
+    sign = np.where(np.isclose(avg_13, 0, rtol=rtol, atol=atol), 1.0, sign)
 
     return sign * von_mises
 
 
 def calc_signed_von_mises_by_first_invariant(
     stress_vector_voigt: NDArray[np.float64],
+    rtol: float = 1e-5,
+    atol: float = 1e-8,
 ) -> NDArray[np.float64]:
     r"""Calculate signed von Mises stress for each stress state.
 
     Sign is determined by the first invariant of the stress tensor.
 
+    The sign assignment follows these rules:
+    - **Positive (+)**: When tr(σ) > 0 (tensile volumetric stress)
+    - **Negative (-)**: When tr(σ) < 0 (compressive volumetric stress)
+    - **Positive (+)**: When tr(σ) ≈ 0 (within tolerance, default fallback)
+
+    Tolerance parameters ensure numerical stability in edge cases where the
+    determining value is very close to zero, preventing erratic sign changes
+    that could occur due to floating-point precision limitations.
+
     ??? abstract "Math Equations"
-        $$\sigma_{SvM} = sgn(tr(\sigma)) \cdot \sigma_{vM}$$
+        $$
+        \sigma_{SvM} = \begin{cases}
+        +\sigma_{vM} & \text{if } tr(\sigma) \geq 0 \\
+        -\sigma_{vM} & \text{if } tr(\sigma) < 0
+        \end{cases}
+        $$
 
     Args:
         stress_vector_voigt: Array of shape (..., 6). The last dimension contains the
             Voigt stress components. Leading dimensions are preserved.
+        rtol: Relative tolerance for comparing the first invariant to zero.
+            Default is 1e-5.
+        atol: Absolute tolerance for comparing the first invariant to zero.
+            Default is 1e-8.
 
     Returns:
         Array of shape (...). Signed von Mises stress for each entry.
@@ -363,7 +389,7 @@ def calc_signed_von_mises_by_first_invariant(
     )
 
     sign = np.sign(invariant_1).astype(np.float64, copy=False)
-    sign = np.where(np.isclose(invariant_1, 0), 1.0, sign)
+    sign = np.where(np.isclose(invariant_1, 0, rtol=rtol, atol=atol), 1.0, sign)
 
     return sign * von_mises
 
@@ -393,17 +419,37 @@ def calc_tresca_stress(stress_vector_voigt: NDArray[np.float64]) -> NDArray[np.f
 
 def calc_signed_tresca_by_hydrostatic(
     stress_vector_voigt: NDArray[np.float64],
+    rtol: float = 1e-5,
+    atol: float = 1e-8,
 ) -> NDArray[np.float64]:
     r"""Calculate signed Tresca stress for each stress state.
 
     Sign is determined by the hydrostatic stress.
 
+    The sign assignment follows these rules:
+    - **Positive (+)**: When hydrostatic stress > 0 (tensile dominant state)
+    - **Negative (-)**: When hydrostatic stress < 0 (compressive dominant state)
+    - **Positive (+)**: When hydrostatic stress ≈ 0 (within tolerance, default fallback)
+
+    Tolerance parameters ensure numerical stability in edge cases where the
+    determining value is very close to zero, preventing erratic sign changes
+    that could occur due to floating-point precision limitations.
+
     ??? abstract "Math Equations"
-        $$\sigma_{S\tau_{max}} = sgn(\sigma_H) \cdot \sigma_{\tau_{max}}$$
+        $$
+        \sigma_{S\tau_{max}} = \begin{cases}
+        +\sigma_{\tau_{max}} & \text{if } \sigma_H \geq 0 \\
+        -\sigma_{\tau_{max}} & \text{if } \sigma_H < 0
+        \end{cases}
+        $$
 
     Args:
         stress_vector_voigt: Array of shape (..., 6). The last dimension contains the
             Voigt stress components. Leading dimensions are preserved.
+        rtol: Relative tolerance for comparing hydrostatic stress to zero.
+            Default is 1e-5.
+        atol: Absolute tolerance for comparing hydrostatic stress to zero.
+            Default is 1e-8.
 
     Returns:
         Array of shape (...). Signed Tresca stress for each entry.
@@ -416,27 +462,44 @@ def calc_signed_tresca_by_hydrostatic(
     hydrostatic_stress = calc_hydrostatic_stress(stress_vector_voigt)
 
     sign = np.sign(hydrostatic_stress)
-    sign = np.where(np.isclose(hydrostatic_stress, 0), 1.0, sign)
+    sign = np.where(np.isclose(hydrostatic_stress, 0, rtol=rtol, atol=atol), 1.0, sign)
 
     return sign * tresca
 
 
 def calc_signed_tresca_by_max_abs_principal(
     stress_vector_voigt: NDArray[np.float64],
+    rtol: float = 1e-5,
+    atol: float = 1e-8,
 ) -> NDArray[np.float64]:
     r"""Calculate signed Tresca stress for each stress state.
 
     Sign is determined by the maximum absolute principal stress value.
 
+    The sign assignment follows these rules:
+    - **Positive (+)**: When (σ₁ + σ₃)/2 > 0 (tension dominant)
+    - **Negative (-)**: When (σ₁ + σ₃)/2 < 0 (compression dominant)
+    - **Positive (+)**: When (σ₁ + σ₃)/2 ≈ 0 (within tolerance, default fallback)
+
+    Tolerance parameters ensure numerical stability in edge cases where the
+    determining value is very close to zero, preventing erratic sign changes
+    that could occur due to floating-point precision limitations.
+
     ??? abstract "Math Equations"
         $$
-        \sigma_{S\tau_{max}} = sgn(\frac{\sigma_{1}+\sigma_{3}}{2})
-        \cdot \sigma_{\tau_{max}}
+        \sigma_{S\tau_{max}} = \begin{cases}
+        +\sigma_{\tau_{max}} & \text{if } \frac{\sigma_1 + \sigma_3}{2} \geq 0 \\
+        -\sigma_{\tau_{max}} & \text{if } \frac{\sigma_1 + \sigma_3}{2} < 0
+        \end{cases}
         $$
 
     Args:
         stress_vector_voigt: Array of shape (..., 6). The last dimension contains the
             Voigt stress components. Leading dimensions are preserved.
+        rtol: Relative tolerance for comparing the average of maximum and minimum
+            principal stresses to zero. Default is 1e-5.
+        atol: Absolute tolerance for comparing the average of maximum and minimum
+            principal stresses to zero. Default is 1e-8.
 
     Returns:
         Array of shape (...). Signed Tresca stress for each entry.
@@ -450,6 +513,6 @@ def calc_signed_tresca_by_max_abs_principal(
 
     avg_13 = 0.5 * (principals[..., 0] + principals[..., 2])
     sign = np.sign(avg_13).astype(np.float64, copy=False)
-    sign = np.where(np.isclose(avg_13, 0), 1.0, sign)
+    sign = np.where(np.isclose(avg_13, 0, rtol=rtol, atol=atol), 1.0, sign)
 
     return sign * tresca
