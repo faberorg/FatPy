@@ -22,6 +22,7 @@
 --custom-info-color: #296595; 
 --custom-tip-color: #034670; 
 --custom-example-color: #6a5acd; 
+--custom-api-color: #98b8d8;  /* Used for API doc section headers */
 
 /* Define custom icons for admonitions - set to existing standard icons */
 /* --md-admonition-icon--custom-note: var(--md-admonition-icon--note); */
@@ -240,4 +241,50 @@ h2.doc-heading {
 .md-typeset .example > .admonition-title::after,
 .md-typeset .example > summary::after {
   background-color: var(--custom-example-color); 
+}
+
+/* API Documentation styles */
+
+/* Indentation. */
+div.doc-contents:not(.first) {
+  padding-left: 25px;
+  border-left: .05rem solid var(--md-typeset-table-color);
+}
+
+/* same size for headings below h3 */
+.md-typeset .doc-contents .doc-class > h4,
+.md-typeset .doc-contents .doc-class > h5,
+.md-typeset .doc-contents .doc-class > h6,
+.md-typeset .doc-contents .doc-method > h4,
+.md-typeset .doc-contents .doc-method > h5,
+.md-typeset .doc-contents .doc-method > h6,
+.md-typeset .doc-contents .doc-function > h4,
+.md-typeset .doc-contents .doc-function > h5,
+.md-typeset .doc-contents .doc-function > h6 {
+  font-size: 1rem;                 
+  font-weight: 600;
+  color: var(--md-primary-fg-color--dark);
+  margin-top: 0.6em;
+  margin-bottom: 0.25em;
+  line-height: 1.2;
+}
+
+/* Rectangular block around module/class/function headings */
+.md-typeset .doc-contents .doc-module > h2,
+.md-typeset .doc-contents .doc-module > h3,
+.md-typeset .doc-contents .doc-class > h3,
+.md-typeset .doc-contents .doc-class > h4,
+.md-typeset .doc-contents .doc-function > h3
+.md-typeset .doc-contents .doc-function > h4 {
+  display: block;
+  padding: 0.35rem 0.6rem;
+  margin: 0.6rem 0 0.3rem;
+  background: color-mix(in srgb, var(--custom-api-color) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--custom-api-color) 28%, rgba(0,0,0,0.06));
+  color: color-contrast(var(--custom-api-color) vs white, black);
+  border-radius: 6px;
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--custom-api-color) 6%, transparent);
+  font-size: 1rem !important;
+  font-weight: 600;
+  line-height: 1.2;
 }
