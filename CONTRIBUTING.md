@@ -2,7 +2,7 @@
 
 Thank you for considering contributing to FatPy, a Python package for fatigue life evaluation of materials, part of the FABER project! Your contributions help improve open source tools for fatigue analysis. Start with these steps to make an impact.
 
-**[:mag: Learn About FABER](https://vybornak2.github.io/FatPy/faber_cost/)**
+**[:mag: Learn About FABER](https://faberorg.github.io/FatPy/faber_cost/)**
 
 ## :rocket: Quick Start
 
@@ -54,7 +54,7 @@ pip install -e .
 pre-commit install
 ```
 
-For detailed configuration of your development environment, see the **[Installation Guide :arrow_right:](https://vybornak2.github.io/FatPy/development/install/#installation-guide)**
+For detailed configuration of your development environment, see the **[Installation Guide :arrow_right:](https://faberorg.github.io/FatPy/development/install/#installation-guide)**
 
 ## :test_tube: Test-Driven Development
 
@@ -73,7 +73,7 @@ For detailed configuration of your development environment, see the **[Installat
    6. **Repeat**  
        Use the same principles for next feature
 
-For more details, see the **[Testing Guide :arrow_right:](https://vybornak2.github.io/FatPy/development/testing/)**
+For more details, see the **[Testing Guide :arrow_right:](https://faberorg.github.io/FatPy/development/testing/)**
 
 ### Run tests regularly
 
@@ -96,7 +96,7 @@ FatPy aims for high code quality utilizing these tools:
 - **MyPy**  - Static type checking for reliability.
 - **Pre-commit** - Automated checks before commits.
 
-Follow our coding standards for contributions, see **[Code Style Guide :arrow_right:](https://vybornak2.github.io/FatPy/development/code_style/)**  
+Follow our coding standards for contributions, see **[Code Style Guide :arrow_right:](https://faberorg.github.io/FatPy/development/code_style/)**  
 
 ### Running Code Quality Checks
 
@@ -128,7 +128,7 @@ Add docstrings following Google style to all new code.
 - **Examples**  
 Include examples and mathematical formulas where helpful to aid users.
 
-Learn best practices and guidelines for documentation, see **[Documentation Guide :arrow_right:](https://vybornak2.github.io/FatPy/development/documentation/)**
+Learn best practices and guidelines for documentation, see **[Documentation Guide :arrow_right:](https://faberorg.github.io/FatPy/development/documentation/)**
 
 ### Building Documentation
 
@@ -159,17 +159,17 @@ Submit a high-quality pull request with these steps:
 
 All contributors must follow our standards.
 
-Understand our expectations for collaboration, see **[Code of Conduct :arrow_right:](https://github.com/Vybornak2/FatPy/blob/main/CODE_OF_CONDUCT.md)**
+Understand our expectations for collaboration, see **[Code of Conduct :arrow_right:](https://github.com/faberorg/FatPy/blob/main/CODE_OF_CONDUCT.md)**
 
 ## :bulb: Ideas and Questions
 
 Join discussion, create an issue or reach out to maintainers:
 
-- :speech_balloon:  **[GitHub Discussions :arrow_right:](https://github.com/vybornak2/FatPy/discussions)**  
+- :speech_balloon:  **[GitHub Discussions :arrow_right:](https://github.com/faberorg/FatPy/discussions)**  
     Join for community support.
-- :beetle: **[Report an Issue :arrow_right:](https://github.com/vybornak2/fatpy/issues)**  
+- :beetle: **[Report an Issue :arrow_right:](https://github.com/faberorg/fatpy/issues)**  
     Create an issue on our GitHub repository for bugs or questions.
-- :envelope: **[Contact our Team :arrow_right:](https://vybornak2.github.io/FatPy/contact/)**  
+- :envelope: **[Contact our Team :arrow_right:](https://faberorg.github.io/FatPy/contact/)**  
     Visit our contact page.
 
 Thank you for contributing to FatPy!

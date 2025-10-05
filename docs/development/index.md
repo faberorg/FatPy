@@ -8,7 +8,7 @@ This section provides comprehensive resources to help you contribute to FatPy, a
 
 [:material-search-web: Learn About FABER](../faber_cost.md)
 
-!!! note
+!!! abstract "About"
     FatPy follows Test-Driven Development (TDD) principles, emphasizing code quality, thorough documentation, and rigorous testing. Whether you're fixing bugs or adding features, this guide will help you become a successful contributor.
 
 ## :fontawesome-solid-rocket: Getting Started
@@ -35,9 +35,9 @@ Deepen your understanding of FatPy development with these resources:
 - :material-cogs: **[CI/CD Process](ci_cd.md)**  
   Explore our continuous integration and deployment workflow.
 
-??? tip "Additional Resources"
-    - Join our [GitHub Discussions](https://github.com/vybornak2/FatPy/discussions) for community support.
-    - Find contribution ideas in our [GitHub Issues](https://github.com/vybornak2/FatPy/issues).
+??? tip "Additional resources"
+    - Join our [GitHub Discussions](https://github.com/faberorg/FatPy/discussions) for community support.
+    - Find contribution ideas in our [GitHub Issues](https://github.com/faberorg/FatPy/issues).
 
 ## :fontawesome-solid-sitemap: Project Structure
 
@@ -79,9 +79,9 @@ Follow our Test-Driven Development (TDD) workflow:
 
 Need assistance with FatPy development? Reach out through these channels:
 
-- :simple-github:  **[GitHub Discussions](https://github.com/vybornak2/FatPy/discussions)**  
+- :simple-github:  **[GitHub Discussions](https://github.com/faberorg/FatPy/discussions)**  
     Join for community support.
-- :fontawesome-solid-bug: **[Report an Issue](https://github.com/vybornak2/fatpy/issues)**  
+- :fontawesome-solid-bug: **[Report an Issue](https://github.com/faberorg/fatpy/issues)**  
     Create an issue on our GitHub repository for bugs or questions.
 - :fontawesome-solid-envelope: **[Contact our Team](../contact.md)**  
     Visit our contact page.
