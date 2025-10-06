@@ -1,4 +1,5 @@
 """Plane-based methods module.
 
-This module contains the classes and functions for plane-based methods.
+Methods for processing stress tensor path on a material plane. Provides basic
+infrastructure for prediction methods based on critical-plane and integral approaches.
 """

@@ -1,4 +1,5 @@
 """Decompositions module.
 
-This module contains the classes and functions for decomposition methods.
+Methods for breaking down complex load signals to cycles.
+Contains both the uniaxial and the multiaxial procedures.
 """
