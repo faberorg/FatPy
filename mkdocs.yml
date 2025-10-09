@@ -115,8 +115,10 @@ extra_javascript:
 extra_css:
   - stylesheets/extra.css
 
-
 extra:
+  analytics:
+    provider: google
+    property: G-HRZWN2CVF7
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/faberorg/fatpy
@@ -136,10 +138,10 @@ extra:
 
 nav:
   - Home:
-    - Overview: index.md
-    - FABER COST: faber_cost.md
-    - License: license.md
-    - Contact: contact.md
+      - Overview: index.md
+      - FABER COST: faber_cost.md
+      - License: license.md
+      - Contact: contact.md
   - API Reference: api/index.md
   - Theory Reference:
       - Overview: theory/index.md
@@ -155,4 +157,3 @@ nav:
       - Code Style: development/code_style.md
       - Documentation: development/documentation.md
       - CI/CD: development/ci_cd.md
-
