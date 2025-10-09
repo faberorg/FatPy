@@ -6,6 +6,7 @@ repo_name: faberorg/FatPy
 
 theme:
   name: material
+  custom_dir: overrides
   palette:
     - media: "(prefers-color-scheme)"
       toggle:
