@@ -15,12 +15,29 @@ material science.
 
 ### Key Features
 
+#### Core Modules
+
 - **Stress-Life**  
-    Module containing methods for analyzing fatigue life based on stress data
+    Stress-based fatigue assessment methods for estimating fatigue damage with corrections for various effects (stress concentration, size, surface quality, etc.)
 - **Strain-Life**  
-    Tools for evaluating fatigue life using strain data
+    Fatigue analysis using strain amplitude and cycles to failure relationships (ε-N approaches) such as Coffin-Manson and Basquin laws, suited for low-cycle and transitional fatigue regimes
 - **Energy-Life**  
-    Methods for assessing fatigue life based on energy data
+    Fatigue analysis methods based on the relationship between strain energy density and number of cycles to failure
+- **Damage Cumulation**  
+    Various fatigue damage accumulation rules for variable amplitude loading, including linear models (Palmgren-Miner) and advanced non-linear approaches accounting for load sequence effects
+- **Decompositions**  
+    Methods for breaking down complex load signals into cycles, containing both uniaxial and multiaxial procedures
+- **Plane-Based Methods**  
+    Methods for processing stress tensor paths on material planes, providing infrastructure for critical-plane and integral prediction approaches
+
+#### Supporting Modules
+
+- **Material Laws**  
+    Functions dealing with various material constitutive laws and behavior models
+- **Structural Mechanics**  
+    Stress analysis and transformation utilities
+- **Utils**  
+    General utilities for mesh handling, signal processing, and data manipulation
 
 ## :fontawesome-solid-download: Installation
 

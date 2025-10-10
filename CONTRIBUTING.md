@@ -22,10 +22,10 @@ git clone https://github.com/your-username/FatPy.git  # Clone your fork
 git checkout -b my-feature-branch  # Create a new branch for your feature
 ```
 
-4. **Write Tests for Your Feature**  
-Define expected behavior first.
-5. **Implement the Feature**  
+4. **Implement the Feature**  
 Write code to pass your tests.
+5. **Write Tests for Your Feature**  
+Define expected behavior first.
 6. **Submit a Pull Request**  
 Share your changes for review.
 
@@ -56,26 +56,19 @@ pre-commit install
 
 For detailed configuration of your development environment, see the **[Installation Guide :arrow_right:](https://faberorg.github.io/FatPy/development/install/#installation-guide)**
 
-## :test_tube: Test-Driven Development
+## :test_tube: Testing
 
-### FatPy follows Test-Driven Development (TDD) principles
+FatPy emphasizes comprehensive testing to ensure code reliability and quality. All contributions should include appropriate tests and maintain high test coverage.
 
-   1. **Write the test first**  
-       Define what the code should do before implementing it
-   2. **See the test fail**  
-       Run the test to confirm it fails without the implementation
-   3. **Write the minimal code**  
-       Implement just enough code to make the test pass
-   4. **Run the test**  
-       Verify the implementation meets the requirements
-   5. **Refactor**  
-       Clean up the code while ensuring tests still pass
-   6. **Repeat**  
-       Use the same principles for next feature
+### Testing Guidelines
 
-For more details, see the **[Testing Guide :arrow_right:](https://faberorg.github.io/FatPy/development/testing/)**
+- **Write comprehensive tests** - Cover all functionality with unit and integration tests
+- **Test edge cases** - Include boundary conditions and error scenarios  
+- **Maintain test coverage** - Aim for high coverage to ensure reliability
+- **Keep tests updated** - Update tests when modifying existing functionality
+- **Use clear test names** - Write descriptive test names and docstrings
 
-### Run tests regularly
+### Running Tests
 
 ```bash
 # Run all tests
@@ -84,9 +77,12 @@ pytest
 # Run specific test file
 pytest tests/core/test_specific_module.py
 
-# Test with coverage
+# Test with coverage report
 pytest --cov=src/fatpy --cov-report=html
+
 ```
+
+For more details, see the **[Testing Guide :arrow_right:](https://faberorg.github.io/FatPy/development/testing/)**
 
 ## :computer: Coding Standards
 
