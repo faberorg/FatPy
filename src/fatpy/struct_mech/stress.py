@@ -43,11 +43,11 @@ def calc_principal_stresses_and_directions(
 
     Returns:
         Tuple (eigvals, eigvecs):
-        - eigvals: Array of shape (..., 3). Principal stresses
-        (descending: σ_1 ≥ σ_2 ≥ σ_3) with leading dimensions preserved.
-        - eigvecs: Array of shape (..., 3, 3). Principal directions (columns are
-        eigenvectors) aligned with eigvals in the same order. The last two
-        dimensions are the 3x3 eigenvector matrix for each input.
+        eigvals: Array of shape (..., 3). Principal stresses
+            (descending: σ_1 ≥ σ_2 ≥ σ_3) with leading dimensions preserved.
+        eigvecs: Array of shape (..., 3, 3). Principal directions (columns are
+            eigenvectors) aligned with eigvals in the same order. The last two
+            dimensions are the 3x3 eigenvector matrix for each input.
 
     Raises:
         ValueError: If the last dimension is not of size 6.
@@ -170,6 +170,13 @@ def calc_stress_deviator(
     r"""Calculate stress deviator for each stress state.
 
     ??? abstract "Math Equations"
+        The stress tensor decomposes as:
+
+        $$ \sigma = \mathbf{s} + \sigma_H \mathbf{I} $$
+
+        where the deviatoric part $\mathbf{s}$ is traceless and obtained by subtracting the
+        hydrostatic part from the normal components.
+
         $$ \mathbf{s} = \sigma - \frac{1}{3} tr(\sigma) $$
 
     Args:
@@ -248,10 +255,13 @@ def calc_signed_von_mises_by_hydrostatic(
 
     Sign is determined by the hydrostatic stress.
 
-    The sign assignment follows these rules:
-    - **Positive (+)**: When hydrostatic stress > 0 (tensile dominant state)
-    - **Negative (-)**: When hydrostatic stress < 0 (compressive dominant state)
-    - **Positive (+)**: When hydrostatic stress ≈ 0 (within tolerance, default fallback)
+    ??? note "Sign Convention"
+        The sign assignment follows these rules:
+
+        - **Positive (+)**: When hydrostatic stress > 0 (tensile dominant state)
+        - **Negative (-)**: When hydrostatic stress < 0 (compressive dominant state)
+        - **Positive (+)**: When hydrostatic stress ≈ 0 (within tolerance, default
+            fallback)
 
     Tolerance parameters ensure numerical stability in edge cases where the
     determining value is very close to zero, preventing erratic sign changes
@@ -298,10 +308,12 @@ def calc_signed_von_mises_by_max_abs_principal(
 
     Sign is determined by average of the maximum and minimum principal stresses.
 
-    The sign assignment follows these rules:
-    - **Positive (+)**: When (σ₁ + σ₃)/2 > 0 (tension dominant)
-    - **Negative (-)**: When (σ₁ + σ₃)/2 < 0 (compression dominant)
-    - **Positive (+)**: When (σ₁ + σ₃)/2 ≈ 0 (within tolerance, default fallback)
+    ??? note "Sign Convention"
+        The sign assignment follows these rules:
+
+        - **Positive (+)**: When (σ₁ + σ₃)/2 > 0 (tension dominant)
+        - **Negative (-)**: When (σ₁ + σ₃)/2 < 0 (compression dominant)
+        - **Positive (+)**: When (σ₁ + σ₃)/2 ≈ 0 (within tolerance, default fallback)
 
     Tolerance parameters ensure numerical stability in edge cases where the
     determining value is very close to zero, preventing erratic sign changes
@@ -349,10 +361,12 @@ def calc_signed_von_mises_by_first_invariant(
 
     Sign is determined by the first invariant of the stress tensor.
 
-    The sign assignment follows these rules:
-    - **Positive (+)**: When tr(σ) > 0 (tensile volumetric stress)
-    - **Negative (-)**: When tr(σ) < 0 (compressive volumetric stress)
-    - **Positive (+)**: When tr(σ) ≈ 0 (within tolerance, default fallback)
+    ??? note "Sign Convention"
+        The sign assignment follows these rules:
+
+        - **Positive (+)**: When tr(σ) > 0 (tensile volumetric stress)
+        - **Negative (-)**: When tr(σ) < 0 (compressive volumetric stress)
+        - **Positive (+)**: When tr(σ) ≈ 0 (within tolerance, default fallback)
 
     Tolerance parameters ensure numerical stability in edge cases where the
     determining value is very close to zero, preventing erratic sign changes
@@ -426,10 +440,13 @@ def calc_signed_tresca_by_hydrostatic(
 
     Sign is determined by the hydrostatic stress.
 
-    The sign assignment follows these rules:
-    - **Positive (+)**: When hydrostatic stress > 0 (tensile dominant state)
-    - **Negative (-)**: When hydrostatic stress < 0 (compressive dominant state)
-    - **Positive (+)**: When hydrostatic stress ≈ 0 (within tolerance, default fallback)
+    ??? note "Sign Convention"
+        The sign assignment follows these rules:
+
+        - **Positive (+)**: When hydrostatic stress > 0 (tensile dominant state)
+        - **Negative (-)**: When hydrostatic stress < 0 (compressive dominant state)
+        - **Positive (+)**: When hydrostatic stress ≈ 0 (within tolerance, default
+            fallback)
 
     Tolerance parameters ensure numerical stability in edge cases where the
     determining value is very close to zero, preventing erratic sign changes
@@ -476,10 +493,12 @@ def calc_signed_tresca_by_max_abs_principal(
 
     Sign is determined by the maximum absolute principal stress value.
 
-    The sign assignment follows these rules:
-    - **Positive (+)**: When (σ₁ + σ₃)/2 > 0 (tension dominant)
-    - **Negative (-)**: When (σ₁ + σ₃)/2 < 0 (compression dominant)
-    - **Positive (+)**: When (σ₁ + σ₃)/2 ≈ 0 (within tolerance, default fallback)
+    ??? note "Sign Convention"
+        The sign assignment follows these rules:
+
+        - **Positive (+)**: When (σ₁ + σ₃)/2 > 0 (tension dominant)
+        - **Negative (-)**: When (σ₁ + σ₃)/2 < 0 (compression dominant)
+        - **Positive (+)**: When (σ₁ + σ₃)/2 ≈ 0 (within tolerance, default fallback)
 
     Tolerance parameters ensure numerical stability in edge cases where the
     determining value is very close to zero, preventing erratic sign changes

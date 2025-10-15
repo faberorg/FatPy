@@ -40,11 +40,11 @@ def calc_principal_strains_and_directions(
 
     Returns:
         Tuple (eigvals, eigvecs):
-        - eigvals: Array of shape (..., 3). Principal strains
-          (descending: ε_1 ≥ ε_2 ≥ ε_3) with leading dimensions preserved.
-        - eigvecs: Array of shape (..., 3, 3). Principal directions (columns are
-          eigenvectors) aligned with eigvals in the same order. The last two
-          dimensions are the 3x3 eigenvector matrix for each input.
+        eigvals: Array of shape (..., 3). Principal strains
+            (descending: ε_1 ≥ ε_2 ≥ ε_3) with leading dimensions preserved.
+        eigvecs: Array of shape (..., 3, 3). Principal directions (columns are
+            eigenvectors) aligned with eigvals in the same order. The last two
+            dimensions are the 3x3 eigenvector matrix for each input.
 
     Raises:
         ValueError: If the last dimension is not of size 6.
@@ -107,7 +107,7 @@ def calc_strain_invariants(strain_voigt: NDArray[np.float64]) -> NDArray[np.floa
 
     Returns:
         Array of shape (..., 3). The last dimension contains (I1, I2, I3) for
-        each entry.
+            each entry.
 
     Raises:
         ValueError: If the last dimension is not of size 6.
@@ -125,7 +125,7 @@ def calc_strain_invariants(strain_voigt: NDArray[np.float64]) -> NDArray[np.floa
 
 
 def calc_volumetric_strain(strain_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
-    r"""Calculate the volumetric (mean normal / hydrostatic) strain for each strain state.
+    r"""Calculate the volumetric (mean normal)strain for each strain state.
 
     ??? abstract "Math Equations"
         $$ \varepsilon_{vol} = \frac{1}{3} \, tr(\varepsilon) =
@@ -138,7 +138,7 @@ def calc_volumetric_strain(strain_voigt: NDArray[np.float64]) -> NDArray[np.floa
 
     Returns:
         Array of shape (...). Volumetric (mean normal) strain for each input state.
-        Tensor rank is reduced by one.
+            Tensor rank is reduced by one.
 
     Raises:
         ValueError: If the last dimension is not of size 6.
@@ -197,7 +197,7 @@ def calc_von_mises_strain_from_principals(
 
     Returns:
         Array of shape (...). Von Mises equivalent strain for each entry.
-        Tensor rank is reduced by one.
+            Tensor rank is reduced by one.
 
     Raises:
         ValueError: If the last dimension is not of size 6.
@@ -233,7 +233,7 @@ def calc_von_mises_strain_voigt(
 
     Returns:
         Array of shape (...). Von Mises equivalent strain for each entry.
-        Tensor rank is reduced by one.
+            Tensor rank is reduced by one.
 
     Raises:
         ValueError: If the last dimension is not of size 6.
@@ -265,21 +265,26 @@ def calc_signed_von_mises_by_max_abs_principal(
     ??? note "Sign Convention"
         The sign assignment follows these rules:
 
-        - **Positive (+)**: When the max absolute principal strain > 0 (tension dominant)
-        - **Negative (-)**: When the max absolute principal strain < 0 (compression dominant)
-        - **Positive (+)**: When max absolute principal strain ≈ 0 (within tolerance, default fallback)
+        - **Positive (+)**: When the max absolute principal strain > 0 (tension
+            dominant)
+        - **Negative (-)**: When the max absolute principal strain < 0 (compression
+            dominant)
+        - **Positive (+)**: When max absolute principal strain ≈ 0 (within tolerance,
+            default fallback)
 
     Args:
         strain_voigt: Array of shape (..., 6). The last dimension contains the
             Voigt strain components. Leading dimensions are preserved.
-        rtol: Relative tolerance for comparing the maximum absolute principal strain to zero.
+        rtol: Relative tolerance for comparing the maximum absolute principal strain
+                to zero.
             Default is 1e-5.
-        atol: Absolute tolerance for comparing the maximum absolute principal strain to zero.
+        atol: Absolute tolerance for comparing the maximum absolute principal strain
+                to zero.
             Default is 1e-8.
 
     Returns:
         Array of shape (...). Signed von Mises equivalent strain for each entry.
-        Tensor rank is reduced by one.
+            Tensor rank is reduced by one.
 
     Raises:
         ValueError: If the last dimension is not of size 6.
