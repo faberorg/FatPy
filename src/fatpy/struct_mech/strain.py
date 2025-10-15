@@ -184,7 +184,7 @@ def calc_deviatoric_strain(strain_voigt: NDArray[np.float64]) -> NDArray[np.floa
 def calc_von_mises_strain_from_principals(
     strain_voigt: NDArray[np.float64],
 ) -> NDArray[np.float64]:
-    r"""Calculate von Mises equivalent strain for each strain state using principal strains.
+    r"""Calculate von Mises equivalent strain for each strain state using principals.
 
     ??? abstract "Math Equations"
         $$ \varepsilon_{vM} = \frac{\sqrt{2}}{3} \sqrt{

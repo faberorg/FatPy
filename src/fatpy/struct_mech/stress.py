@@ -174,8 +174,8 @@ def calc_stress_deviator(
 
         $$ \sigma = \mathbf{s} + \sigma_H \mathbf{I} $$
 
-        where the deviatoric part $\mathbf{s}$ is traceless and obtained by subtracting the
-        hydrostatic part from the normal components.
+        where the deviatoric part $\mathbf{s}$ is traceless and obtained by subtracting
+        the hydrostatic part from the normal components.
 
         $$ \mathbf{s} = \sigma - \frac{1}{3} tr(\sigma) $$
 
