@@ -250,7 +250,7 @@ def calc_von_mises_strain_voigt(
     term_norm = (e11 - e22) ** 2 + (e22 - e33) ** 2 + (e33 - e11) ** 2
     term_shear = 6.0 * (e12**2 + e23**2 + e13**2)
 
-    return np.sqrt((2 / 9.0) * term_norm + term_shear)
+    return np.sqrt((2.0 / 9.0) * (term_norm + term_shear))
 
 
 def calc_signed_von_mises_by_max_abs_principal(
