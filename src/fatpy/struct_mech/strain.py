@@ -213,7 +213,7 @@ def calc_von_mises_strain_from_principals(
 
 
 # ? Definition https://www.sciencedirect.com/topics/engineering/equivalent-strain
-def calc_von_mises_strain_voigt(
+def calc_von_mises_strain(
     strain_voigt: NDArray[np.float64],
 ) -> NDArray[np.float64]:
     r"""Von Mises equivalent strain computed directly from Voigt components.
@@ -260,7 +260,7 @@ def calc_signed_von_mises_by_max_abs_principal(
 ) -> NDArray[np.float64]:
     r"""Calculate signed von Mises equivalent strain for each strain state.
 
-    Sign is determined by the principal strain with the largest absolute value.
+    Sign is determined by average of the maximum and minimum principal strains.
 
     ??? note "Sign Convention"
         The sign assignment follows these rules:
@@ -271,6 +271,18 @@ def calc_signed_von_mises_by_max_abs_principal(
             dominant)
         - **Positive (+)**: When max absolute principal strain ≈ 0 (within tolerance,
             default fallback)
+
+    Tolerance parameters ensure numerical stability in edge cases where the
+    determining value is very close to zero, preventing erratic sign changes
+    that could occur due to floating-point precision limitations.
+
+    ??? abstract "Math Equations"
+        $$
+        \varepsilon_{SvM} = \begin{cases}
+        +\varepsilon_{vM} & \text{if } \frac{\varepsilon_1 + \varepsilon_3}{2} \geq 0 \\
+        -\varepsilon_{vM} & \text{if } \frac{\varepsilon_1 + \varepsilon_3}{2} < 0
+        \end{cases}
+        $$
 
     Args:
         strain_voigt: Array of shape (..., 6). The last dimension contains the
@@ -291,12 +303,11 @@ def calc_signed_von_mises_by_max_abs_principal(
     """
     voigt.check_shape(strain_voigt)
 
-    von_mises = calc_von_mises_strain_voigt(strain_voigt)
+    von_mises = calc_von_mises_strain(strain_voigt)
     principals = calc_principal_strains(strain_voigt)
 
-    indices = np.argmax(np.abs(principals), axis=-1)
-    max_abs_values = np.take_along_axis(principals, indices[..., None], axis=-1)[..., 0]
-    sign = np.sign(max_abs_values).astype(np.float64, copy=False)
-    sign = np.where(np.isclose(max_abs_values, 0, rtol=rtol, atol=atol), 1.0, sign)
+    avg_13 = 0.5 * (principals[..., 0] + principals[..., 2])
+    sign = np.sign(avg_13).astype(np.float64, copy=False)
+    sign = np.where(np.isclose(avg_13, 0, rtol=rtol, atol=atol), 1.0, sign)
 
     return sign * von_mises

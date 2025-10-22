@@ -133,6 +133,7 @@ def test_calc_principal_strains(
     strain_vector_sample: NDArray[np.float64],
     principal_strains_sample: NDArray[np.float64],
 ) -> None:
+    """Test shape and values of principal strains calculation."""
     principals = strain.calc_principal_strains(strain_vector_sample)
 
     assert principals.shape[:-1] == strain_vector_sample.shape[:-1]
@@ -147,6 +148,7 @@ def test_calc_principal_strains(
 def test_calc_strain_invariants(
     strain_vector_sample: NDArray[np.float64],
 ) -> None:
+    """Test calculation of strain invariants."""
     invariants = strain.calc_strain_invariants(strain_vector_sample)
 
     assert invariants.shape == strain_vector_sample.shape[:-1] + (3,)
@@ -167,6 +169,7 @@ def test_calc_volumetric_strain(
     strain_vector_sample: NDArray[np.float64],
     volumetric_strain_sample: NDArray[np.float64],
 ) -> None:
+    """Test calculation of volumetric strain."""
     volumetric = strain.calc_volumetric_strain(strain_vector_sample)
 
     assert volumetric.shape == strain_vector_sample.shape[:-1]
@@ -177,6 +180,7 @@ def test_calc_volumetric_strain(
 def test_calc_deviatoric_strain(
     strain_vector_sample: NDArray[np.float64],
 ) -> None:
+    """Test calculation of deviatoric strain."""
     deviator = strain.calc_deviatoric_strain(strain_vector_sample)
 
     assert deviator.shape == strain_vector_sample.shape
@@ -211,7 +215,7 @@ def test_calc_von_mises_from_principals(
         assert np.isclose(von_mises[idx], vm, atol=1e-12)
 
 
-def test_calc_von_mises_voigt(
+def test_calc_von_mises(
     strain_vector_sample: NDArray[np.float64],
 ) -> None:
     """Test calculation of von Mises strain from Voigt components.
@@ -221,7 +225,7 @@ def test_calc_von_mises_voigt(
     Args:
         strain_vector_sample (NDArray[np.float64]): Sample strain vectors.
     """
-    von_mises = strain.calc_von_mises_strain_voigt(strain_vector_sample)
+    von_mises = strain.calc_von_mises_strain(strain_vector_sample)
 
     assert von_mises.shape == strain_vector_sample.shape[:-1]
 
@@ -237,6 +241,9 @@ def test_calc_von_mises_voigt(
 def test_calc_signed_von_mises_by_max_abs_principal(
     strain_vector_sample: NDArray[np.float64],
 ) -> None:
+    """Test calculation of signed von Mises strain.
+    Utilizes average of maximum and minimum principal strains for sign determination.
+    """
     signed_von_mises = strain.calc_signed_von_mises_by_max_abs_principal(
         strain_vector_sample
     )
@@ -248,8 +255,7 @@ def test_calc_signed_von_mises_by_max_abs_principal(
         s = strain_tensor - np.eye(3) * (np.trace(strain_tensor) / 3.0)
         vm = np.sqrt((2.0 / 3.0) * np.sum(s**2))
         principals = np.linalg.eigvalsh(strain_tensor)
-        indices = np.argmax(np.abs(principals))
-        max_abs = principals[indices]
-        sign = np.sign(max_abs)
-        sign = np.where(np.isclose(max_abs, 0.0), 1.0, sign)
+        avg13 = 0.5 * (principals[0] + principals[2])
+        sign = np.sign(avg13)
+        sign = np.where(np.isclose(avg13, 0.0), 1.0, sign)
         assert np.isclose(signed_von_mises[idx], sign * vm, atol=1e-12)
