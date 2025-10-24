@@ -15,5 +15,4 @@ def test_s_eqa_asme() -> None:
     mean_stress = np.array([100.0])
 
     N = s_eqa_asme(fat_strength_coef, fat_strength_exp, yilel_stress, stress_amp, mean_stress)
-    print(N)
     assert N == np.array([98366])
