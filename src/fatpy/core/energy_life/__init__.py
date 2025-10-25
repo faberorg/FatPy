@@ -1,5 +1,5 @@
 """Energy-based fatigue life analysis methods.
 
-This package provides implementations of energy-based approaches for
-fatigue life prediction and analysis.
+Fatigue analysis methods based on the relationship between the strain energy
+(usually strain energy density) and number of cycles to failure.
 """

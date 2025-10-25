@@ -1,4 +1,5 @@
 """Material laws module.
 
-Contains the classes and functions for defining and working with material laws.
+Contains classes and functions that define material laws and enable their calibration
+for the material under consideration.
 """

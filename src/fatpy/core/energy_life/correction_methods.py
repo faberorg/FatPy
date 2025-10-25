@@ -1,1 +1,1 @@
-"""Correction methods for the energy-life."""
+"""Correction methods for the energy-life approach."""
