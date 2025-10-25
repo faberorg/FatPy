@@ -1,5 +1,5 @@
-"""Hooke's law methods of material laws.
+"""Hooke's law.
 
-Elastic stress to strain and back conversion with various degree of complexity due to
-dimensionality.
+Converts between elastic stress and strain with varying levels of complexity depending
+on dimensionality.
 """

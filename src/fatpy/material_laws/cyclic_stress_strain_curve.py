@@ -1,4 +1,5 @@
-"""Cyclic stress-strain curve methods of material laws.
+"""Cyclic stress–strain curve approximation models.
 
-Various formulations of the dependency between stress and strain in a fatigue cycle.
+Implements various formulations, such as the Ramberg–Osgood model, describing the
+relationship between elastic–plastic stress and strain.
 """

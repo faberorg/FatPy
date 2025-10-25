@@ -1,5 +1,5 @@
-"""Stress-strain curve methods of material laws.
+"""Stress-life curve methods of material laws.
 
-Wohler curve representations.
-Various models of conversion between stress and life and vice versa.
+Provides implementations of Wöhler (S-N) curve models along with methods for converting
+between stress amplitude and fatigue life in both directions.
 """
