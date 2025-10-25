@@ -55,9 +55,10 @@ def example_function(param1: int, param2: str) -> bool:
     More detailed explanation if needed. This can span
     multiple lines and include more information.
 
-    Mathematical formulas can be included using LaTeX syntax:
+    ??? abstract "Math Equations"
+        Mathematical formulas can be included using LaTeX syntax:
 
-    $$ y = f(x) $$
+        $$ y = f(x) $$
 
     Args:
         param1: Description of the first parameter

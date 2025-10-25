@@ -11,9 +11,20 @@ A Python package for fatigue life evaluation of materials.
 
 ## Features
 
-- **Stress-Life** - Methods for analyzing fatigue life based on stress data
-- **Strain-Life** - Tools for evaluating fatigue life using strain data
-- **Energy-Life** - Methods for assessing fatigue life based on energy data
+### Core Modules
+
+- **Stress-Life** - Stress-based fatigue assessment methods for estimating fatigue damage with corrections for various effects (stress concentration, size, surface quality, etc.)
+- **Strain-Life** - Fatigue analysis using strain amplitude and cycles to failure relationships (ε-N approaches) such as Coffin-Manson and Basquin laws, suited for low-cycle and transitional fatigue regimes
+- **Energy-Life** - Fatigue analysis methods based on the relationship between strain energy density and number of cycles to failure
+- **Damage Cumulation** - Various fatigue damage accumulation rules for variable amplitude loading, including linear models (Palmgren-Miner) and advanced non-linear approaches accounting for load sequence effects
+- **Decompositions** - Methods for breaking down complex load signals into cycles, containing both uniaxial and multiaxial procedures
+- **Plane-Based Methods** - Methods for processing stress tensor paths on material planes, providing infrastructure for critical-plane and integral prediction approaches
+
+### Supporting Modules
+
+- **Material Laws** - Functions dealing with various material constitutive laws and behavior models
+- **Structural Mechanics** - Stress, strain analysis and transformation utilities
+- **Utils** - General utilities for mesh handling, signal processing, and data manipulation
 
 ## Quick Links
 
@@ -54,11 +65,11 @@ Visit `http://127.0.0.1:8000` to view the documentation locally.
 
 ## Contributing
 
-We welcome contributions and follow Test-Driven Development (TDD) principles. Please see our [Contributing Guide](CONTRIBUTING.md) for:
+We welcome contributions. Please see our [Contributing Guide](CONTRIBUTING.md) for:
 
 - Setting up your development environment
-- Test-Driven Development workflow
 - Code quality guidelines and standards
+- Testing procedures
 - Documentation requirement
 - Pull request process
 

@@ -2,27 +2,26 @@
 title: Testing
 ---
 
-
-# :fontawesome-solid-vial: Test Driven Development
+# :fontawesome-solid-vial: Testing
 
 This guide outlines the testing approach and best practices for the FatPy project.
 
 ## :fontawesome-solid-lightbulb: Testing Philosophy
 
-FatPy follows the principles of Test-Driven Development (TDD):
+FatPy emphasizes comprehensive testing to ensure code reliability and quality:
 
-1. **Write the test first**  
-    Define what the code should do before implementing it
-2. **See the test fail**  
-    Run the test to confirm it fails without the implementation
-3. **Write the minimal code**  
-    Implement just enough code to make the test pass
-4. **Run the test**  
-    Verify the implementation meets the requirements
-5. **Refactor**  
-    Clean up the code while ensuring tests still pass
-6. **Repeat**  
-    Use the same principles for next feature
+1. **Write comprehensive tests**  
+    Cover all functionality with appropriate unit and integration tests
+2. **Test edge cases**  
+    Include boundary conditions and error scenarios
+3. **Maintain test coverage**  
+    Aim for high test coverage to ensure code reliability
+4. **Verify functionality**  
+    Ensure all tests pass before submitting changes
+5. **Keep tests updated**  
+    Update tests when modifying existing functionality
+6. **Document test cases**  
+    Use clear test names and docstrings to explain test purpose
 
 ## :simple-pytest: Testing Framework
 
@@ -33,7 +32,7 @@ FatPy follows the principles of Test-Driven Development (TDD):
 
 Tests are organized in the `tests/` directory, mirroring the structure of the `src/fatpy` package:
 
-```
+```text
 tests/
 ├── core/
 │   ├── stress_life/

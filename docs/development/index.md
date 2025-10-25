@@ -9,7 +9,7 @@ This section provides comprehensive resources to help you contribute to FatPy, a
 [:material-search-web: Learn About FABER](../faber_cost.md)
 
 !!! abstract "About"
-    FatPy follows Test-Driven Development (TDD) principles, emphasizing code quality, thorough documentation, and rigorous testing. Whether you're fixing bugs or adding features, this guide will help you become a successful contributor.
+    FatPy emphasizes code quality, thorough documentation, and rigorous testing. Whether you're fixing bugs or adding features, this guide will help you become a successful contributor.
 
 ## :fontawesome-solid-rocket: Getting Started
 
@@ -39,40 +39,27 @@ Deepen your understanding of FatPy development with these resources:
     - Join our [GitHub Discussions](https://github.com/faberorg/FatPy/discussions) for community support.
     - Find contribution ideas in our [GitHub Issues](https://github.com/faberorg/FatPy/issues).
 
-## :fontawesome-solid-sitemap: Project Structure
-
-FatPy is organized into several core modules:
-
-- **Core** - Contains the fundamental analytical methods:
-  - Stress-Life: Methods for stress-based fatigue analysis
-  - Strain-Life: Methods for strain-based fatigue analysis
-  - Energy-Life: Methods for energy-based fatigue analysis
-- **Data Parsing** - Tools for handling input/output operations
-- **Utilities** - Supporting functionality and helper methods
-
 Get a detailed overview of FatPy’s modules and functions, visit **[API Reference](../api/index.md)**.
 
 ## :fontawesome-solid-code-branch: Development Workflow
 
-Follow our Test-Driven Development (TDD) workflow:
+Follow our development workflow:
 
-1. **Write Tests First**  
-   Define expected behavior before coding.
-2. **Set Up Your Environment**  
+1. **Set Up Your Environment**  
    :fontawesome-solid-download: [Installation Guide](install.md)
-3. **Create a Feature Branch**  
+2. **Create a Feature Branch**  
 
     ```bash
     git checkout -b feature-name
     ```
 
-4. **Implement the Feature**  
+3. **Implement the Feature**  
     Follow the [Code Style Guide](code_style.md).
-5. **Run and Refine Tests**  
+4. **Write and Run Tests**  
     :fontawesome-solid-vial: [Testing Guide](testing.md)
-6. **Document your Changes**  
+5. **Document your Changes**  
     Use [Documentation](documentation.md) resources!
-7. **Submit a pull request**  
+6. **Submit a pull request**  
     :fontawesome-solid-handshake: [Contributing Guide](contributing.md)
 
 ## :material-help-box-outline: Getting Help
