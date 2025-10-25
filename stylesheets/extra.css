@@ -1,0 +1,290 @@
+:root > * {
+/* Primary color shades */
+--md-primary-fg-color:               hsla(231, 48%, 48%,1);
+--md-primary-fg-color--light:        hsla(231, 48%, 35%, 1);
+--md-primary-fg-color--dark:         hsla(221, 75%, 60%, 1);
+--md-primary-bg-color:               hsla(0, 0%, 100%, 1);
+--md-primary-bg-color--light:        hsla(0, 0%, 100%, 0.7);
+
+/* Accent color shades */
+--md-accent-fg-color:                hsl(231, 100%, 75%);
+--md-accent-fg-color--transparent:   hsla(231, 100%, 75%, 0.1);
+--md-accent-bg-color:                hsl(0, 0%, 100%);
+--md-accent-bg-color--light:         hsla(0, 0%, 100%, 0.7);
+
+/* Define custom colors for headings */
+--fatpy-heading1-color: var(--md-primary-fg-color--light);
+--fatpy-heading2-color: var(--md-primary-fg-color--light);
+
+/* Defined custom colors for admonitions in light mode */
+--custom-note-color: #98b8d8; 
+--custom-abstract-color: #6490bc; 
+--custom-info-color: #296595; 
+--custom-tip-color: #034670; 
+--custom-example-color: #6a5acd; 
+--custom-api-color: #98b8d8;  /* Used for API doc section headers */
+
+/* Define custom icons for admonitions - set to existing standard icons */
+/* --md-admonition-icon--custom-note: var(--md-admonition-icon--note); */
+
+}
+
+/* Dark mode (Material for MkDocs uses "slate" as the dark scheme) */
+[data-md-color-scheme="slate"] {
+  --fatpy-heading1-color: var(--md-primary-fg-color--dark);
+  --fatpy-heading2-color: var(--md-primary-fg-color--dark);
+
+  /* Define Dark mode colors for admonitions */
+  --custom-note-color: #1b4e96;
+  --custom-abstract-color: #245fb2;
+  --custom-info-color: #517fbf;
+  --custom-tip-color: #79a1d8;
+  --custom-example-color: #9385ff;
+}
+
+/* Page headers */
+.md-typeset h1 {
+    color: var(--fatpy-heading1-color);
+    font-size: 2.2em;
+    font-weight: 400;
+    margin-bottom: 1rem;
+}
+
+/* Section headers */
+.md-typeset h2 {
+    font-weight: 500;
+    color: var(--fatpy-heading2-color);
+    border-bottom: 1px solid var(--fatpy-heading2-color);
+    padding-bottom: 0.2em;
+    margin-top: 1.5em;
+}
+
+/* Documentation headers */
+h2.doc-heading {
+    font-weight: 500;
+    color: var(--fatpy-heading2-color);
+    border-bottom: none;
+}
+
+/* Code blocks */
+.md-typeset pre {
+    border-radius: 0.2rem;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12), 0 3px 1px -2px rgba(0,0,0,.2);
+}
+
+/* Table of contents */
+.md-nav__title {
+    font-weight: 500;
+}
+
+/* Navigation items */
+.md-nav__item--nested > .md-nav__link {
+    font-weight: 500;
+}
+
+/* Admonition blocks */
+.md-typeset .admonition,
+.md-typeset details {
+    border-radius: 0.2rem;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12), 0 3px 1px -2px rgba(0,0,0,.2);
+    font-size: 0.8rem;
+}
+
+/* Content tabs */
+.md-typeset .tabbed-set {
+    border-radius: 0.2rem;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12), 0 3px 1px -2px rgba(0,0,0,.2);
+}
+
+/* Add padding to tab content area */
+.md-typeset .tabbed-content {
+    padding: 0.8rem;
+}
+
+/* Improve table appearance */
+.md-typeset table:not([class]) {
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12), 0 3px 1px -2px rgba(0,0,0,.2);
+    border-radius: 0.2rem;
+}
+
+/* Improve annotations in API docs */
+.doc-contents .doc-function > h3,
+.doc-contents .doc-class > h3,
+.doc-contents .doc-module > h3 {
+    color: var(--md-primary-fg-color--dark);
+    font-weight: 500;
+}
+
+/* Make parameter names stand out */
+.doc-contents .doc-param-name {
+    font-weight: 500;
+}
+
+/* Equation display */
+.md-typeset .arithmatex {
+    margin: 1em 0;
+}
+
+/* Navigation scrollbar - more subtle */
+.md-nav__list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.md-nav__list::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+
+/* Modified admonition styles for Abstract */
+.md-typeset .admonition.abstract,
+.md-typeset details.abstract {
+  border-color: var(--custom-abstract-color); 
+}
+
+.md-typeset .abstract > .admonition-title,
+.md-typeset .abstract > summary {
+    background-color: color-mix(in srgb, var(--custom-abstract-color) 10%, transparent);
+}
+
+.md-typeset .abstract > .admonition-title::before,
+.md-typeset .abstract > summary::before {
+  background-color: var(--custom-abstract-color); 
+  /* -webkit-mask-image: var(--md-admonition-icon--custom-abstract);
+          mask-image: var(--md-admonition-icon--custom-abstract); */
+}
+
+.md-typeset .abstract > .admonition-title::after,
+.md-typeset .abstract > summary::after {
+  background-color: var(--custom-abstract-color); 
+}
+
+/* Modified admonition styles for Note */
+.md-typeset .admonition.note,
+.md-typeset details.note {
+  border-color: var(--custom-note-color); 
+}
+
+.md-typeset .note > .admonition-title,
+.md-typeset .note > summary {
+    background-color: color-mix(in srgb, var(--custom-note-color) 10%, transparent);
+}
+
+.md-typeset .note > .admonition-title::before,
+.md-typeset .note > summary::before {
+  background-color: var(--custom-note-color); 
+}
+
+.md-typeset .note > .admonition-title::after,
+.md-typeset .note > summary::after {
+  background-color: var(--custom-note-color); 
+}
+
+/* Modified admonition styles for Info */
+.md-typeset .admonition.info,
+.md-typeset details.info {
+  border-color: var(--custom-info-color); 
+}
+
+.md-typeset .info > .admonition-title,
+.md-typeset .info > summary {
+    background-color: color-mix(in srgb, var(--custom-info-color) 10%, transparent);
+}
+
+.md-typeset .info > .admonition-title::before,
+.md-typeset .info > summary::before {
+  background-color: var(--custom-info-color); 
+}
+
+.md-typeset .info > .admonition-title::after,
+.md-typeset .info > summary::after {
+  background-color: var(--custom-info-color); 
+}
+
+/* Modified admonition styles for Tip */
+.md-typeset .admonition.tip,
+.md-typeset details.tip {
+  border-color: var(--custom-tip-color); 
+}
+
+.md-typeset .tip > .admonition-title,
+.md-typeset .tip > summary {
+    background-color: color-mix(in srgb, var(--custom-tip-color) 10%, transparent);
+}
+
+.md-typeset .tip > .admonition-title::before,
+.md-typeset .tip > summary::before {
+  background-color: var(--custom-tip-color); 
+}
+
+.md-typeset .tip > .admonition-title::after,
+.md-typeset .tip > summary::after {
+  background-color: var(--custom-tip-color); 
+}
+
+/* Modified admonition styles for Example */
+.md-typeset .admonition.example,
+.md-typeset details.example {
+  border-color: var(--custom-example-color); 
+}
+
+.md-typeset .example > .admonition-title,
+.md-typeset .example > summary {
+    background-color: color-mix(in srgb, var(--custom-example-color) 10%, transparent);
+}
+
+.md-typeset .example > .admonition-title::before,
+.md-typeset .example > summary::before {
+  background-color: var(--custom-example-color); 
+}
+
+.md-typeset .example > .admonition-title::after,
+.md-typeset .example > summary::after {
+  background-color: var(--custom-example-color); 
+}
+
+/* API Documentation styles */
+
+/* Indentation. */
+div.doc-contents:not(.first) {
+  padding-left: 25px;
+  border-left: .05rem solid var(--md-typeset-table-color);
+}
+
+/* same size for headings below h3 */
+.md-typeset .doc-contents .doc-class > h4,
+.md-typeset .doc-contents .doc-class > h5,
+.md-typeset .doc-contents .doc-class > h6,
+.md-typeset .doc-contents .doc-method > h4,
+.md-typeset .doc-contents .doc-method > h5,
+.md-typeset .doc-contents .doc-method > h6,
+.md-typeset .doc-contents .doc-function > h4,
+.md-typeset .doc-contents .doc-function > h5,
+.md-typeset .doc-contents .doc-function > h6 {
+  font-size: 1rem;                 
+  font-weight: 600;
+  color: var(--md-primary-fg-color--dark);
+  margin-top: 0.6em;
+  margin-bottom: 0.25em;
+  line-height: 1.2;
+}
+
+/* Rectangular block around module/class/function headings */
+.md-typeset .doc-contents .doc-module > h2,
+.md-typeset .doc-contents .doc-module > h3,
+.md-typeset .doc-contents .doc-class > h3,
+.md-typeset .doc-contents .doc-class > h4,
+.md-typeset .doc-contents .doc-function > h3
+.md-typeset .doc-contents .doc-function > h4 {
+  display: block;
+  padding: 0.35rem 0.6rem;
+  margin: 0.6rem 0 0.3rem;
+  background: color-mix(in srgb, var(--custom-api-color) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--custom-api-color) 28%, rgba(0,0,0,0.06));
+  color: color-contrast(var(--custom-api-color) vs white, black);
+  border-radius: 6px;
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--custom-api-color) 6%, transparent);
+  font-size: 1rem !important;
+  font-weight: 600;
+  line-height: 1.2;
+}
