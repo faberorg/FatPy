@@ -194,27 +194,6 @@ def test_calc_deviatoric_strain(
         assert np.allclose(deviator[idx], deviator_voigt, atol=1e-12)
 
 
-def test_calc_von_mises_from_principals(
-    strain_vector_sample: NDArray[np.float64],
-) -> None:
-    """Test calculation of von Mises strain from principals.
-
-    Uses the definition based on the strain deviator tensor.
-
-    Args:
-        strain_vector_sample (NDArray[np.float64]): Sample strain vectors.
-    """
-    von_mises = strain.calc_von_mises_strain_from_principals(strain_vector_sample)
-
-    assert von_mises.shape == strain_vector_sample.shape[:-1]
-
-    for idx in np.ndindex(von_mises.shape):
-        strain_tensor = voigt.voigt_to_tensor(strain_vector_sample[idx])
-        s = strain_tensor - np.eye(3) * (np.trace(strain_tensor) / 3.0)
-        vm = np.sqrt((2.0 / 3.0) * np.sum(s**2))
-        assert np.isclose(von_mises[idx], vm, atol=1e-12)
-
-
 def test_calc_von_mises(
     strain_vector_sample: NDArray[np.float64],
 ) -> None:

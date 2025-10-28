@@ -193,37 +193,6 @@ def calc_deviatoric_strain(
 
 
 # Von Mises functions
-def calc_von_mises_strain_from_principals(
-    strain_vector_voigt: NDArray[np.float64],
-) -> NDArray[np.float64]:
-    r"""Calculate von Mises equivalent strain for each strain state using principals.
-
-    ??? abstract "Math Equations"
-        $$ \varepsilon_{vM} = \frac{\sqrt{2}}{3} \sqrt{
-           (\varepsilon_1-\varepsilon_2)^2 + (\varepsilon_2-\varepsilon_3)^2 +
-           (\varepsilon_3-\varepsilon_1)^2} $$
-
-    Args:
-        strain_vector_voigt: Array of shape (..., 6). The last dimension contains the
-            Voigt strain components. Leading dimensions are preserved.
-
-    Returns:
-        Array of shape (...). Von Mises equivalent strain for each entry.
-            Tensor rank is reduced by one.
-
-    Raises:
-        ValueError: If the last dimension is not of size 6.
-    """
-    voigt.check_shape(strain_vector_voigt)
-
-    principals = calc_principal_strains(strain_vector_voigt)
-    e1 = principals[..., 0]
-    e2 = principals[..., 1]
-    e3 = principals[..., 2]
-
-    return np.sqrt((2 / 9.0) * ((e1 - e2) ** 2 + (e2 - e3) ** 2 + (e3 - e1) ** 2))
-
-
 def calc_von_mises_strain(
     strain_vector_voigt: NDArray[np.float64],
 ) -> NDArray[np.float64]:
