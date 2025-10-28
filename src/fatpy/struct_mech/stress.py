@@ -43,9 +43,9 @@ def calc_principal_stresses_and_directions(
 
     Returns:
         Tuple (eigvals, eigvecs):
-        eigvals: Array of shape (..., 3). Principal stresses
+            - eigvals: Array of shape (..., 3). Principal stresses
             (descending: σ_1 ≥ σ_2 ≥ σ_3) with leading dimensions preserved.
-        eigvecs: Array of shape (..., 3, 3). Principal directions (columns are
+            - eigvecs: Array of shape (..., 3, 3). Principal directions (columns are
             eigenvectors) aligned with eigvals in the same order. The last two
             dimensions are the 3x3 eigenvector matrix for each input.
 
@@ -300,7 +300,7 @@ def calc_signed_von_mises_by_hydrostatic(
 
 
 def calc_signed_von_mises_by_max_abs_principal(
-    stress_voigt: NDArray[np.float64],
+    stress_vector_voigt: NDArray[np.float64],
     rtol: float = 1e-5,
     atol: float = 1e-8,
 ) -> NDArray[np.float64]:
@@ -328,7 +328,7 @@ def calc_signed_von_mises_by_max_abs_principal(
         $$
 
     Args:
-        stress_voigt: Array of shape (..., 6). The last dimension contains the
+        stress_vector_voigt: Array of shape (..., 6). The last dimension contains the
             Voigt stress components. Leading dimensions are preserved.
         rtol: Relative tolerance for comparing the average of maximum and minimum
             principal stresses to zero. Default is 1e-5.
@@ -342,8 +342,8 @@ def calc_signed_von_mises_by_max_abs_principal(
     Raises:
         ValueError: If the last dimension is not of size 6.
     """
-    von_mises = calc_von_mises_stress(stress_voigt)
-    principals = calc_principal_stresses(stress_voigt)
+    von_mises = calc_von_mises_stress(stress_vector_voigt)
+    principals = calc_principal_stresses(stress_vector_voigt)
 
     avg_13 = 0.5 * (principals[..., 0] + principals[..., 2])
     sign = np.sign(avg_13).astype(np.float64, copy=False)

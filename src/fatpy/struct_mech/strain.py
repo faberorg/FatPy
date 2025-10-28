@@ -24,7 +24,7 @@ from fatpy.utils import voigt
 
 
 def calc_principal_strains_and_directions(
-    strain_voigt: NDArray[np.float64],
+    strain_vector_voigt: NDArray[np.float64],
 ) -> tuple[NDArray[np.float64], NDArray[np.float64]]:
     r"""Calculate principal strains and principal directions for each state.
 
@@ -35,23 +35,23 @@ def calc_principal_strains_and_directions(
         $$ \varepsilon \mathbf{v} = \lambda \mathbf{v} $$
 
     Args:
-        strain_voigt: Array of shape (..., 6). The last dimension contains the
+        strain_vector_voigt: Array of shape (..., 6). The last dimension contains the
             Voigt strain components. Leading dimensions are preserved.
 
     Returns:
         Tuple (eigvals, eigvecs):
-        eigvals: Array of shape (..., 3). Principal strains
+            - eigvals: Array of shape (..., 3). Principal strains
             (descending: ε_1 ≥ ε_2 ≥ ε_3) with leading dimensions preserved.
-        eigvecs: Array of shape (..., 3, 3). Principal directions (columns are
+            - eigvecs: Array of shape (..., 3, 3). Principal directions (columns are
             eigenvectors) aligned with eigvals in the same order. The last two
             dimensions are the 3x3 eigenvector matrix for each input.
 
     Raises:
         ValueError: If the last dimension is not of size 6.
     """
-    voigt.check_shape(strain_voigt)
+    voigt.check_shape(strain_vector_voigt)
 
-    tensor = voigt.voigt_to_tensor(strain_voigt)
+    tensor = voigt.voigt_to_tensor(strain_vector_voigt)
     eigvals, eigvecs = np.linalg.eigh(tensor)
     sorted_indices = np.argsort(eigvals, axis=-1)[..., ::-1]
     eigvals_sorted = np.take_along_axis(eigvals, sorted_indices, axis=-1)
@@ -62,7 +62,9 @@ def calc_principal_strains_and_directions(
     return eigvals_sorted, eigvecs_sorted
 
 
-def calc_principal_strains(strain_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
+def calc_principal_strains(
+    strain_vector_voigt: NDArray[np.float64],
+) -> NDArray[np.float64]:
     r"""Calculate principal strains for each strain state.
 
     ??? abstract "Math Equations"
@@ -72,7 +74,7 @@ def calc_principal_strains(strain_voigt: NDArray[np.float64]) -> NDArray[np.floa
         $$ \varepsilon \mathbf{v} = \lambda \mathbf{v} $$
 
     Args:
-        strain_voigt: Array of shape (..., 6). The last dimension contains the
+        strain_vector_voigt: Array of shape (..., 6). The last dimension contains the
             Voigt strain components. Leading dimensions are preserved.
 
     Returns:
@@ -81,15 +83,17 @@ def calc_principal_strains(strain_voigt: NDArray[np.float64]) -> NDArray[np.floa
     Raises:
         ValueError: If the last dimension is not of size 6.
     """
-    voigt.check_shape(strain_voigt)
+    voigt.check_shape(strain_vector_voigt)
 
-    tensor = voigt.voigt_to_tensor(strain_voigt)
+    tensor = voigt.voigt_to_tensor(strain_vector_voigt)
     eigvals = np.linalg.eigvalsh(tensor)
 
     return np.sort(eigvals, axis=-1)[..., ::-1]
 
 
-def calc_strain_invariants(strain_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
+def calc_strain_invariants(
+    strain_vector_voigt: NDArray[np.float64],
+) -> NDArray[np.float64]:
     r"""Calculate the first, second, and third invariants for each strain state.
 
     ??? abstract "Math Equations"
@@ -102,7 +106,7 @@ def calc_strain_invariants(strain_voigt: NDArray[np.float64]) -> NDArray[np.floa
         $$
 
     Args:
-        strain_voigt: Array of shape (..., 6). The last dimension contains the
+        strain_vector_voigt: Array of shape (..., 6). The last dimension contains the
             Voigt strain components. Leading dimensions are preserved.
 
     Returns:
@@ -112,9 +116,9 @@ def calc_strain_invariants(strain_voigt: NDArray[np.float64]) -> NDArray[np.floa
     Raises:
         ValueError: If the last dimension is not of size 6.
     """
-    voigt.check_shape(strain_voigt)
+    voigt.check_shape(strain_vector_voigt)
 
-    tensor = voigt.voigt_to_tensor(strain_voigt)
+    tensor = voigt.voigt_to_tensor(strain_vector_voigt)
     invariant_1 = np.trace(tensor, axis1=-2, axis2=-1)
     invariant_2 = 0.5 * (
         invariant_1**2 - np.trace(np.matmul(tensor, tensor), axis1=-2, axis2=-1)
@@ -124,7 +128,9 @@ def calc_strain_invariants(strain_voigt: NDArray[np.float64]) -> NDArray[np.floa
     return np.stack((invariant_1, invariant_2, invariant_3), axis=-1)
 
 
-def calc_volumetric_strain(strain_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
+def calc_volumetric_strain(
+    strain_vector_voigt: NDArray[np.float64],
+) -> NDArray[np.float64]:
     r"""Calculate the volumetric (mean normal)strain for each strain state.
 
     ??? abstract "Math Equations"
@@ -133,7 +139,7 @@ def calc_volumetric_strain(strain_voigt: NDArray[np.float64]) -> NDArray[np.floa
         $$
 
     Args:
-        strain_voigt: Array of shape (..., 6). The last dimension contains the
+        strain_vector_voigt: Array of shape (..., 6). The last dimension contains the
             Voigt strain components. Leading dimensions are preserved.
 
     Returns:
@@ -143,12 +149,18 @@ def calc_volumetric_strain(strain_voigt: NDArray[np.float64]) -> NDArray[np.floa
     Raises:
         ValueError: If the last dimension is not of size 6.
     """
-    voigt.check_shape(strain_voigt)
+    voigt.check_shape(strain_vector_voigt)
 
-    return (strain_voigt[..., 0] + strain_voigt[..., 1] + strain_voigt[..., 2]) / 3.0
+    return (
+        strain_vector_voigt[..., 0]
+        + strain_vector_voigt[..., 1]
+        + strain_vector_voigt[..., 2]
+    ) / 3.0
 
 
-def calc_deviatoric_strain(strain_voigt: NDArray[np.float64]) -> NDArray[np.float64]:
+def calc_deviatoric_strain(
+    strain_vector_voigt: NDArray[np.float64],
+) -> NDArray[np.float64]:
     r"""Calculate the deviatoric strain for each strain state.
 
     ??? abstract "Math Equations"
@@ -162,7 +174,7 @@ def calc_deviatoric_strain(strain_voigt: NDArray[np.float64]) -> NDArray[np.floa
         $$ \varepsilon_{dev} = \varepsilon - \frac{1}{3} tr(\varepsilon) $$
 
     Args:
-        strain_voigt: Array of shape (..., 6). The last dimension contains the
+        strain_vector_voigt: Array of shape (..., 6). The last dimension contains the
             Voigt strain components. Leading dimensions are preserved.
 
     Returns:
@@ -171,18 +183,18 @@ def calc_deviatoric_strain(strain_voigt: NDArray[np.float64]) -> NDArray[np.floa
     Raises:
         ValueError: If the last dimension is not of size 6.
     """
-    voigt.check_shape(strain_voigt)
+    voigt.check_shape(strain_vector_voigt)
 
-    volumetric = calc_volumetric_strain(strain_voigt)
-    deviatoric = strain_voigt.copy()
-    deviatoric[..., 0:3] = deviatoric[..., 0:3] - volumetric[..., None]
+    volumetric = calc_volumetric_strain(strain_vector_voigt)
+    deviatoric = strain_vector_voigt.copy()
+    deviatoric[..., :3] = deviatoric[..., :3] - volumetric[..., None]
 
     return deviatoric
 
 
 # Von Mises functions
 def calc_von_mises_strain_from_principals(
-    strain_voigt: NDArray[np.float64],
+    strain_vector_voigt: NDArray[np.float64],
 ) -> NDArray[np.float64]:
     r"""Calculate von Mises equivalent strain for each strain state using principals.
 
@@ -192,7 +204,7 @@ def calc_von_mises_strain_from_principals(
            (\varepsilon_3-\varepsilon_1)^2} $$
 
     Args:
-        strain_voigt: Array of shape (..., 6). The last dimension contains the
+        strain_vector_voigt: Array of shape (..., 6). The last dimension contains the
             Voigt strain components. Leading dimensions are preserved.
 
     Returns:
@@ -202,9 +214,9 @@ def calc_von_mises_strain_from_principals(
     Raises:
         ValueError: If the last dimension is not of size 6.
     """
-    voigt.check_shape(strain_voigt)
+    voigt.check_shape(strain_vector_voigt)
 
-    principals = calc_principal_strains(strain_voigt)
+    principals = calc_principal_strains(strain_vector_voigt)
     e1 = principals[..., 0]
     e2 = principals[..., 1]
     e3 = principals[..., 2]
@@ -212,9 +224,8 @@ def calc_von_mises_strain_from_principals(
     return np.sqrt((2 / 9.0) * ((e1 - e2) ** 2 + (e2 - e3) ** 2 + (e3 - e1) ** 2))
 
 
-# ? Definition https://www.sciencedirect.com/topics/engineering/equivalent-strain
 def calc_von_mises_strain(
-    strain_voigt: NDArray[np.float64],
+    strain_vector_voigt: NDArray[np.float64],
 ) -> NDArray[np.float64]:
     r"""Von Mises equivalent strain computed directly from Voigt components.
 
@@ -228,7 +239,7 @@ def calc_von_mises_strain(
         $$
 
     Args:
-        strain_voigt: Array of shape (..., 6). The last dimension contains the
+        strain_vector_voigt: Array of shape (..., 6). The last dimension contains the
             Voigt strain components. Leading dimensions are preserved.
 
     Returns:
@@ -238,23 +249,27 @@ def calc_von_mises_strain(
     Raises:
         ValueError: If the last dimension is not of size 6.
     """
-    voigt.check_shape(strain_voigt)
+    voigt.check_shape(strain_vector_voigt)
 
-    e11 = strain_voigt[..., 0]
-    e22 = strain_voigt[..., 1]
-    e33 = strain_voigt[..., 2]
-    e23 = strain_voigt[..., 3]  # epsilon_23
-    e13 = strain_voigt[..., 4]  # epsilon_13
-    e12 = strain_voigt[..., 5]  # epsilon_12
-
-    term_norm = (e11 - e22) ** 2 + (e22 - e33) ** 2 + (e33 - e11) ** 2
-    term_shear = 6.0 * (e12**2 + e23**2 + e13**2)
-
-    return np.sqrt((2.0 / 9.0) * (term_norm + term_shear))
+    e11 = strain_vector_voigt[..., 0]
+    e22 = strain_vector_voigt[..., 1]
+    e33 = strain_vector_voigt[..., 2]
+    e23 = strain_vector_voigt[..., 3]  # epsilon_23
+    e13 = strain_vector_voigt[..., 4]  # epsilon_13
+    e12 = strain_vector_voigt[..., 5]  # epsilon_12
+    return np.sqrt(
+        (2.0 / 9.0)
+        * (
+            (e11 - e22) ** 2
+            + (e22 - e33) ** 2
+            + (e33 - e11) ** 2
+            + 6.0 * (e12**2 + e23**2 + e13**2)
+        )
+    )
 
 
 def calc_signed_von_mises_by_max_abs_principal(
-    strain_voigt: NDArray[np.float64],
+    strain_vector_voigt: NDArray[np.float64],
     rtol: float = 1e-5,
     atol: float = 1e-8,
 ) -> NDArray[np.float64]:
@@ -265,12 +280,9 @@ def calc_signed_von_mises_by_max_abs_principal(
     ??? note "Sign Convention"
         The sign assignment follows these rules:
 
-        - **Positive (+)**: When the max absolute principal strain > 0 (tension
-            dominant)
-        - **Negative (-)**: When the max absolute principal strain < 0 (compression
-            dominant)
-        - **Positive (+)**: When max absolute principal strain ≈ 0 (within tolerance,
-            default fallback)
+        - **Positive (+)**: When (ε₁ + ε₃)/2 > 0 (tension dominant)
+        - **Negative (-)**: When (ε₁ + ε₃)/2 < 0 (compression dominant)
+        - **Positive (+)**: When (ε₁ + ε₃)/2 ≈ 0 (within tolerance, default fallback)
 
     Tolerance parameters ensure numerical stability in edge cases where the
     determining value is very close to zero, preventing erratic sign changes
@@ -285,7 +297,7 @@ def calc_signed_von_mises_by_max_abs_principal(
         $$
 
     Args:
-        strain_voigt: Array of shape (..., 6). The last dimension contains the
+        strain_vector_voigt: Array of shape (..., 6). The last dimension contains the
             Voigt strain components. Leading dimensions are preserved.
         rtol: Relative tolerance for comparing the maximum absolute principal strain
                 to zero.
@@ -301,10 +313,10 @@ def calc_signed_von_mises_by_max_abs_principal(
     Raises:
         ValueError: If the last dimension is not of size 6.
     """
-    voigt.check_shape(strain_voigt)
+    voigt.check_shape(strain_vector_voigt)
 
-    von_mises = calc_von_mises_strain(strain_voigt)
-    principals = calc_principal_strains(strain_voigt)
+    von_mises = calc_von_mises_strain(strain_vector_voigt)
+    principals = calc_principal_strains(strain_vector_voigt)
 
     avg_13 = 0.5 * (principals[..., 0] + principals[..., 2])
     sign = np.sign(avg_13).astype(np.float64, copy=False)
