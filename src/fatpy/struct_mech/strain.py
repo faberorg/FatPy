@@ -269,11 +269,9 @@ def calc_signed_von_mises_by_max_abs_principal(
         strain_vector_voigt: Array of shape (..., 6). The last dimension contains the
             Voigt strain components. Leading dimensions are preserved.
         rtol: Relative tolerance for comparing the average of maximum and minimum
-                principal strain to zero.
-            Default is 1e-5.
+            principal strain to zero. Default is 1e-5.
         atol: Absolute tolerance for comparing the average of maximum and minimum
-              principal strain to zero.
-            Default is 1e-8.
+            principal strain to zero. Default is 1e-8.
 
     Returns:
         Array of shape (...). Signed von Mises equivalent strain for each entry.
