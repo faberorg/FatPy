@@ -65,7 +65,7 @@ The easiest way to install FatPy is from PyPI:
         To install package and add dependency to your project .toml file use:
 
         ```bash
-        uv add fatpy # Install from PyPI and add dependency 
+        uv add fatpy # Install from PyPI and add dependency
         ```
 
 This installs the latest stable release with all dependencies.

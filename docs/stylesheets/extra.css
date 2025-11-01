@@ -17,11 +17,11 @@
 --fatpy-heading2-color: var(--md-primary-fg-color--light);
 
 /* Defined custom colors for admonitions in light mode */
---custom-note-color: #98b8d8; 
---custom-abstract-color: #6490bc; 
---custom-info-color: #296595; 
---custom-tip-color: #034670; 
---custom-example-color: #6a5acd; 
+--custom-note-color: #98b8d8;
+--custom-abstract-color: #6490bc;
+--custom-info-color: #296595;
+--custom-tip-color: #034670;
+--custom-example-color: #6a5acd;
 --custom-api-color: #98b8d8;  /* Used for API doc section headers */
 
 /* Define custom icons for admonitions - set to existing standard icons */
@@ -139,7 +139,7 @@ h2.doc-heading {
 /* Modified admonition styles for Abstract */
 .md-typeset .admonition.abstract,
 .md-typeset details.abstract {
-  border-color: var(--custom-abstract-color); 
+  border-color: var(--custom-abstract-color);
 }
 
 .md-typeset .abstract > .admonition-title,
@@ -149,20 +149,20 @@ h2.doc-heading {
 
 .md-typeset .abstract > .admonition-title::before,
 .md-typeset .abstract > summary::before {
-  background-color: var(--custom-abstract-color); 
+  background-color: var(--custom-abstract-color);
   /* -webkit-mask-image: var(--md-admonition-icon--custom-abstract);
           mask-image: var(--md-admonition-icon--custom-abstract); */
 }
 
 .md-typeset .abstract > .admonition-title::after,
 .md-typeset .abstract > summary::after {
-  background-color: var(--custom-abstract-color); 
+  background-color: var(--custom-abstract-color);
 }
 
 /* Modified admonition styles for Note */
 .md-typeset .admonition.note,
 .md-typeset details.note {
-  border-color: var(--custom-note-color); 
+  border-color: var(--custom-note-color);
 }
 
 .md-typeset .note > .admonition-title,
@@ -172,18 +172,18 @@ h2.doc-heading {
 
 .md-typeset .note > .admonition-title::before,
 .md-typeset .note > summary::before {
-  background-color: var(--custom-note-color); 
+  background-color: var(--custom-note-color);
 }
 
 .md-typeset .note > .admonition-title::after,
 .md-typeset .note > summary::after {
-  background-color: var(--custom-note-color); 
+  background-color: var(--custom-note-color);
 }
 
 /* Modified admonition styles for Info */
 .md-typeset .admonition.info,
 .md-typeset details.info {
-  border-color: var(--custom-info-color); 
+  border-color: var(--custom-info-color);
 }
 
 .md-typeset .info > .admonition-title,
@@ -193,18 +193,18 @@ h2.doc-heading {
 
 .md-typeset .info > .admonition-title::before,
 .md-typeset .info > summary::before {
-  background-color: var(--custom-info-color); 
+  background-color: var(--custom-info-color);
 }
 
 .md-typeset .info > .admonition-title::after,
 .md-typeset .info > summary::after {
-  background-color: var(--custom-info-color); 
+  background-color: var(--custom-info-color);
 }
 
 /* Modified admonition styles for Tip */
 .md-typeset .admonition.tip,
 .md-typeset details.tip {
-  border-color: var(--custom-tip-color); 
+  border-color: var(--custom-tip-color);
 }
 
 .md-typeset .tip > .admonition-title,
@@ -214,18 +214,18 @@ h2.doc-heading {
 
 .md-typeset .tip > .admonition-title::before,
 .md-typeset .tip > summary::before {
-  background-color: var(--custom-tip-color); 
+  background-color: var(--custom-tip-color);
 }
 
 .md-typeset .tip > .admonition-title::after,
 .md-typeset .tip > summary::after {
-  background-color: var(--custom-tip-color); 
+  background-color: var(--custom-tip-color);
 }
 
 /* Modified admonition styles for Example */
 .md-typeset .admonition.example,
 .md-typeset details.example {
-  border-color: var(--custom-example-color); 
+  border-color: var(--custom-example-color);
 }
 
 .md-typeset .example > .admonition-title,
@@ -235,12 +235,12 @@ h2.doc-heading {
 
 .md-typeset .example > .admonition-title::before,
 .md-typeset .example > summary::before {
-  background-color: var(--custom-example-color); 
+  background-color: var(--custom-example-color);
 }
 
 .md-typeset .example > .admonition-title::after,
 .md-typeset .example > summary::after {
-  background-color: var(--custom-example-color); 
+  background-color: var(--custom-example-color);
 }
 
 /* API Documentation styles */
@@ -261,7 +261,7 @@ div.doc-contents:not(.first) {
 .md-typeset .doc-contents .doc-function > h4,
 .md-typeset .doc-contents .doc-function > h5,
 .md-typeset .doc-contents .doc-function > h6 {
-  font-size: 1rem;                 
+  font-size: 1rem;
   font-weight: 600;
   color: var(--md-primary-fg-color--dark);
   margin-top: 0.6em;

@@ -120,7 +120,7 @@ Status badges are displayed in the README.md:
       - Check Python version differences
       - Check dependency versions
       - Review test logs for environment-specific issues
-  
+
 === "**Type Errors**"
 
     - **Issue**: Mypy reports type errors

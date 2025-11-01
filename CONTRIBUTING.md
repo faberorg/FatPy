@@ -8,25 +8,25 @@ Thank you for considering contributing to FatPy, a Python package for fatigue li
 
 Get started contributing to FatPy in a few simple steps:
 
-1. **Fork the Repository**  
+1. **Fork the Repository**
 Create a personal copy on GitHub.
-2. **Clone Your Fork**  
+2. **Clone Your Fork**
 
 ```bash
 git clone https://github.com/your-username/FatPy.git  # Clone your fork
 ```
 
-3. **Create a Branch**  
+3. **Create a Branch**
 
 ```bash
 git checkout -b my-feature-branch  # Create a new branch for your feature
 ```
 
-4. **Implement the Feature**  
+4. **Implement the Feature**
 Write code to pass your tests.
-5. **Write Tests for Your Feature**  
+5. **Write Tests for Your Feature**
 Define expected behavior first.
-6. **Submit a Pull Request**  
+6. **Submit a Pull Request**
 Share your changes for review.
 
 ## :hammer_and_wrench: Development Setup
@@ -63,7 +63,7 @@ FatPy emphasizes comprehensive testing to ensure code reliability and quality. A
 ### Testing Guidelines
 
 - **Write comprehensive tests** - Cover all functionality with unit and integration tests
-- **Test edge cases** - Include boundary conditions and error scenarios  
+- **Test edge cases** - Include boundary conditions and error scenarios
 - **Maintain test coverage** - Aim for high coverage to ensure reliability
 - **Keep tests updated** - Update tests when modifying existing functionality
 - **Use clear test names** - Write descriptive test names and docstrings
@@ -92,7 +92,7 @@ FatPy aims for high code quality utilizing these tools:
 - **MyPy**  - Static type checking for reliability.
 - **Pre-commit** - Automated checks before commits.
 
-Follow our coding standards for contributions, see **[Code Style Guide :arrow_right:](https://faberorg.github.io/FatPy/development/code_style/)**  
+Follow our coding standards for contributions, see **[Code Style Guide :arrow_right:](https://faberorg.github.io/FatPy/development/code_style/)**
 
 ### Running Code Quality Checks
 
@@ -117,11 +117,11 @@ pre-commit run --all-files
 
 Keep FatPy’s documentation clear and up-to-date with these guidelines:
 
-- **API Changes**  
+- **API Changes**
 Update documentation for any API modifications.
-- **Docstrings**  
+- **Docstrings**
 Add docstrings following Google style to all new code.
-- **Examples**  
+- **Examples**
 Include examples and mathematical formulas where helpful to aid users.
 
 Learn best practices and guidelines for documentation, see **[Documentation Guide :arrow_right:](https://faberorg.github.io/FatPy/development/documentation/)**
@@ -140,15 +140,15 @@ mkdocs serve
 
 Submit a high-quality pull request with these steps:
 
-1. **Run Tests and Checks**  
+1. **Run Tests and Checks**
    Ensure tests pass and code quality checks succeed.
-2. **Update Documentation**  
+2. **Update Documentation**
    Reflect changes in relevant docs.
-3. **Link Issues**  
+3. **Link Issues**
    Reference related GitHub issues.
-4. **Follow guidelines**  
+4. **Follow guidelines**
    Make sure your code follows the project's style guidelines.
-5. **Await Review**  
+5. **Await Review**
    Respond to feedback from maintainers.
 
 ## :book: Code of Conduct
@@ -161,11 +161,11 @@ Understand our expectations for collaboration, see **[Code of Conduct :arrow_rig
 
 Join discussion, create an issue or reach out to maintainers:
 
-- :speech_balloon:  **[GitHub Discussions :arrow_right:](https://github.com/faberorg/FatPy/discussions)**  
+- :speech_balloon:  **[GitHub Discussions :arrow_right:](https://github.com/faberorg/FatPy/discussions)**
     Join for community support.
-- :beetle: **[Report an Issue :arrow_right:](https://github.com/faberorg/fatpy/issues)**  
+- :beetle: **[Report an Issue :arrow_right:](https://github.com/faberorg/fatpy/issues)**
     Create an issue on our GitHub repository for bugs or questions.
-- :envelope: **[Contact our Team :arrow_right:](https://faberorg.github.io/FatPy/contact/)**  
+- :envelope: **[Contact our Team :arrow_right:](https://faberorg.github.io/FatPy/contact/)**
     Visit our contact page.
 
 Thank you for contributing to FatPy!

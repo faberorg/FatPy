@@ -108,15 +108,15 @@ Follow these guidelines to create clear and effective documentation for FatPy.
 
 ### **General Guidelines**
 
-- **Clear Language**  
+- **Clear Language**
   Use concise, straightforward wording.
-- **Examples**  
+- **Examples**
   Include practical code or use-case examples, where possible.
-- **Related Links**  
+- **Related Links**
   Reference related documentation.
-- **Headers**  
+- **Headers**
   Organize content with clear section headings.
-- **Mathematical Formulas**  
+- **Mathematical Formulas**
   Use LaTeX for mathematical notation where appropriate.
 
 ---
@@ -174,15 +174,15 @@ Consistent naming is crucial for code readability and maintainability. Follow th
     - **`fat`**: fatigue (e.g., `fat_limit` for fatigue limit)
     - **`frac`**: fracture (e.g., `frac_toughness` for fracture toughness)
 
-    Common names and material parameters:  
-    - `first_principal_stress`, `second_principal_stress` and `third_principal_stress`  
-    - `elastic_modulus`, `shear_modulus` and `poisson_ratio`  
-    - `ultimate_tensile_strength` and `yield_strength`  
+    Common names and material parameters:
+    - `first_principal_stress`, `second_principal_stress` and `third_principal_stress`
+    - `elastic_modulus`, `shear_modulus` and `poisson_ratio`
+    - `ultimate_tensile_strength` and `yield_strength`
 
     !!! warning "Clarity First"
         If an abbreviation makes the code harder to understand for someone new to the specific module or fatigue in general, prefer the full name. Document any project-specific abbreviations clearly.
 
-Learn more about the naming conventions form our discussion page:  
+Learn more about the naming conventions form our discussion page:
 
 [:simple-github::fontawesome-solid-comment-dots: Naming Conventions for FatPy Functions & Parameters #18](https://github.com/faberorg/FatPy/discussions/18)
 
@@ -209,7 +209,7 @@ Use LaTeX for mathematical formulas. This allows for clear rendering of equation
     Hooke's Law can be expressed as $\sigma = E \cdot \epsilon$.
     ```
 
-    **Rendered output:**  
+    **Rendered output:**
     Hooke's Law can be expressed as $\sigma = E \cdot \epsilon$.
 
 === "Block Syntax"
@@ -218,7 +218,7 @@ Use LaTeX for mathematical formulas. This allows for clear rendering of equation
     **How to write it:**
     ``` latex title="Block syntax"
     % This line is empty
-    $$ 
+    $$
     \sigma_{eq} = \sqrt{3J_2} = \sqrt{\frac{3}{2}s_{ij}s_{ij}}
     $$
     % This line is empty
@@ -231,7 +231,7 @@ Use LaTeX for mathematical formulas. This allows for clear rendering of equation
     $$
 
 === "Display Complex Expression"
-    For more complex expressions, like summations, matrices, or a sequence of aligned equations.  
+    For more complex expressions, like summations, matrices, or a sequence of aligned equations.
 
     This example shows Miner's rule for damage accumulation:
 
@@ -289,7 +289,7 @@ API documentation is automatically generated from docstrings using mkdocstrings.
 1. All public functions, classes, and modules must have Google-style docstrings.
 2. Type hints should be used for all function parameters and return values.
 3. Examples should be included in docstrings where appropriate.
-4. Mathematical formulas should use LaTeX syntax within docstrings, e.g.:  
+4. Mathematical formulas should use LaTeX syntax within docstrings, e.g.:
     `$$ \sigma = \sqrt{x^2} $$`
 
 View the generated API documentation: **[:fontawesome-solid-book-open: API Reference](../api/index.md)**
@@ -298,11 +298,11 @@ View the generated API documentation: **[:fontawesome-solid-book-open: API Refer
 
 To add new documentation pages, follow these steps:
 
-- **Create File**  
+- **Create File**
   Add a new Markdown file in the appropriate directory (e.g., `docs/`).
-- **Update Navigation**  
+- **Update Navigation**
   Include the file in `mkdocs.yml` under the `nav` section.
-- **Format Content**  
+- **Format Content**
   Use headers, code blocks, and consistent Markdown formatting.
 
 ??? note "Documentation Deployment"

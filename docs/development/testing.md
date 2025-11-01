@@ -10,17 +10,17 @@ This guide outlines the testing approach and best practices for the FatPy projec
 
 FatPy emphasizes comprehensive testing to ensure code reliability and quality:
 
-1. **Write comprehensive tests**  
+1. **Write comprehensive tests**
     Cover all functionality with appropriate unit and integration tests
-2. **Test edge cases**  
+2. **Test edge cases**
     Include boundary conditions and error scenarios
-3. **Maintain test coverage**  
+3. **Maintain test coverage**
     Aim for high test coverage to ensure code reliability
-4. **Verify functionality**  
+4. **Verify functionality**
     Ensure all tests pass before submitting changes
-5. **Keep tests updated**  
+5. **Keep tests updated**
     Update tests when modifying existing functionality
-6. **Document test cases**  
+6. **Document test cases**
     Use clear test names and docstrings to explain test purpose
 
 ## :simple-pytest: Testing Framework
