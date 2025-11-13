@@ -169,7 +169,8 @@ def calc_stress_eq_amp_gerber(
         The Gerber equivalent stress amplitude is calculated as:
 
         $$
-        \displaystyle\sigma_{aeq}=\frac{\sigma_a}{1-\left(\frac{\sigma_m}{\sigma_{UTS}}\right)^2 }
+        \displaystyle\sigma_{aeq}=\frac{\sigma_a}{1-\left(\frac{\sigma_m}{\sigma_{UTS}}
+            \right)^2 }
         $$
 
     Args:
@@ -216,8 +217,9 @@ def calc_stress_eq_amp_morrow(
         stress_amp: Array-like of stress amplitudes. Leading dimensions are preserved.
         mean_stress: Array-like of mean stresses. Must be broadcastable with
             stress_amp. Leading dimensions are preserved.
-        true_fract_stress: Array-like of true tensile fracture stress. Must be broadcastable
-            with stress_amp and mean_stress. Leading dimensions are preserved.
+        true_fract_stress: Array-like of true tensile fracture stress. Must be
+            broadcastable with stress_amp and mean_stress. Leading dimensions
+            are preserved.
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
