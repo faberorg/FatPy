@@ -234,3 +234,54 @@ def calc_stress_eq_amp_morrow(
     true_fract_stress_arr = np.asarray(true_fract_stress, dtype=np.float64)
 
     return stress_amp_arr / (1 - mean_stress_arr / true_fract_stress_arr)
+
+
+def calc_stress_eq_amp_walker(
+    stress_amp: ArrayLike | np.float64,
+    mean_stress: ArrayLike | np.float64,
+    walker_parameter: ArrayLike | np.float64,
+) -> NDArray[np.float64]:
+    r"""Calculate equivalent stress amplitude using Walker criterion.
+
+    The Walker criterion accounts for mean stress effects in high-cycle fatigue
+    by modifying by combining stress amplitude and maximum stress in the cycle and
+    utilizing a material specific exponent - the Walker parameter (γ').
+
+    ??? abstract "Math Equations"
+        The Walker equivalent stress amplitude is calculated as:
+
+        $$
+        \displaystyle\sigma_{aeq}=\left(\sigma_a+\sigma_m\right)^{1-\gamma'} \cdot
+            \sigma_a^{\gamma'}
+        $$
+    Args:
+        stress_amp: Array-like of stress amplitudes. Leading dimensions are preserved.
+        mean_stress: Array-like of mean stresses. Must be broadcastable with
+            stress_amp. Leading dimensions are preserved.
+        walker_parameter: Array-like of Walker exponents (γ'). Must be broadcastable
+            with stress_amp and mean_stress. Leading dimensions are preserved.
+
+    Returns:
+        Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
+            rules for the input arrays.
+
+    Raises:
+        ValueError: If input arrays cannot be broadcast together or when the
+            condition γ' in (0, 1) is not satisfied.
+    """
+    stress_amp_arr, mean_stress_arr = _validate_stress_inputs(
+        stress_amp, mean_stress, None
+    )
+    walker_parameter_arr = np.asarray(walker_parameter, dtype=np.float64)
+
+    # Check validity of Walker parameter: γ' in range (0, 1)
+    invalid_condition = (walker_parameter_arr < 0) | (walker_parameter_arr > 1)
+    if np.any(invalid_condition):
+        raise ValueError(
+            "Walker parameter (γ') must be in the range (0, 1). "
+            "Invalid values detected in the input data."
+        )
+
+    return (stress_amp_arr + mean_stress_arr) ** (
+        1 - walker_parameter_arr
+    ) * stress_amp_arr**walker_parameter_arr
