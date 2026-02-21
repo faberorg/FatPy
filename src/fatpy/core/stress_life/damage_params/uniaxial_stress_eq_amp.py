@@ -5,6 +5,9 @@ stress effect through an equivalent stress amplitude approach. By adjusting the 
 amplitude to account for mean stress influences—using models such as Goodman, Gerber,
 or Soderberg—they enable more accurate fatigue life predictions where mean stresses
 significantly affect material endurance.
+
+For more information you can refer to the following resource:
+https://doi.org/10.1051/matecconf/201816510018
 """
 
 import warnings
@@ -324,8 +327,9 @@ def calc_stress_eq_amp_linear(
         stress_amp: Array-like of stress amplitudes. Leading dimensions are preserved.
         mean_stress: Array-like of mean stresses. Must be broadcastable with
             stress_amp. Leading dimensions are preserved.
-        stress_parameter_M: Array-like of material stress parameters M. Must be broadcastable
-            with stress_amp and mean_stress. Leading dimensions are preserved.
+        stress_parameter_M: Array-like of material stress parameters M.
+            Must be broadcastable with stress_amp and mean_stress.
+            Leading dimensions are preserved.
 
     Returns:
             Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
