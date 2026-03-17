@@ -563,10 +563,7 @@ def calc_stress_eq_amp_swt(
         The SWT equivalent stress amplitude is calculated as:
 
         $$
-        \begin{align*}
         \sigma_{aeq} = \sqrt{\sigma_{a} \cdot (\sigma_{m} + \sigma_{a})} \\
-        \text{where: } \sigma_{m} < 0 \rightarrow \sigma_{aeq} = \sigma_{a} \\
-        \end{align*}
         $$
 
     Args:
@@ -579,8 +576,6 @@ def calc_stress_eq_amp_swt(
             rules for the input arrays.
 
     Raises:
-        Warning: If mean stress is compressive (σₘ < 0), a warning is issued and
-            the equivalent stress amplitude is set equal to the stress amplitude (σₐ)
         ValueError: If stress amplitude is negative.
         ValueError: If the validity condition σₐ > |σₘ| is not satisfied.
 
@@ -607,14 +602,6 @@ def calc_stress_eq_amp_swt(
             "satisfied for some data points. The SWT approach may not be "
             "appropriate for compressive-dominated loading conditions."
         )
-
-    if np.any(mean_stress_arr < 0):
-        warnings.warn(
-            r"Mean stress is compressive, $\sigma_{aeq} = \sigma_a$  was used!",
-            UserWarning,
-            stacklevel=2,
-        )
-        return stress_amp_arr
 
     return np.sqrt(stress_amp_arr * (mean_stress_arr + stress_amp_arr))
 

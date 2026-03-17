@@ -290,10 +290,7 @@ class TestCalcStressEqAmpSwt:
     def test_basic_calculation(self) -> None:
         for mean_stress, stress_amp in [(-100.0, 180.0), (100.0, 180.0)]:
             result = calc_stress_eq_amp_swt(stress_amp, mean_stress)
-            if mean_stress < 0.0:
-                expected = stress_amp
-            else:
-                expected = np.sqrt((stress_amp + mean_stress) * stress_amp)
+            expected = np.sqrt((stress_amp + mean_stress) * stress_amp)
         assert_allclose(result, expected)
 
     def test_array_inputs(
@@ -309,13 +306,8 @@ class TestCalcStressEqAmpSwt:
             calc_stress_eq_amp_swt(-100.0, 500.0)
 
     def test_swt_validity_condition(self) -> None:
-
         with pytest.raises(ValueError):
             calc_stress_eq_amp_swt(400.0, -500.0)
-
-    def test_swt_negative_mean_stress_warning(self) -> None:
-        with pytest.warns(UserWarning):
-            calc_stress_eq_amp_swt(100.0, -50.0)
 
 
 class TestCalcStressEqAmpWalker:
