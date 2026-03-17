@@ -109,7 +109,7 @@ def calc_stress_eq_amp_bagci(
     ratio = np.abs(mean_stress_arr) / yield_strength_arr
     if np.any(ratio == 1.0):
         raise ValueError(
-            "Mean stress equals yield strength this would result in "
+            "Mean stress magnitude equals yield strength this would result in "
             "infinite equivalent stress amplitude."
         )
     elif np.any(ratio > 1.0):
@@ -171,8 +171,8 @@ def calc_stress_eq_amp_gerber(
 
     if np.any(ratio == 1.0):
         raise ValueError(
-            "Mean stress equals ultimate tensile strength this would result in "
-            "infinite equivalent stress amplitude."
+            "Mean stress magnitude equals ultimate tensile strength this would "
+            "result in infinite equivalent stress amplitude."
         )
     elif np.any(ratio > 1.0):
         warnings.warn(
