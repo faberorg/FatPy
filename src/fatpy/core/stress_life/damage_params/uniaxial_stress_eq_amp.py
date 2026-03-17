@@ -332,8 +332,8 @@ def calc_stress_eq_amp_linear(
             Leading dimensions are preserved.
 
     Returns:
-            Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
-                rules for the input arrays.
+        Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
+            rules for the input arrays.
 
     Raises:
         Warning: If mean stress exceeds material stress parameter M.
