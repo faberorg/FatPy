@@ -86,7 +86,7 @@ class WholerPowerLaw(SN_Curve):
         if np.any(life_array <= 0):
             raise ValueError("life must contain only positive values")
 
-        return np.power((self.SN_C) / life_array, 1 / self.SN_w)
+        return (self.SN_C / life_array) ** (1 / self.SN_w)
 
     def life(self, stress_amp: ArrayLike) -> ArrayLike:
         """Calculate fatigue life from stress amplitude using the Wöhler power law.
@@ -107,7 +107,7 @@ class WholerPowerLaw(SN_Curve):
         if np.any(stress_amp_array <= 0):
             raise ValueError("stress_amp must contain only positive values")
 
-        return self.SN_C / np.power(stress_amp, self.SN_w)
+        return self.SN_C / (stress_amp**self.SN_w)
 
 
 class WohlerKohoutVechet(SN_Curve):
@@ -151,8 +151,9 @@ class WohlerKohoutVechet(SN_Curve):
     def stress_amp(self, life: ArrayLike) -> ArrayLike:
         """Calculate stress amplitude from fatigue life using Kohout-Věchet method.
 
-        Uses the forward relationship:
-        σ_a = A * (C * (N + B) / (N + C))^β
+        ??? abstract "Math Equations"
+            Uses the forward relationship:
+            σ_a = A * (C * (N + B) / (N + C))^β
 
         Parameters:
         life : ArrayLike
@@ -170,24 +171,35 @@ class WohlerKohoutVechet(SN_Curve):
         if np.any(life_array <= 0):
             raise ValueError("life must contain only positive values")
 
-        # Calculate stress amplitude
-        stress_amp = self.A * np.power(
-            (self.C * (life_array + self.B)) / (life_array + self.C), self.beta
+        stress_amp = (
+            self.A
+            * (self.C * ((life_array + self.B) / (life_array + self.C))) ** self.beta
         )
 
         return stress_amp
 
-    def life(self, stress_amp: ArrayLike, max_iterations: int = 100) -> ArrayLike:
+    def life(
+        self,
+        stress_amp: ArrayLike,
+        max_iterations: int = 100,
+        tolerance: float = 1e-6,
+        start_life_guess: float = 1e5,
+    ) -> ArrayLike:
         """Calculate fatigue life from stress amplitude using Newton solver.
 
-        Uses a vectorized Newton solver to find the inverse of:
-        σ_a = A * (C * (N + B) / (N + C))^β
+        ??? abstract "Math Equations"
+            Uses a vectorized Newton solver to find the inverse of:
+            σ_a = A * (C * (N + B) / (N + C))^β
 
         Parameters:
         stress_amp : ArrayLike
             The stress amplitude (σ_a) in MPa. Must be positive.
         max_iterations : int, optional
             Maximum number of Newton iterations. Default is 100.
+        tolerance : float, optional
+            Tolerance for convergence. Default is 1e-6.
+        start_life_guess : float, optional
+            Initial guess for the fatigue life. Default is 1e5.
 
         Returns:
         ArrayLike
@@ -202,35 +214,34 @@ class WohlerKohoutVechet(SN_Curve):
             raise ValueError("stress_amp must contain only positive values")
 
         # Initialize solution array with starting guess
-        N = np.full_like(stress_amp_array, 1e5, dtype=np.float64)
+        N = np.full_like(stress_amp_array, start_life_guess, dtype=np.float64)
 
-        # Newton solver parameters
-        tolerance = 1e-6
-
-        # Pre-calculate constants for efficiency
-        derivative_constant = self.A * self.beta * np.power(self.C, self.beta)
+        # Pre-calculate constants
+        derivative_constant = self.A * self.beta * (self.C**self.beta)
 
         converged = False
         for _ in range(max_iterations):
             # Calculate function value f(N) = A * (C*(N+B)/(N+C))^β - σ_a
             f_N = (
-                self.A * np.power((self.C * (N + self.B)) / (N + self.C), self.beta)
+                self.A * (self.C * (N + self.B) / (N + self.C)) ** self.beta
                 - stress_amp_array
             )
 
             # Calculate derivative f'(N) = A*β*C^β*(N+B)^(β-1)*(C-B)/(N+C)^(β+1)
-            f_prime_N = derivative_constant * (
-                (np.power(N + self.B, self.beta - 1) * (self.C - self.B))
-                / np.power(N + self.C, self.beta + 1)
-            )
+            f_prime_N = (
+                derivative_constant
+                * ((N + self.B) ** (self.beta - 1))
+                * (self.C - self.B)
+            ) / ((N + self.C) ** (self.beta + 1))
 
             # Avoid division by zero
             f_prime_N = np.where(np.abs(f_prime_N) < 1e-15, 1e-15, f_prime_N)
+            # TODO limits based on float type or catch the case where derivative is zero, ie. B=C should B<C checked since the KV model expects it?
 
             # Newton update
             N_new = N - f_N / f_prime_N
 
-            # Clamp negative values to small positive number
+            # TODO Clamp negative values to small positive number
             N_new = np.maximum(N_new, 1.0)
 
             # Check convergence
