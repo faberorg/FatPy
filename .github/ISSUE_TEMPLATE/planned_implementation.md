@@ -2,26 +2,33 @@
 name: Planned Implementation
 about: Document a planned feature implementation for the project roadmap
 title: '[IMPL] '
-labels: 'planned-implementation'
+labels: 'planned-implementation', 'WIP'
 assignees: ''
 
 ---
+<!-- TEMPLATE GUIDELINE
 
-<!-- All comments do not appear in the rendered issue and does not need to be removed -->
+MANDATORY blocks must be completed.
+OPTIONAL blocks are provided inside HTML comments: `< !--`, `-- >`
+    remove comment markers to enable
+
+IMPORTANT:
+Function docstrings are our documentation source of truth, so all relevant information should be included there.
+
+Any important information captured in the issue should be reflected in the function signature, docstring, and/or test cases to ensure it is not lost during implementation.
+-->
 
 ## ℹ️ General Information
 
-<!-- This section reflects current planning -->
+<!-- MANDATORY: this section reflects current planning -->
 
-**Component Name:**
+**Component Name:** some_name
 
-**Component Location:**
+**Component Location:** src/FatPy/some_params.py
 
-**Suggested Python Name:**
+**Suggested Python Name:** calc_some_param <!-- should be verified against existing naming conventions, nomenclature table -->
 
-**FABER WG Relation:**
-
-**Brief Description:**
+**FABER WG Relation:** WG6.1
 
 **Priority:** (1-10 scale)
 
@@ -29,56 +36,136 @@ assignees: ''
 
 **Estimated Effort:** (1-10 scale)
 
-**Dependencies:**
+**Dependencies:** <!-- List any dependencies on other components, libraries, or tools -->
 
--
--
+**Related Issues:** <!-- Link to related issues, if any  using #Number_of_issue-->
 
 ---
 
-## Implementation Details
+<!-- MANDATORY -->
+## 📋 Problem Description
 
-### 📋 Specification
+Problem description goes here.
 
-#### Mathematical Formulation
+### Mathematical Formulation
+
 <!-- Describe algorithms, equations, and mathematical relationships -->
+$\text{Simple mathematical formulation here}$
 
-#### Inputs
-<!-- List and describe all required inputs -->
+$$
+\text{Or more complex} \\
+\text{mathematical formulation here}
+$$
+
+**Latex text:**
+<!-- copy the formula inside the code block below for easier copy-pasting -->
+```plaintext
+$\text{Simple mathematical formulation here}$
+
+$$
+\text{Or more complex} \\
+\text{mathematical formulation here}
+$$
+```
+
+<!-- MANDATORY -->
+## 🔧 Implementation Guideline
+
+
+<!-- OPTIONAL
+### Abstraction / Interface Design
+
+Reference existing abstraction if any (base class, protocol, interface, abstract method).
+If no abstraction exists, explicitly state: "No existing abstraction applies."
+
+**Abstraction Reference:**
+Example: src/fatpy/core/strain_life/base_methods.py::BaseMethod
+
+-->
+
+### Function Signature
+
+<!--
+Change function signature
+- Use type hints for all parameters and return types
+- Include default values for optional parameters
+- Provide a docstring that describes the function's purpose, parameters, return value, and any
+    exceptions it may raise
+-->
+
+```python
+import numpy as np
+from numpy.typing import ArrayLike, Optional, NDArray
+
+def function_name(
+    input1: ArrayLike,
+    input2: Optional[ArrayLike] = None,
+    param1: float = 0.5,
+    param2: int = 10
+) -> NDArray[np.float64]:
+    """Brief description of the function.
+
+    Some more detailed description of the function's purpose and behavior.
+
+    Args:
+        input1: Description of the first input.
+        input2: Description of the second input (optional).
+        param1: Description of the first parameter (default is 0.5).
+        param2: Description of the second parameter (default is 10).
+
+    Returns:
+        Description of the output.
+    
+    Raises:
+        ValueError: Description of when this error is raised.
+        TypeError: Description of when this error is raised.    
+    """
+    pass  # Implementation goes here
+```
+
+<!-- OPTIONAL
+### Inputs
+
 | Parameter | Symbol | Type | Description | Units | Constraints |
 |-----------|--------|------|-------------|-------|-------------|
 |           |        |      |             |       |             |
-|           |        |      |             |       |             |
 
-#### Outputs
-<!-- List and describe expected outputs -->
+-->
+
+
+<!-- OPTIONAL
+### Outputs
+
 | Parameter | Symbol | Type | Description | Units | Range |
 |-----------|--------|------|-------------|-------|-------|
 |           |        |      |             |       |       |
-|           |        |      |             |       |       |
 
-#### Expected Behavior
-<!-- Describe the expected behavior, step-by-step process -->
+-->
 
-### 🔧 Implementation Guidelines
+<!-- OPTIONAL
+### Expected Behavior
 
-#### Function Signature
+- expected behavior
+- input assumptions
+- computation path
+- boundary behavior
+- additional requirements
 
-```python
-# Suggested function signature
-def function_name():
-    pass
-```
+<!--
 
-#### Code Structure
+<!-- OPTIONAL
+### Error Handling
 
-<!-- Suggestions for implementation approach -->
+Document validation and failure behavior if applicable:
+- Input validation rules
+- Raised exceptions and when they occur
+- Message style for user-facing errors
+- Behavior for non-fatal issues (warning vs error)
 
-#### Error Handling
+--> 
 
-<!-- Required error handling and validation -->
-
-### ✅ Validation & Testing
+<!-- MANDATORY -->
+## ✅ Validation & Testing
 
 #### Test Cases
 
@@ -86,33 +173,20 @@ def function_name():
 
 | Test Case | Inputs | Expected Outputs | Notes |
 |-----------|--------|------------------|-------|
-| Example 1 | | | |
-| Example 2 | | | |
+| Example 1 |        |                  |       |
+| Example 2 |        |                  |       |
 
-#### Validation Criteria
+### Acceptance Criteria
+<!-- Define clear acceptance criteria for the implementation -->
+- [ ] Implementation meets all specified requirements
+- [ ] Code is well-documented and follows style guidelines
+- [ ] All test cases pass successfully
+<!-- If additional criteria are needed, list them here -->
 
-<!-- How to validate the implementation is correct -->
+<!-- MANDATORY -->
+## 📚 References & Resources
 
-- [ ] Mathematical accuracy verified against literature
-- [ ] Edge cases handled appropriately
-- [ ] Output format matches specification
+<!-- MANDATORY: literature, papers, existing implementations, theory -->
+<!-- Ideally provide links to online resources -->
+- [Reference 1](https://example.com)
 
-### 📚 References & Resources
-
-<!-- Literature, papers, existing implementations, theory -->
-
-### 📝 Technical Notes
-
-<!-- Special considerations, performance requirements, edge cases -->
-
-#### Performance Considerations
-
--
-
-#### Edge Cases to Handle
-
--
-
-#### Special Requirements
-
--
