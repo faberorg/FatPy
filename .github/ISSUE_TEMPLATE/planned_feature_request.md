@@ -2,7 +2,7 @@
 name: Planned Implementation
 about: Document a planned feature implementation for the project roadmap
 title: ''
-labels: 'feature', 'WIP', `backlog`
+labels: 'WIP', `backlog`
 assignees: ''
 
 ---
