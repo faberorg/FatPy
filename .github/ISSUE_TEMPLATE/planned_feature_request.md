@@ -1,8 +1,8 @@
 ---
 name: Planned Implementation
 about: Document a planned feature implementation for the project roadmap
-title: '[IMPL] '
-labels: 'planned-implementation', 'WIP'
+title: ''
+labels: 'feature', 'WIP', `backlog`
 assignees: ''
 
 ---
