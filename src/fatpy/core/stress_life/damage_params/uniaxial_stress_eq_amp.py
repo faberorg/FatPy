@@ -94,52 +94,6 @@ def calc_stress_eq_amp_asme(
     return eq_stress_amp_arr
 
 
-def calc_stress_eq_amp_ASME(
-    stress_amp: ArrayLike | np.float64,
-    mean_stress: ArrayLike | np.float64,
-    yield_strength: ArrayLike | np.float64,
-) -> NDArray[np.float64]:
-    r"""Calculate equivalent stress amplitude using ASME criterion.
-
-    ??? info "ASME Use-case"
-        The ASME criterion accounts for mean stress effects in high-cycle fatigue
-        by modifying the stress amplitude based on the yield strength using a
-        quadratic, square-root denominator relationship.
-
-    ??? abstract "Math Equations"
-        The ASME equivalent stress amplitude is calculated as:
-
-        $$
-        \sigma_{aeq}=\frac{\sigma_a}{\left[1-\left(\frac{\sigma_m}{R_e}\right)^2\right]^{1/2}}
-        $$
-
-    Args:
-        stress_amp: Array-like of stress amplitudes. Leading dimensions are preserved.
-        mean_stress: Array-like of mean stresses. Must be broadcastable with
-            stress_amp. Leading dimensions are preserved.
-        yield_strength: Array-like of yield strengths. Must be broadcastable with
-            stress_amp and mean_stress. Leading dimensions are preserved.
-
-    Raises:
-        ValueError: If yield strength is not positive.
-        ValueError: If mean stress magnitude is equal or greater to yield strength,
-            resulting in infinite equivalent stress amplitude.
-    """
-    stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
-    mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
-    yield_strength_arr = np.asarray(yield_strength, dtype=np.float64)
-
-    if np.any(yield_strength_arr <= 0):
-        raise ValueError("Yield strength must be positive")
-
-    # Check if mean stress approaches or exceeds material parameter
-    ratio = np.abs(mean_stress_arr) / yield_strength_arr
-    if np.any(ratio >= 1.0):
-        raise ValueError("Mean stress magnitude equal or greater than yield strength.")
-
-    return stress_amp_arr / (1 - (mean_stress_arr / yield_strength_arr) ** 2) ** 0.5
-
-
 def calc_stress_eq_amp_bagci(
     stress_amp: ArrayLike | np.float64,
     mean_stress: ArrayLike | np.float64,
@@ -202,10 +156,6 @@ def calc_stress_eq_amp_gerber(
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Gerber criterion.
 
-    ??? info "Gerber Use-case"
-        The Gerber criterion accounts for mean stress effects in high-cycle fatigue
-        by modifying the stress amplitude based on the ultimate tensile strength.
-
     ??? abstract "Math Equations"
         The Gerber equivalent stress amplitude is calculated as:
 
@@ -264,11 +214,6 @@ def calc_stress_eq_amp_goodman(
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Goodman criterion.
 
-    ??? info "Goodman Use-case"
-        The Goodman criterion accounts for mean stress effects in high-cycle fatigue
-        by modifying the stress amplitude based on the ultimate tensile strength using
-        a linear relationship.
-
     ??? abstract "Math Equations"
         The Goodman equivalent stress amplitude is calculated as:
 
@@ -325,11 +270,6 @@ def calc_stress_eq_amp_half_slope(
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using a half-slope mean stress correction.
 
-    ??? info "Half-slope Use-case"
-        A half-slope mean stress correction can be applied to account for mean
-        stress effects in high-cycle fatigue by modifying the stress amplitude based
-        on the ultimate tensile strength.
-
     ??? abstract "Math Equations"
         The half-slope corrected equivalent stress amplitude is calculated as:
 
@@ -350,7 +290,7 @@ def calc_stress_eq_amp_half_slope(
             rules for the input arrays.
 
     Raises:
-        Warning: If mean stress exceeds double of the ultimate tensile strength.
+        Warning: If mean stress exceeds the ultimate tensile strength.
         ValueError: If ultimate tensile strength is not positive.
         ValueError: If mean stress is equal to double of the ultimate tensile strength,
             resulting in zero equivalent stress amplitude.
@@ -364,15 +304,15 @@ def calc_stress_eq_amp_half_slope(
         raise ValueError("Ultimate tensile strength must be positive")
 
     # Check if mean stress approaches or exceeds material parameter
-    ratio = mean_stress_arr / (2 * ult_tensile_strength_arr)
-    if np.any(ratio == 1.0):
+    ratio = mean_stress_arr / ult_tensile_strength_arr
+    if np.any(ratio == 2.0):
         raise ValueError(
-            "Mean stress equals half of the ultimate tensile strength this would result"
-            "in zero equivalent stress amplitude."
+            "Mean stress equals to double of the ultimate tensile strength this would "
+            "result in infinite equivalent stress amplitude."
         )
     elif np.any(ratio > 1.0):
         warnings.warn(
-            "Mean stress exceeds half of the ultimate tensile strength. ",
+            "Mean stress exceeds the ultimate tensile strength. ",
             UserWarning,
             stacklevel=2,
         )
@@ -385,11 +325,6 @@ def calc_stress_eq_amp_linear(
     stress_param_M: ArrayLike | np.float64,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using a linear mean stress correction.
-
-    ??? info "Linear Use-case"
-        A simple linear mean stress correction can be applied to account for mean
-        stress effects in high-cycle fatigue by modifying the stress amplitude based
-        on the ultimate tensile strength.
 
     ??? abstract "Math Equations"
         The linearly corrected equivalent stress amplitude is calculated as:
@@ -448,10 +383,6 @@ def calc_stress_eq_amp_morrow(
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Morrow criterion.
 
-    ??? info "Morrow Use-case"
-        The Morrow criterion accounts for mean stress effects in high-cycle fatigue
-        by modifying the stress amplitude based on the true fracture strength.
-
     ??? abstract "Math Equations"
         The Morrow equivalent stress amplitude is calculated as:
 
@@ -509,11 +440,6 @@ def calc_stress_eq_amp_soderberg(
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Soderberg criterion.
 
-    ??? info "Soderberg Use-case"
-        The Soderberg criterion accounts for mean stress effects in high-cycle fatigue
-        by modifying the stress amplitude based on the yield strength using a linear
-        relationship.
-
     ??? abstract "Math Equations"
         The Soderberg equivalent stress amplitude is calculated as:
 
@@ -568,10 +494,6 @@ def calc_stress_eq_amp_smith(
     ult_tensile_strength: ArrayLike | np.float64,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Smith criterion.
-
-    ??? info "Smith Use-case"
-        The Smith criterion accounts for mean stress effects in high-cycle fatigue
-        by modifying the stress amplitude based on the ultimate tensile strength.
 
     ??? abstract "Math Equations"
         The Smith equivalent stress amplitude is calculated as:
@@ -630,10 +552,6 @@ def calc_stress_eq_amp_swt(
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Smith-Watson-Topper parameter.
 
-    ??? info "SWT Use-case"
-        The Smith-Watson-Topper (SWT) parameter accounts for mean stress effects in
-        high-cycle fatigue by combining stress amplitude and maximum stress in the cycle
-
     ??? abstract "Math Equations"
         The SWT equivalent stress amplitude is calculated as:
 
@@ -652,10 +570,10 @@ def calc_stress_eq_amp_swt(
 
     Raises:
         ValueError: If stress amplitude is negative.
-        ValueError: If the validity condition σₐ > |σₘ| is not satisfied.
+        ValueError: If the validity condition σₐ + σₘ > 0 is not satisfied.
 
     ??? note "Validity Condition"
-        The SWT parameter is valid when $\sigma_a > |\sigma_m|$, ensuring that the
+        The SWT parameter is valid when $\sigma_a + \sigma_m > 0$, ensuring that the
         maximum stress in the cycle is positive (tensile). When this condition is
         not met, a ValueError is raised.
 
@@ -667,13 +585,12 @@ def calc_stress_eq_amp_swt(
     if np.any(stress_amp_arr < 0):
         raise ValueError("Stress amplitude must be non-negative")
 
-    # Check validity condition: σₐ > |σₘ|
-    abs_mean_stress = np.abs(mean_stress_arr)
-    invalid_condition = stress_amp_arr <= abs_mean_stress
+    # Check validity condition: σₐ + σₘ > 0
+    invalid_condition = stress_amp_arr + mean_stress_arr <= 0
 
     if np.any(invalid_condition):
         raise ValueError(
-            "Smith-Watson-Topper parameter validity condition (σₐ > |σₘ|) not "
+            "Smith-Watson-Topper parameter validity condition (σₐ + σₘ > 0) not "
             "satisfied for some data points. The SWT approach may not be "
             "appropriate for compressive-dominated loading conditions."
         )
@@ -687,11 +604,6 @@ def calc_stress_eq_amp_walker(
     walker_param: ArrayLike | np.float64,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Walker criterion.
-
-    ??? info "Walker Use-case"
-        The Walker criterion accounts for mean stress effects in high-cycle fatigue
-        by modifying by combining stress amplitude and maximum stress in the cycle and
-        utilizing a material specific exponent - the Walker parameter (γ').
 
     ??? abstract "Math Equations"
         The Walker equivalent stress amplitude is calculated as:
@@ -712,17 +624,38 @@ def calc_stress_eq_amp_walker(
             rules for the input arrays.
 
     Raises:
+        ValueError: If stress amplitude is negative.
+        ValueError: If the validity condition σₐ + σₘ > 0 is not satisfied.
         ValueError: If input arrays cannot be broadcast together or when the
             condition γ' in (0, 1) is not satisfied.
+
+    ??? note "Validity Condition"
+        The Walker method is valid when $\sigma_a + \sigma_m > 0$, ensuring that the
+        maximum stress in the cycle is positive (tensile). When this condition is
+        not met, a ValueError is raised.
     """
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
     mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
     walker_param_arr = np.asarray(walker_param, dtype=np.float64)
 
-    # Check validity of Walker parameter: γ' in range (0, 1)
-    invalid_condition = (walker_param_arr < 0) | (walker_param_arr > 1)
+    # Check for negative stress amplitudes
+    if np.any(stress_amp_arr < 0):
+        raise ValueError("Stress amplitude must be non-negative")
+
+    # Check validity condition: σₐ + σₘ > 0
+    invalid_condition = stress_amp_arr + mean_stress_arr <= 0
+
     if np.any(invalid_condition):
-        raise ValueError("Walker parameter (γ') must be in the range (0, 1). ")
+        raise ValueError(
+            "Walker method validity condition (σₐ + σₘ > 0) not "
+            "satisfied for some data points. The Walker approach may not be "
+            "appropriate for compressive-dominated loading conditions."
+        )
+
+    # Check validity of Walker parameter: γ' in range (0, 1)
+    invalid_condition = (walker_param_arr <= 0) | (walker_param_arr >= 1)
+    if np.any(invalid_condition):
+        raise ValueError("Walker parameter (γ') must be in the range [0, 1]. ")
 
     return (stress_amp_arr + mean_stress_arr) ** (
         1 - walker_param_arr
