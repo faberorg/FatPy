@@ -12,6 +12,7 @@ from numpy.testing import assert_allclose
 from numpy.typing import NDArray
 
 from fatpy.core.stress_life.damage_params.uniaxial_stress_eq_amp import (
+    ASME_mean_stress_correction_method,
     calc_stress_eq_amp_ASME,
     calc_stress_eq_amp_bagci,
     calc_stress_eq_amp_gerber,
@@ -31,6 +32,38 @@ def array_inputs() -> Tuple[NDArray[np.float64], NDArray[np.float64]]:
     stress_amp = np.array([150.0, 500.0, 80.0, 200.0])
     mean_stress = np.array([100.0, 150.0, 30.0, 0.0])
     return stress_amp, mean_stress
+
+
+class TestASMEMeanStressCorrectionMethod:
+    def test_basic_calculation(self) -> None:
+        result = ASME_mean_stress_correction_method(180.0, 100.0, 500.0)
+        expected = 180.0 / np.sqrt(1.0 - (100.0 / 500.0) ** 2)
+        assert_allclose(result, expected)
+
+    def test_array_inputs(
+        self,
+        array_inputs: Tuple[NDArray[np.float64], NDArray[np.float64]],
+    ) -> None:
+        stress_amp, mean_stress = array_inputs
+        result = ASME_mean_stress_correction_method(stress_amp, mean_stress, 700.0)
+        assert result.shape == (4,)
+
+    def test_invalid_yield_strength(self) -> None:
+        with pytest.raises(ValueError):
+            for ys in [0.0, -500.0]:
+                ASME_mean_stress_correction_method(100.0, 50.0, ys)
+
+    def test_mean_stress_yield_strength_comparison_error(self) -> None:
+        with pytest.raises(ValueError):
+            for ms in [500.0, -500.0, 600.0, -600.0]:
+                ASME_mean_stress_correction_method(100.0, ms, 500.0)
+
+    def test_negative_mean_stress_no_correction(self) -> None:
+        result = ASME_mean_stress_correction_method(
+            180.0, -100.0, 500.0, allow_neg_mean_stress=False
+        )
+        expected = 180.0
+        assert_allclose(result, expected)
 
 
 class TestCalcStressEqAmpASME:

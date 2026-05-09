@@ -10,13 +10,88 @@ For more information you can refer to the following resource:
 https://doi.org/10.1051/matecconf/201816510018
 """
 
-# TODO: Excel calls the methods MEan Stress correction Methods - correction_method or mean_stress_correction_method do we change it here?
-# TODO? USe case block can be deleted, do we add any details or should the mathematical formula be enough?
-
 import warnings
 
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
+
+# TODO: wrapper functionality with allowing negative mean stresses
+
+
+def _asme_correction_method(
+    stress_amp: ArrayLike | np.float64,
+    mean_stress: ArrayLike | np.float64,
+    yield_strength: ArrayLike | np.float64,  # TODO? Array or float?
+) -> NDArray[np.float64]:
+    """Calculate equivalent stress amplitude using ASME criterion."""
+    stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
+    mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
+    yield_strength_arr = np.asarray(yield_strength, dtype=np.float64)
+
+    asme_eq_amp = (
+        stress_amp_arr / (1 - (mean_stress_arr / yield_strength_arr) ** 2) ** 0.5
+    )
+
+    return asme_eq_amp
+
+
+def calc_stress_eq_amp_asme(
+    stress_amp: ArrayLike | np.float64,
+    mean_stress: ArrayLike | np.float64,
+    yield_strength: ArrayLike | np.float64,
+    allow_neg_mean_stress: bool = True,
+) -> NDArray[np.float64]:
+    r"""Calculate equivalent stress amplitude using ASME criterion.
+
+    ??? abstract "Math Equations"
+        The ASME equivalent stress amplitude is calculated as:
+
+        $$
+        \sigma_{aeq}=\frac{\sigma_a}{\left[1-\left(\frac{\sigma_m}{R_e}\right)^2\right]^{1/2}}
+        $$
+
+    Args:
+        stress_amp(ArrayLike): The stress amplitude values.
+            Leading dimensions are preserved.
+        mean_stress(ArrayLike): The mean stress values. Must be broadcastable with
+            stress_amp. Leading dimensions are preserved.
+        yield_strength(ArrayLike): The yield strength values. Must be broadcastable with
+            stress_amp and mean_stress. Leading dimensions are preserved.
+        allow_neg_mean_stress(bool, optional): A flag to control the calculation method.
+            Defaults to True. If set to False, the equivalent stress amplitude will be
+            set equal to the original stress amplitude for cases where the mean stress
+            is negative, ignoring the correction.
+
+    Raises:
+        ValueError: If yield strength is not positive.
+        ValueError: If mean stress magnitude is equal or greater to yield strength,
+            resulting in infinite equivalent stress amplitude.
+
+    Returns:
+        NDArray[np.float64]: The calculated equivalent amplitude stress values.
+    """
+    stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
+    mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
+    yield_strength_arr = np.asarray(yield_strength, dtype=np.float64)
+
+    if np.any(yield_strength_arr <= 0):
+        raise ValueError("Yield strength must be positive")
+
+    # Check if mean stress approaches or exceeds material parameter
+    ratio = np.abs(mean_stress_arr) / yield_strength_arr
+    if np.any(ratio >= 1.0):
+        raise ValueError("Mean stress magnitude equal or greater than yield strength.")
+
+    eq_stress_amp_arr = _asme_correction_method(
+        stress_amp_arr, mean_stress_arr, yield_strength_arr
+    )
+
+    if not allow_neg_mean_stress:
+        eq_stress_amp_arr = np.where(
+            mean_stress_arr < 0, stress_amp_arr, eq_stress_amp_arr
+        )
+
+    return eq_stress_amp_arr
 
 
 def calc_stress_eq_amp_ASME(
@@ -28,8 +103,8 @@ def calc_stress_eq_amp_ASME(
 
     ??? info "ASME Use-case"
         The ASME criterion accounts for mean stress effects in high-cycle fatigue
-        by modifying the stress amplitude based on the yield strength using a linear
-        relationship.
+        by modifying the stress amplitude based on the yield strength using a
+        quadratic, square-root denominator relationship.
 
     ??? abstract "Math Equations"
         The ASME equivalent stress amplitude is calculated as:
@@ -71,11 +146,6 @@ def calc_stress_eq_amp_bagci(
     yield_strength: ArrayLike | np.float64,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Bagci criterion.
-
-    ??? info "Bagci Use-case"
-        The Bagci criterion accounts for mean stress effects in high-cycle fatigue
-        by modifying the stress amplitude based on the yield strength using a linear
-        relationship.
 
     ??? abstract "Math Equations"
         The Bagci equivalent stress amplitude is calculated as:
@@ -271,17 +341,18 @@ def calc_stress_eq_amp_half_slope(
         stress_amp: Array-like of stress amplitudes. Leading dimensions are preserved.
         mean_stress: Array-like of mean stresses. Must be broadcastable with
             stress_amp. Leading dimensions are preserved.
-        ult_tensile_strength: Array-like of ultimate tensile strengths. Must be broadcastable
-            with stress_amp and mean_stress. Leading dimensions are preserved.
+        ult_tensile_strength: Array-like of ultimate tensile strengths. Must be
+            broadcastable with stress_amp and mean_stress. Leading dimensions are
+            preserved.
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
             rules for the input arrays.
 
     Raises:
-        Warning: If mean stress exceeds half of the ultimate tensile strength.
+        Warning: If mean stress exceeds double of the ultimate tensile strength.
         ValueError: If ultimate tensile strength is not positive.
-        ValueError: If mean stress is equal to half of the ultimate tensile strength,
+        ValueError: If mean stress is equal to double of the ultimate tensile strength,
             resulting in zero equivalent stress amplitude.
 
     """
