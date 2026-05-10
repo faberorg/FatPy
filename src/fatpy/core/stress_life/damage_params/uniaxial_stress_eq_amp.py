@@ -2,12 +2,14 @@
 
 Contains criteria that address uniaxial high-cycle fatigue by incorporating the mean
 stress effect through an equivalent stress amplitude approach. By adjusting the stress
-amplitude to account for mean stress influences—using models such as Goodman, Gerber,
-or Soderberg—they enable more accurate fatigue life predictions where mean stresses
+amplitude to account for mean stress influences using models such as Goodman, Gerber,
+or Soderberg. They enable more accurate fatigue life predictions where mean stresses
 significantly affect material endurance.
 
 For more information you can refer to the following resource:
-https://doi.org/10.1051/matecconf/201816510018
+
+[PAPUGA, Jan, et al. Mean stress effect in stress-life fatigue prediction re-evaluated.
+In: MATEC web of conferences. EDP Sciences, 2018. p. 10018.](https://doi.org/10.1051/matecconf/201816510018).
 """
 
 import warnings
@@ -15,13 +17,11 @@ import warnings
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
 
-# TODO: wrapper functionality with allowing negative mean stresses
-
 
 def _asme_correction_method(
     stress_amp: ArrayLike | np.float64,
     mean_stress: ArrayLike | np.float64,
-    yield_strength: ArrayLike | np.float64,  # TODO? Array or float?
+    yield_strength: ArrayLike | np.float64,
 ) -> NDArray[np.float64]:
     """Calculate equivalent stress amplitude using ASME criterion."""
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
@@ -51,13 +51,13 @@ def calc_stress_eq_amp_asme(
         $$
 
     Args:
-        stress_amp(ArrayLike): The stress amplitude values.
+        stress_amp: The stress amplitude values.
             Leading dimensions are preserved.
-        mean_stress(ArrayLike): The mean stress values. Must be broadcastable with
+        mean_stress: The mean stress values. Must be broadcastable with
             stress_amp. Leading dimensions are preserved.
-        yield_strength(ArrayLike): The yield strength values. Must be broadcastable with
+        yield_strength: The yield strength values. Must be broadcastable with
             stress_amp and mean_stress. Leading dimensions are preserved.
-        allow_neg_mean_stress(bool, optional): A flag to control the calculation method.
+        allow_neg_mean_stress: A flag to control the calculation method.
             Defaults to True. If set to False, the equivalent stress amplitude will be
             set equal to the original stress amplitude for cases where the mean stress
             is negative, ignoring the correction.
@@ -68,7 +68,8 @@ def calc_stress_eq_amp_asme(
             resulting in infinite equivalent stress amplitude.
 
     Returns:
-        NDArray[np.float64]: The calculated equivalent amplitude stress values.
+        Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
+            rules for the input arrays.
     """
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
     mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
@@ -79,6 +80,7 @@ def calc_stress_eq_amp_asme(
 
     # Check if mean stress approaches or exceeds material parameter
     ratio = np.abs(mean_stress_arr) / yield_strength_arr
+
     if np.any(ratio >= 1.0):
         raise ValueError("Mean stress magnitude equal or greater than yield strength.")
 
@@ -86,6 +88,7 @@ def calc_stress_eq_amp_asme(
         stress_amp_arr, mean_stress_arr, yield_strength_arr
     )
 
+    # If allow_neg_mean_stress is False, set equivalent stress amplitude = to original
     if not allow_neg_mean_stress:
         eq_stress_amp_arr = np.where(
             mean_stress_arr < 0, stress_amp_arr, eq_stress_amp_arr
@@ -94,10 +97,26 @@ def calc_stress_eq_amp_asme(
     return eq_stress_amp_arr
 
 
+def _bagci_correction_method(
+    stress_amp: ArrayLike | np.float64,
+    mean_stress: ArrayLike | np.float64,
+    yield_strength: ArrayLike | np.float64,
+) -> NDArray[np.float64]:
+    """Calculate equivalent stress amplitude using Bagci criterion."""
+    stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
+    mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
+    yield_strength_arr = np.asarray(yield_strength, dtype=np.float64)
+
+    bagci_eq_amp = stress_amp_arr / (1 - (mean_stress_arr / yield_strength_arr) ** 4)
+
+    return bagci_eq_amp
+
+
 def calc_stress_eq_amp_bagci(
     stress_amp: ArrayLike | np.float64,
     mean_stress: ArrayLike | np.float64,
     yield_strength: ArrayLike | np.float64,
+    allow_neg_mean_stress: bool = True,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Bagci criterion.
 
@@ -114,6 +133,10 @@ def calc_stress_eq_amp_bagci(
             stress_amp. Leading dimensions are preserved.
         yield_strength: Array-like of yield strengths. Must be broadcastable with
             stress_amp and mean_stress. Leading dimensions are preserved.
+        allow_neg_mean_stress: A flag to control the calculation method.
+            Defaults to True. If set to False, the equivalent stress amplitude will be
+            set equal to the original stress amplitude for cases where the mean stress
+            is negative, ignoring the correction.
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
@@ -134,6 +157,7 @@ def calc_stress_eq_amp_bagci(
 
     # Check if mean stress approaches or exceeds material parameter
     ratio = np.abs(mean_stress_arr) / yield_strength_arr
+
     if np.any(ratio == 1.0):
         raise ValueError(
             "Mean stress magnitude equals yield strength this would result in "
@@ -146,13 +170,41 @@ def calc_stress_eq_amp_bagci(
             stacklevel=2,
         )
 
-    return stress_amp_arr / (1 - (mean_stress_arr / yield_strength_arr) ** 4)
+    eq_stress_amp_arr = _bagci_correction_method(
+        stress_amp_arr, mean_stress_arr, yield_strength_arr
+    )
+
+    # If allow_neg_mean_stress is False, set equivalent stress amplitude = to original
+    if not allow_neg_mean_stress:
+        eq_stress_amp_arr = np.where(
+            mean_stress_arr < 0, stress_amp_arr, eq_stress_amp_arr
+        )
+
+    return eq_stress_amp_arr
+
+
+def _gerber_correction_method(
+    stress_amp: ArrayLike | np.float64,
+    mean_stress: ArrayLike | np.float64,
+    ult_tensile_strength: ArrayLike | np.float64,
+) -> NDArray[np.float64]:
+    """Calculate equivalent stress amplitude using Gerber criterion."""
+    stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
+    mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
+    ult_tensile_strength_arr = np.asarray(ult_tensile_strength, dtype=np.float64)
+
+    gerber_eq_amp = stress_amp_arr / (
+        1 - (mean_stress_arr / ult_tensile_strength_arr) ** 2
+    )
+
+    return gerber_eq_amp
 
 
 def calc_stress_eq_amp_gerber(
     stress_amp: ArrayLike | np.float64,
     mean_stress: ArrayLike | np.float64,
     ult_tensile_strength: ArrayLike | np.float64,
+    allow_neg_mean_stress: bool = True,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Gerber criterion.
 
@@ -168,8 +220,13 @@ def calc_stress_eq_amp_gerber(
         stress_amp: Array-like of stress amplitudes. Leading dimensions are preserved.
         mean_stress: Array-like of mean stresses. Must be broadcastable with
             stress_amp. Leading dimensions are preserved.
-        ult_tensile_strength: Array-like of ultimate tensile strengths. Must be broadcastable
-            with stress_amp and mean_stress. Leading dimensions are preserved.
+        ult_tensile_strength: Array-like of ultimate tensile strengths. Must be
+            broadcastable with stress_amp and mean_stress.
+            Leading dimensions are preserved.
+        allow_neg_mean_stress: A flag to control the calculation method.
+            Defaults to True. If set to False, the equivalent stress amplitude will be
+            set equal to the original stress amplitude for cases where the mean stress
+            is negative, ignoring the correction.
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
@@ -204,13 +261,39 @@ def calc_stress_eq_amp_gerber(
             stacklevel=2,
         )
 
-    return stress_amp_arr / (1 - (mean_stress_arr / ult_tensile_strength_arr) ** 2)
+        eq_stress_amp_arr = _gerber_correction_method(
+            stress_amp_arr, mean_stress_arr, ult_tensile_strength_arr
+        )
+
+    # If allow_neg_mean_stress is False, set equivalent stress amplitude = to original
+    if not allow_neg_mean_stress:
+        eq_stress_amp_arr = np.where(
+            mean_stress_arr < 0, stress_amp_arr, eq_stress_amp_arr
+        )
+
+    return eq_stress_amp_arr
+
+
+def _linear_correction_method(
+    stress_amp: ArrayLike | np.float64,
+    mean_stress: ArrayLike | np.float64,
+    material_parameter: ArrayLike | np.float64,
+) -> NDArray[np.float64]:
+    """Calculate equivalent stress amplitude using linear correction."""
+    stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
+    mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
+    material_parameter_arr = np.asarray(material_parameter, dtype=np.float64)
+
+    linear_eq_amp = stress_amp_arr / (1 - (mean_stress_arr / material_parameter_arr))
+
+    return linear_eq_amp
 
 
 def calc_stress_eq_amp_goodman(
     stress_amp: ArrayLike | np.float64,
     mean_stress: ArrayLike | np.float64,
     ult_tensile_strength: ArrayLike | np.float64,
+    allow_neg_mean_stress: bool = True,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Goodman criterion.
 
@@ -225,15 +308,20 @@ def calc_stress_eq_amp_goodman(
         stress_amp: Array-like of stress amplitudes. Leading dimensions are preserved.
         mean_stress: Array-like of mean stresses. Must be broadcastable with
             stress_amp. Leading dimensions are preserved.
-        ult_tensile_strength: Array-like of ultimate tensile strengths. Must be broadcastable
-            with stress_amp and mean_stress. Leading dimensions are preserved.
+        ult_tensile_strength: Array-like of ultimate tensile strengths. Must be
+            broadcastable with stress_amp and mean_stress.
+            Leading dimensions are preserved.
+        allow_neg_mean_stress: A flag to control the calculation method.
+            Defaults to True. If set to False, the equivalent stress amplitude will be
+            set equal to the original stress amplitude for cases where the mean stress
+            is negative, ignoring the correction.
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
             rules for the input arrays.
 
     Raises:
-        Warning: If mean stress exceeds ultimate tensile strength.
+        Warning: If mean stress magnitude exceeds ultimate tensile strength.
         ValueError: If ultimate tensile strength is not positive.
         ValueError: If mean stress is equal to ultimate tensile strength, resulting in
             infinite equivalent stress amplitude.
@@ -253,20 +341,31 @@ def calc_stress_eq_amp_goodman(
             "Mean stress equals ultimate tensile strength this would result in "
             "infinite equivalent stress amplitude."
         )
-    elif np.any(ratio > 1.0):
+    elif np.any(abs(ratio) > 1.0):
         warnings.warn(
             "Mean stress magnitude exceeds ultimate tensile strength. ",
             UserWarning,
             stacklevel=2,
         )
 
-    return stress_amp_arr / (1 - mean_stress_arr / ult_tensile_strength_arr)
+    eq_stress_amp_arr = _linear_correction_method(
+        stress_amp_arr, mean_stress_arr, ult_tensile_strength_arr
+    )
+
+    # If allow_neg_mean_stress is False, set equivalent stress amplitude = to original
+    if not allow_neg_mean_stress:
+        eq_stress_amp_arr = np.where(
+            mean_stress_arr < 0, stress_amp_arr, eq_stress_amp_arr
+        )
+
+    return eq_stress_amp_arr
 
 
 def calc_stress_eq_amp_half_slope(
     stress_amp: ArrayLike | np.float64,
     mean_stress: ArrayLike | np.float64,
     ult_tensile_strength: ArrayLike | np.float64,
+    allow_neg_mean_stress: bool = True,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using a half-slope mean stress correction.
 
@@ -284,16 +383,20 @@ def calc_stress_eq_amp_half_slope(
         ult_tensile_strength: Array-like of ultimate tensile strengths. Must be
             broadcastable with stress_amp and mean_stress. Leading dimensions are
             preserved.
+        allow_neg_mean_stress: A flag to control the calculation method.
+            Defaults to True. If set to False, the equivalent stress amplitude will be
+            set equal to the original stress amplitude for cases where the mean stress
+            is negative, ignoring the correction.
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
             rules for the input arrays.
 
     Raises:
-        Warning: If mean stress exceeds the ultimate tensile strength.
+        Warning: If mean stress magnitude exceeds the ultimate tensile strength.
         ValueError: If ultimate tensile strength is not positive.
         ValueError: If mean stress is equal to double of the ultimate tensile strength,
-            resulting in zero equivalent stress amplitude.
+            resulting in infinite equivalent stress amplitude.
 
     """
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
@@ -305,24 +408,37 @@ def calc_stress_eq_amp_half_slope(
 
     # Check if mean stress approaches or exceeds material parameter
     ratio = mean_stress_arr / ult_tensile_strength_arr
+
     if np.any(ratio == 2.0):
         raise ValueError(
             "Mean stress equals to double of the ultimate tensile strength this would "
             "result in infinite equivalent stress amplitude."
         )
-    elif np.any(ratio > 1.0):
+    elif np.any(abs(ratio) > 1.0):
         warnings.warn(
-            "Mean stress exceeds the ultimate tensile strength. ",
+            "Mean stress magnitude exceeds the ultimate tensile strength. ",
             UserWarning,
             stacklevel=2,
         )
-    return stress_amp_arr / (1 - mean_stress_arr / (2 * ult_tensile_strength_arr))
+
+    eq_stress_amp_arr = _linear_correction_method(
+        stress_amp_arr, mean_stress_arr, 2 * ult_tensile_strength_arr
+    )
+
+    # If allow_neg_mean_stress is False, set equivalent stress amplitude = to original
+    if not allow_neg_mean_stress:
+        eq_stress_amp_arr = np.where(
+            mean_stress_arr < 0, stress_amp_arr, eq_stress_amp_arr
+        )
+
+    return eq_stress_amp_arr
 
 
 def calc_stress_eq_amp_linear(
     stress_amp: ArrayLike | np.float64,
     mean_stress: ArrayLike | np.float64,
-    stress_param_M: ArrayLike | np.float64,
+    stress_param_m: ArrayLike | np.float64,
+    allow_neg_mean_stress: bool = True,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using a linear mean stress correction.
 
@@ -336,50 +452,69 @@ def calc_stress_eq_amp_linear(
         stress_amp: Array-like of stress amplitudes. Leading dimensions are preserved.
         mean_stress: Array-like of mean stresses. Must be broadcastable with
             stress_amp. Leading dimensions are preserved.
-        stress_param_M: Array-like of material stress parameters M.
+        stress_param_m: Array-like of material stress parameters M.
             Must be broadcastable with stress_amp and mean_stress.
             Leading dimensions are preserved.
+        allow_neg_mean_stress: A flag to control the calculation method.
+            Defaults to True. If set to False, the equivalent stress amplitude will be
+            set equal to the original stress amplitude for cases where the mean stress
+            is negative, ignoring the correction.
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
             rules for the input arrays.
 
     Raises:
-        Warning: If mean stress exceeds material stress parameter M.
+        Warning: If mean stress magnitude exceeds material stress parameter M.
         ValueError: If material stress parameter M is not positive.
         ValueError: If mean stress is equal to material stress parameter M, resulting in
-            zero equivalent stress amplitude.
-
+            infinite equivalent stress amplitude.
     """
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
     mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
-    stress_param_M_arr = np.asarray(stress_param_M, dtype=np.float64)
+    stress_param_m_arr = np.asarray(stress_param_m, dtype=np.float64)
 
-    if np.any(stress_param_M_arr <= 0):
+    if np.any(stress_param_m_arr <= 0):
         raise ValueError("Material stress parameter M must be positive")
+
     # Check if mean stress approaches or exceeds material parameter
-    ratio = mean_stress_arr / stress_param_M_arr
+    ratio = mean_stress_arr / stress_param_m_arr
 
     if np.any(ratio == 1.0):
         raise ValueError(
             "Mean stress equals material stress parameter M this would result in "
-            "zero equivalent stress amplitude."
+            "infinite equivalent stress amplitude."
         )
-    elif np.any(ratio > 1.0):
+    elif np.any(abs(ratio) > 1.0):
         warnings.warn(
-            "Mean stress exceeds material stress parameter M. ",
+            "Mean stress magnitude exceeds material stress parameter M. ",
             UserWarning,
             stacklevel=2,
         )
 
-    return stress_amp_arr / (1 - mean_stress_arr / stress_param_M_arr)
+    eq_stress_amp_arr = _linear_correction_method(
+        stress_amp_arr, mean_stress_arr, stress_param_m_arr
+    )
+
+    # If allow_neg_mean_stress is False, set equivalent stress amplitude = to original
+    if not allow_neg_mean_stress:
+        eq_stress_amp_arr = np.where(
+            mean_stress_arr < 0, stress_amp_arr, eq_stress_amp_arr
+        )
+
+    return eq_stress_amp_arr
 
 
-# todo! Check the name of the material parameter,issue calls it a true fracture stress but the paper calls it a fatigue strength coeficient, exel calls it a fat_strength_coef
+# todo! Check the name of the material parameter,issue calls it a true fracture stress
+# todo! but the paper calls it a fatigue strength coeficient,
+# todo! exel calls it a fat_strength_coef
+
+
 def calc_stress_eq_amp_morrow(
     stress_amp: ArrayLike | np.float64,
     mean_stress: ArrayLike | np.float64,
-    true_frac_stress: ArrayLike | np.float64,
+    fat_strength_coef: ArrayLike | np.float64,
+    allow_neg_mean_stress: bool = True,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Morrow criterion.
 
@@ -394,49 +529,64 @@ def calc_stress_eq_amp_morrow(
         stress_amp: Array-like of stress amplitudes. Leading dimensions are preserved.
         mean_stress: Array-like of mean stresses. Must be broadcastable with
             stress_amp. Leading dimensions are preserved.
-        true_frac_stress: Array-like of true tensile fracture stress. Must be
+        fat_strength_coef: Array-like of fatigue strength coefficients. Must be
             broadcastable with stress_amp and mean_stress. Leading dimensions
             are preserved.
+        allow_neg_mean_stress: A flag to control the calculation method.
+            Defaults to True. If set to False, the equivalent stress amplitude will be
+            set equal to the original stress amplitude for cases where the mean stress
+            is negative, ignoring the correction.
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
             rules for the input arrays.
 
     Raises:
-        Warning: If mean stress exceeds true fracture stress.
-        ValueError: If true fracture stress is not positive.
-        ValueError: If mean stress is equal to true fracture stress, resulting in
+        Warning: If mean stress magnitude exceeds fatigue strength coefficient.
+        ValueError: If fatigue strength coefficient is not positive.
+        ValueError: If mean stress is equal to fatigue strength coefficient, resulting in
             infinite equivalent stress amplitude.
     """
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
     mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
-    true_frac_stress_arr = np.asarray(true_frac_stress, dtype=np.float64)
+    fat_strength_coef_arr = np.asarray(fat_strength_coef, dtype=np.float64)
 
-    if np.any(true_frac_stress_arr <= 0):
-        raise ValueError("True fracture stress must be positive")
+    if np.any(fat_strength_coef_arr <= 0):
+        raise ValueError("Fatigue strength coefficient must be positive")
 
     # Check if mean stress approaches or exceeds material parameter
-    ratio = mean_stress_arr / true_frac_stress_arr
+    ratio = mean_stress_arr / fat_strength_coef_arr
 
     if np.any(ratio == 1.0):
         raise ValueError(
-            "Mean stress equals true fracture stress this would result in "
+            "Mean stress equals fatigue strength coefficient this would result in "
             "infinite equivalent stress amplitude."
         )
-    elif np.any(ratio > 1.0):
+    elif np.any(np.abs(ratio) > 1.0):
         warnings.warn(
-            "Mean stress exceeds true fracture stress. ",
+            "Mean stress magnitude exceeds fatigue strength coefficient. ",
             UserWarning,
             stacklevel=2,
         )
 
-    return stress_amp_arr / (1 - mean_stress_arr / true_frac_stress_arr)
+    eq_stress_amp_arr = _linear_correction_method(
+        stress_amp_arr, mean_stress_arr, fat_strength_coef_arr
+    )
+
+    # If allow_neg_mean_stress is False, set equivalent stress amplitude = to original
+    if not allow_neg_mean_stress:
+        eq_stress_amp_arr = np.where(
+            mean_stress_arr < 0, stress_amp_arr, eq_stress_amp_arr
+        )
+
+    return eq_stress_amp_arr
 
 
 def calc_stress_eq_amp_soderberg(
     stress_amp: ArrayLike | np.float64,
     mean_stress: ArrayLike | np.float64,
     yield_strength: ArrayLike | np.float64,
+    allow_neg_mean_stress: bool = True,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Soderberg criterion.
 
@@ -453,13 +603,17 @@ def calc_stress_eq_amp_soderberg(
             stress_amp. Leading dimensions are preserved.
         yield_strength: Array-like of yield strengths. Must be broadcastable with
             stress_amp and mean_stress. Leading dimensions are preserved.
+        allow_neg_mean_stress: A flag to control the calculation method.
+            Defaults to True. If set to False, the equivalent stress amplitude will be
+            set equal to the original stress amplitude for cases where the mean stress
+            is negative, ignoring the correction.
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
             rules for the input arrays.
 
     Raises:
-        Warning: If mean stress exceeds yield strength.
+        Warning: If mean stress magnitude exceeds yield strength.
         ValueError: If yield strength is not positive.
         ValueError: If mean stress is equal to yield strength, resulting in
             infinite equivalent stress amplitude.
@@ -473,25 +627,54 @@ def calc_stress_eq_amp_soderberg(
 
     # Check if mean stress approaches or exceeds material parameter
     ratio = mean_stress_arr / yield_strength_arr
+
     if np.any(ratio == 1.0):
         raise ValueError(
             "Mean stress equals yield strength this would result in "
             "infinite equivalent stress amplitude."
         )
-    elif np.any(ratio > 1.0):
+    elif np.any(np.abs(ratio) > 1.0):
         warnings.warn(
-            "Mean stress exceeds yield strength. ",
+            "Mean stress magnitude exceeds yield strength. ",
             UserWarning,
             stacklevel=2,
         )
 
-    return stress_amp_arr / (1 - mean_stress_arr / yield_strength_arr)
+    eq_stress_amp_arr = _linear_correction_method(
+        stress_amp_arr, mean_stress_arr, yield_strength_arr
+    )
+
+    # If allow_neg_mean_stress is False, set equivalent stress amplitude = to original
+    if not allow_neg_mean_stress:
+        eq_stress_amp_arr = np.where(
+            mean_stress_arr < 0, stress_amp_arr, eq_stress_amp_arr
+        )
+
+    return eq_stress_amp_arr
+
+
+def _smith_correction_method(
+    stress_amp: ArrayLike | np.float64,
+    mean_stress: ArrayLike | np.float64,
+    ult_tensile_strength: ArrayLike | np.float64,
+) -> NDArray[np.float64]:
+    """Calculate equivalent stress amplitude using Smith criterion."""
+    stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
+    mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
+    ult_tensile_strength_arr = np.asarray(ult_tensile_strength, dtype=np.float64)
+
+    smith_eq_amp = (
+        stress_amp_arr * (1 + mean_stress_arr / ult_tensile_strength_arr)
+    ) / (1 - mean_stress_arr / ult_tensile_strength_arr)
+
+    return smith_eq_amp
 
 
 def calc_stress_eq_amp_smith(
     stress_amp: ArrayLike | np.float64,
     mean_stress: ArrayLike | np.float64,
     ult_tensile_strength: ArrayLike | np.float64,
+    allow_neg_mean_stress: bool = True,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Smith criterion.
 
@@ -507,15 +690,20 @@ def calc_stress_eq_amp_smith(
         stress_amp: Array-like of stress amplitudes. Leading dimensions are preserved.
         mean_stress: Array-like of mean stresses. Must be broadcastable with
             stress_amp. Leading dimensions are preserved.
-        ult_tensile_strength: Array-like of ultimate tensile strengths. Must be broadcastable
-            with stress_amp and mean_stress. Leading dimensions are preserved.
+        ult_tensile_strength: Array-like of ultimate tensile strengths. Must be
+            broadcastable with stress_amp and mean_stress.
+            Leading dimensions are preserved.
+        allow_neg_mean_stress: A flag to control the calculation method.
+            Defaults to True. If set to False, the equivalent stress amplitude will be
+            set equal to the original stress amplitude for cases where the mean stress
+            is negative, ignoring the correction.
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
             rules for the input arrays.
 
     Raises:
-        Warning: If mean stress exceeds ultimate tensile strength.
+        Warning: If mean stress magnitude exceeds ultimate tensile strength.
         ValueError: If ultimate tensile strength is not positive.
         ValueError: If mean stress is equal to ultimate tensile strength, resulting in
             infinite equivalent stress amplitude.
@@ -535,20 +723,44 @@ def calc_stress_eq_amp_smith(
             "Mean stress equals ultimate tensile strength this would result in "
             "infinite equivalent stress amplitude."
         )
-    elif np.any(ratio > 1.0):
+    elif np.any(np.abs(ratio) > 1.0):
         warnings.warn(
-            "Mean stress exceeds ultimate tensile strength. ",
+            "Mean stress magnitude exceeds ultimate tensile strength. ",
             UserWarning,
             stacklevel=2,
         )
-    return (stress_amp_arr * (1 + mean_stress_arr / ult_tensile_strength_arr)) / (
-        1 - mean_stress_arr / ult_tensile_strength_arr
+
+    eq_stress_amp_arr = _smith_correction_method(
+        stress_amp_arr, mean_stress_arr, ult_tensile_strength_arr
     )
+
+    # If allow_neg_mean_stress is False, set equivalent stress amplitude = to original
+    if not allow_neg_mean_stress:
+        eq_stress_amp_arr = np.where(
+            mean_stress_arr < 0, stress_amp_arr, eq_stress_amp_arr
+        )
+
+    return eq_stress_amp_arr
+
+
+# TODO use Walker instead and set the gamma parameter to 0.5?
+def _swt_correction_method(
+    stress_amp: ArrayLike | np.float64,
+    mean_stress: ArrayLike | np.float64,
+) -> NDArray[np.float64]:
+    """Calculate equivalent stress amplitude using Smith-Watson-Topper criterion."""
+    stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
+    mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
+
+    swt_eq_amp = np.sqrt(stress_amp_arr * (mean_stress_arr + stress_amp_arr))
+
+    return swt_eq_amp
 
 
 def calc_stress_eq_amp_swt(
     stress_amp: ArrayLike | np.float64,
     mean_stress: ArrayLike | np.float64,
+    allow_neg_mean_stress: bool = True,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Smith-Watson-Topper parameter.
 
@@ -563,6 +775,10 @@ def calc_stress_eq_amp_swt(
         stress_amp: Array-like of stress amplitudes. Leading dimensions are preserved.
         mean_stress: Array-like of mean stresses. Must be broadcastable with
             stress_amp. Leading dimensions are preserved.
+       allow_neg_mean_stress: A flag to control the calculation method.
+            Defaults to True. If set to False, the equivalent stress amplitude will be
+            set equal to the original stress amplitude for cases where the mean stress
+            is negative, ignoring the correction.
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
@@ -595,13 +811,39 @@ def calc_stress_eq_amp_swt(
             "appropriate for compressive-dominated loading conditions."
         )
 
-    return np.sqrt(stress_amp_arr * (mean_stress_arr + stress_amp_arr))
+    eq_stress_amp_arr = _swt_correction_method(stress_amp_arr, mean_stress_arr)
+
+    # If allow_neg_mean_stress is False, set equivalent stress amplitude = to original
+    if not allow_neg_mean_stress:
+        eq_stress_amp_arr = np.where(
+            mean_stress_arr < 0, stress_amp_arr, eq_stress_amp_arr
+        )
+
+    return eq_stress_amp_arr
+
+
+def _walker_correction_method(
+    stress_amp: ArrayLike | np.float64,
+    mean_stress: ArrayLike | np.float64,
+    walker_param: ArrayLike | np.float64,
+) -> NDArray[np.float64]:
+    """Calculate equivalent stress amplitude using Walker criterion."""
+    stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
+    mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
+    walker_param_arr = np.asarray(walker_param, dtype=np.float64)
+
+    walker_eq_amp = (stress_amp_arr + mean_stress_arr) ** (
+        1 - walker_param_arr
+    ) * stress_amp_arr**walker_param_arr
+
+    return walker_eq_amp
 
 
 def calc_stress_eq_amp_walker(
     stress_amp: ArrayLike | np.float64,
     mean_stress: ArrayLike | np.float64,
     walker_param: ArrayLike | np.float64,
+    allow_neg_mean_stress: bool = True,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Walker criterion.
 
@@ -618,6 +860,10 @@ def calc_stress_eq_amp_walker(
             stress_amp. Leading dimensions are preserved.
         walker_param: Array-like of Walker exponents (γ'). Must be broadcastable
             with stress_amp and mean_stress. Leading dimensions are preserved.
+        allow_neg_mean_stress: A flag to control the calculation method.
+            Defaults to True. If set to False, the equivalent stress amplitude will be
+            set equal to the original stress amplitude for cases where the mean stress
+            is negative, ignoring the correction.
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
@@ -626,8 +872,7 @@ def calc_stress_eq_amp_walker(
     Raises:
         ValueError: If stress amplitude is negative.
         ValueError: If the validity condition σₐ + σₘ > 0 is not satisfied.
-        ValueError: If input arrays cannot be broadcast together or when the
-            condition γ' in (0, 1) is not satisfied.
+        ValueError: When the condition γ' in [0, 1] is not satisfied.
 
     ??? note "Validity Condition"
         The Walker method is valid when $\sigma_a + \sigma_m > 0$, ensuring that the
@@ -652,8 +897,8 @@ def calc_stress_eq_amp_walker(
             "appropriate for compressive-dominated loading conditions."
         )
 
-    # Check validity of Walker parameter: γ' in range (0, 1)
-    invalid_condition = (walker_param_arr <= 0) | (walker_param_arr >= 1)
+    # Check validity of Walker parameter: γ' in range [0, 1]
+    invalid_condition = (walker_param_arr < 0) | (walker_param_arr > 1)
     if np.any(invalid_condition):
         raise ValueError("Walker parameter (γ') must be in the range [0, 1]. ")
 
