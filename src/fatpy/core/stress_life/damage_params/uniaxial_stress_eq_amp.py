@@ -63,9 +63,9 @@ def calc_stress_eq_amp_asme(
             is negative, ignoring the correction.
 
     Raises:
-        ValueError: If yield strength is not positive.
+        ValueError: If yield strength is not positive ($R_e > 0$).
         ValueError: If mean stress magnitude is equal or greater to yield strength,
-            resulting in infinite equivalent stress amplitude.
+            resulting in infinite equivalent stress amplitude ($\sigma_m = R_e$).
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
@@ -143,10 +143,10 @@ def calc_stress_eq_amp_bagci(
             rules for the input arrays.
 
     Raises:
-        Warning: If mean stress magnitude exceeds yield strength.
-        ValueError: If yield strength is not positive.
+        Warning: If mean stress magnitude exceeds yield strength ($|\sigma_m| > R_e$).
+        ValueError: If yield strength is not positive ($R_e > 0$).
         ValueError: If mean stress magnitude is equal to yield strength,
-            resulting in infinite equivalent stress amplitude.
+            resulting in infinite equivalent stress amplitude ($\sigma_m = R_e$).
     """
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
     mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
@@ -233,10 +233,12 @@ def calc_stress_eq_amp_gerber(
             rules for the input arrays.
 
     Raises:
-        Warning: If mean stress magnitude exceeds ultimate tensile strength.
-        ValueError: If ultimate tensile strength is not positive.
+        Warning: If mean stress magnitude exceeds ultimate tensile strength
+            ($|\sigma_m| > \sigma_{UTS}$).
+        ValueError: If ultimate tensile strength is not positive ($\sigma_{UTS} > 0$).
         ValueError: If mean stress magnitude is equal to ultimate tensile strength,
-            resulting in infinite equivalent stress amplitude.
+            resulting in infinite equivalent stress amplitude
+            ($\sigma_m = \sigma_{UTS}$).
 
     """
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
@@ -321,10 +323,11 @@ def calc_stress_eq_amp_goodman(
             rules for the input arrays.
 
     Raises:
-        Warning: If mean stress magnitude exceeds ultimate tensile strength.
-        ValueError: If ultimate tensile strength is not positive.
+        Warning: If mean stress magnitude exceeds ultimate tensile strength
+            ($|\sigma_m| > \sigma_{UTS}$).
+        ValueError: If ultimate tensile strength is not positive ($\sigma_{UTS} > 0$).
         ValueError: If mean stress is equal to ultimate tensile strength, resulting in
-            infinite equivalent stress amplitude.
+            infinite equivalent stress amplitude ($\sigma_m = \sigma_{UTS}$).
     """
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
     mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
@@ -393,10 +396,12 @@ def calc_stress_eq_amp_half_slope(
             rules for the input arrays.
 
     Raises:
-        Warning: If mean stress magnitude exceeds the ultimate tensile strength.
-        ValueError: If ultimate tensile strength is not positive.
+        Warning: If mean stress magnitude exceeds the ultimate tensile strength
+            ($|\sigma_m| > \sigma_{UTS}$).
+        ValueError: If ultimate tensile strength is not positive ($\sigma_{UTS} > 0$).
         ValueError: If mean stress is equal to double of the ultimate tensile strength,
-            resulting in infinite equivalent stress amplitude.
+            resulting in infinite equivalent stress amplitude
+            ($\sigma_m = 2 \cdot \sigma_{UTS}$).
 
     """
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
@@ -448,6 +453,7 @@ def calc_stress_eq_amp_linear(
         $$
         \sigma_{aeq}=\frac{\sigma_a}{1 - \frac{\sigma_m}{M}}
         $$
+
     Args:
         stress_amp: Array-like of stress amplitudes. Leading dimensions are preserved.
         mean_stress: Array-like of mean stresses. Must be broadcastable with
@@ -465,10 +471,11 @@ def calc_stress_eq_amp_linear(
             rules for the input arrays.
 
     Raises:
-        Warning: If mean stress magnitude exceeds material stress parameter M.
-        ValueError: If material stress parameter M is not positive.
+        Warning: If mean stress magnitude exceeds material stress parameter M
+            ($|\sigma_m| > M$).
+        ValueError: If material stress parameter M is not positive ($M > 0$).
         ValueError: If mean stress is equal to material stress parameter M, resulting in
-            infinite equivalent stress amplitude.
+            infinite equivalent stress amplitude ($\sigma_m = M$).
     """
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
     mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
@@ -542,10 +549,11 @@ def calc_stress_eq_amp_morrow(
             rules for the input arrays.
 
     Raises:
-        Warning: If mean stress magnitude exceeds fatigue strength coefficient.
-        ValueError: If fatigue strength coefficient is not positive.
-        ValueError: If mean stress is equal to fatigue strength coefficient, resulting in
-            infinite equivalent stress amplitude.
+        Warning: If mean stress magnitude exceeds fatigue strength coefficient
+            ($|\sigma_m| > \sigma_{f}'$).
+        ValueError: If fatigue strength coefficient is not positive ($\sigma_{f}' > 0$).
+        ValueError: If mean stress is equal to fatigue strength coefficient, resulting
+            in infinite equivalent stress amplitude ($\sigma_m = \sigma_{f}'$).
     """
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
     mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
@@ -613,10 +621,10 @@ def calc_stress_eq_amp_soderberg(
             rules for the input arrays.
 
     Raises:
-        Warning: If mean stress magnitude exceeds yield strength.
-        ValueError: If yield strength is not positive.
+        Warning: If mean stress magnitude exceeds yield strength ($|\sigma_m| > R_e$).
+        ValueError: If yield strength is not positive ($R_e > 0$).
         ValueError: If mean stress is equal to yield strength, resulting in
-            infinite equivalent stress amplitude.
+            infinite equivalent stress amplitude ($\sigma_m = R_e$).
     """
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
     mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
@@ -703,10 +711,11 @@ def calc_stress_eq_amp_smith(
             rules for the input arrays.
 
     Raises:
-        Warning: If mean stress magnitude exceeds ultimate tensile strength.
-        ValueError: If ultimate tensile strength is not positive.
+        Warning: If mean stress magnitude exceeds ultimate tensile strength
+            ($\sigma_m > \sigma_{UTS}$).
+        ValueError: If ultimate tensile strength is not positive ($\sigma_{UTS} > 0$).
         ValueError: If mean stress is equal to ultimate tensile strength, resulting in
-            infinite equivalent stress amplitude.
+            infinite equivalent stress amplitude ($\sigma_{m} = \sigma_{UTS}$).
 
     """
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
@@ -775,7 +784,7 @@ def calc_stress_eq_amp_swt(
         stress_amp: Array-like of stress amplitudes. Leading dimensions are preserved.
         mean_stress: Array-like of mean stresses. Must be broadcastable with
             stress_amp. Leading dimensions are preserved.
-       allow_neg_mean_stress: A flag to control the calculation method.
+        allow_neg_mean_stress: A flag to control the calculation method.
             Defaults to True. If set to False, the equivalent stress amplitude will be
             set equal to the original stress amplitude for cases where the mean stress
             is negative, ignoring the correction.
@@ -785,8 +794,8 @@ def calc_stress_eq_amp_swt(
             rules for the input arrays.
 
     Raises:
-        ValueError: If stress amplitude is negative.
-        ValueError: If the validity condition σₐ + σₘ > 0 is not satisfied.
+        ValueError: If stress amplitude is negative ($\sigma_a < 0$).
+        ValueError: If the validity condition $\sigma_a + \sigma_m >0$ is not satisfied.
 
     ??? note "Validity Condition"
         The SWT parameter is valid when $\sigma_a + \sigma_m > 0$, ensuring that the
@@ -806,8 +815,8 @@ def calc_stress_eq_amp_swt(
 
     if np.any(invalid_condition):
         raise ValueError(
-            "Smith-Watson-Topper parameter validity condition (σₐ + σₘ > 0) not "
-            "satisfied for some data points. The SWT approach may not be "
+            r"Smith-Watson-Topper parameter validity condition $\sigma_a + \sigma_m >0$"
+            " not satisfied for some data points. The SWT approach may not be "
             "appropriate for compressive-dominated loading conditions."
         )
 
@@ -854,11 +863,12 @@ def calc_stress_eq_amp_walker(
         \displaystyle\sigma_{aeq}=\left(\sigma_a+\sigma_m\right)^{1-\gamma'} \cdot
             \sigma_a^{\gamma'}
         $$
+
     Args:
         stress_amp: Array-like of stress amplitudes. Leading dimensions are preserved.
         mean_stress: Array-like of mean stresses. Must be broadcastable with
             stress_amp. Leading dimensions are preserved.
-        walker_param: Array-like of Walker exponents (γ'). Must be broadcastable
+        walker_param: Array-like of Walker exponents ($\gamma'$'). Must be broadcastable
             with stress_amp and mean_stress. Leading dimensions are preserved.
         allow_neg_mean_stress: A flag to control the calculation method.
             Defaults to True. If set to False, the equivalent stress amplitude will be
@@ -870,9 +880,9 @@ def calc_stress_eq_amp_walker(
             rules for the input arrays.
 
     Raises:
-        ValueError: If stress amplitude is negative.
-        ValueError: If the validity condition σₐ + σₘ > 0 is not satisfied.
-        ValueError: When the condition γ' in [0, 1] is not satisfied.
+        ValueError: If stress amplitude is negative ($\sigma_a < 0$).
+        ValueError: If the validity condition $\sigma_a + \sigma_m >0$ is not satisfied.
+        ValueError: When the condition $\gamma'$ in [0, 1] is not satisfied.
 
     ??? note "Validity Condition"
         The Walker method is valid when $\sigma_a + \sigma_m > 0$, ensuring that the
@@ -892,7 +902,7 @@ def calc_stress_eq_amp_walker(
 
     if np.any(invalid_condition):
         raise ValueError(
-            "Walker method validity condition (σₐ + σₘ > 0) not "
+            r"Walker method validity condition $\sigma_a + \sigma_m >0$ not "
             "satisfied for some data points. The Walker approach may not be "
             "appropriate for compressive-dominated loading conditions."
         )
@@ -900,7 +910,7 @@ def calc_stress_eq_amp_walker(
     # Check validity of Walker parameter: γ' in range [0, 1]
     invalid_condition = (walker_param_arr < 0) | (walker_param_arr > 1)
     if np.any(invalid_condition):
-        raise ValueError("Walker parameter (γ') must be in the range [0, 1]. ")
+        raise ValueError(r"Walker parameter ($\gamma'$') must be in the range [0, 1]. ")
 
     return (stress_amp_arr + mean_stress_arr) ** (
         1 - walker_param_arr
