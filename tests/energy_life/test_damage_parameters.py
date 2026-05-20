@@ -47,6 +47,38 @@ def stress_strain_values() -> dict[str, float]:
     return params
 
 
+@pytest.fixture
+def stress_strain_values_array() -> dict[str, np.ndarray]:
+    """Stress / Strain values as arrays for testing swt with array inputs.
+
+    Returns:
+        dict[str, np.ndarray]: Parameters including:
+          strain_amp: Strain amplitude
+          stress_amp: Stress amplitude
+          mean_stress: Mean stress
+    """
+    params = {
+        "strain_amp": np.array([0.0135, 0.0135]),
+        "stress_amp": np.array([290.0, 290.0]),
+        "mean_stress": np.array([10.0, 10.0]),
+    }
+    return params
+
+
+@pytest.fixture
+def invalid_stress_condition_array() -> dict[str, np.ndarray]:
+    """Stress / Strain values that violate SWT validity condition
+    (stress_amp <= abs(mean_stress)).
+    """
+
+    params = {
+        "strain_amp": np.array([0.0135, 0.0135]),
+        "stress_amp": np.array([10.0, 20.0]),
+        "mean_stress": np.array([10.0, 10.0]),
+    }
+    return params
+
+
 def test_swt(
     en_curve_parameters: dict[str, float], stress_strain_values: dict[str, float]
 ) -> None:
@@ -54,11 +86,35 @@ def test_swt(
     in strain-life.
 
     """
-    sig_f, eps_f, b, c, young_modulus = en_curve_parameters.values()
-    eps_a, sig_a, sig_m = stress_strain_values.values()
 
-    n = dp.swt(sig_f, b, eps_f, c, young_modulus, eps_a, sig_m, sig_a)
-    p_swt = np.sqrt(young_modulus * eps_a * (sig_m + sig_a))
+    n = dp.swt(en_curve_parameters, stress_strain_values)
+
+    elastic_modulus: float = en_curve_parameters["elastic_modulus"]
+    strain_amp: float = stress_strain_values["strain_amp"]
+    mean_stress: float = stress_strain_values["mean_stress"]
+    stress_amp: float = stress_strain_values["stress_amp"]
+    p_swt = dp.calc_dmg_param_swt(elastic_modulus, strain_amp, mean_stress, stress_amp)
 
     assert n == 278
     assert p_swt == 810.0
+
+
+def test_swt_array_returns_elementwise_cycles(
+    en_curve_parameters: dict[str, float],
+    stress_strain_values_array: dict[str, np.ndarray],
+) -> None:
+    """swt_array should solve SWT for each broadcasted input entry."""
+
+    n_values = dp.swt(en_curve_parameters, stress_strain_values_array)
+
+    assert np.array_equal(n_values, np.array([278, 278]))
+
+
+def test_swt_array_raises_for_invalid_stress_condition(
+    en_curve_parameters: dict[str, float],
+    invalid_stress_condition_array: dict[str, np.ndarray],
+) -> None:
+    """SWT is not valid when stress_amp <= abs(mean_stress)."""
+
+    with pytest.raises(ValueError, match="SWT is only valid"):
+        dp.swt(en_curve_parameters, invalid_stress_condition_array)
