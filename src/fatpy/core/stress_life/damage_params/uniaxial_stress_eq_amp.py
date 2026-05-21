@@ -1,12 +1,11 @@
 """Uniaxial fatigue criteria methods for the stress-life approach.
 
-Contains criteria that address uniaxial high-cycle fatigue by incorporating the mean
-stress effect through an equivalent stress amplitude approach. By adjusting the stress
-amplitude to account for mean stress influences using models such as Goodman, Gerber,
-or Soderberg. They enable more accurate fatigue life predictions where mean stresses
-significantly affect material endurance.
+This module contains criteria for uniaxial high-cycle fatigue that incorporate
+mean-stress effects via equivalent stress amplitudes. It adjusts the stress amplitude
+using models such as Goodman, Gerber, and Soderberg to provide more accurate
+fatigue-life predictions when mean stresses significantly affect material endurance.
 
-For more information you can refer to the following resource:
+For more information, you can refer to the following resource:
 
 [PAPUGA, Jan, et al. Mean stress effect in stress-life fatigue prediction re-evaluated.
 In: MATEC web of conferences. EDP Sciences, 2018. p. 10018.](https://doi.org/10.1051/matecconf/201816510018).
@@ -40,6 +39,8 @@ def calc_stress_eq_amp_asme(
     mean_stress: ArrayLike | np.float64,
     yield_strength: ArrayLike | np.float64,
     allow_neg_mean_stress: bool = True,
+    rtol: float = 0.0001,
+    atol: float = 1e-7,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using ASME criterion.
 
@@ -61,11 +62,19 @@ def calc_stress_eq_amp_asme(
             Defaults to True. If set to False, the equivalent stress amplitude will be
             set equal to the original stress amplitude for cases where the mean stress
             is negative, ignoring the correction.
+        rtol: Relative tolerance for checking if mean stress magnitude is close to
+            yield strength.
+        atol: Absolute tolerance for checking if mean stress magnitude is close to
+            yield strength.
 
     Raises:
         ValueError: If yield strength is not positive ($R_e > 0$).
-        ValueError: If mean stress magnitude is equal or greater to yield strength,
-            resulting in infinite equivalent stress amplitude ($\sigma_m = R_e$).
+        ValueError: If mean stress magnitude exceeds yield strength,
+            which would produce a negative value under the square root.
+            ($|\sigma_m| > R_e$)
+        ValueError: If mean stress magnitude is close to yield strength
+            (within tolerance), the equivalent stress amplitude tends to infinity.
+            ($\left|\frac{\sigma_m}{R_e}\right| \approx 1.0$ within tolerance).
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
@@ -81,8 +90,17 @@ def calc_stress_eq_amp_asme(
     # Check if mean stress approaches or exceeds material parameter
     ratio = np.abs(mean_stress_arr) / yield_strength_arr
 
-    if np.any(ratio >= 1.0):
-        raise ValueError("Mean stress magnitude equal or greater than yield strength.")
+    if np.any(ratio > 1.0):
+        raise ValueError(
+            "Mean stress magnitude exceeds yield strength, which produces a negative"
+            " value under the square root."
+        )
+
+    if np.any(np.isclose(ratio, 1.0, rtol=rtol, atol=atol)):
+        raise ValueError(
+            "Mean stress magnitude is close to yield strength, this results in "
+            "infinite equivalent stress amplitude."
+        )
 
     eq_stress_amp_arr = _asme_correction_method(
         stress_amp_arr, mean_stress_arr, yield_strength_arr
@@ -263,9 +281,9 @@ def calc_stress_eq_amp_gerber(
             stacklevel=2,
         )
 
-        eq_stress_amp_arr = _gerber_correction_method(
-            stress_amp_arr, mean_stress_arr, ult_tensile_strength_arr
-        )
+    eq_stress_amp_arr = _gerber_correction_method(
+        stress_amp_arr, mean_stress_arr, ult_tensile_strength_arr
+    )
 
     # If allow_neg_mean_stress is False, set equivalent stress amplitude = to original
     if not allow_neg_mean_stress:

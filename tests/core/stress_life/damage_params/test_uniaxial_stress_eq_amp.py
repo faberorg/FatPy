@@ -9,11 +9,10 @@ from typing import Tuple
 import numpy as np
 import pytest
 from numpy.testing import assert_allclose
-from numpy.typing import NDArray
+from numpy.typing import ArrayLike, NDArray
 
 from fatpy.core.stress_life.damage_params.uniaxial_stress_eq_amp import (
-    ASME_mean_stress_correction_method,
-    calc_stress_eq_amp_ASME,
+    calc_stress_eq_amp_asme,
     calc_stress_eq_amp_bagci,
     calc_stress_eq_amp_gerber,
     calc_stress_eq_amp_goodman,
@@ -26,69 +25,113 @@ from fatpy.core.stress_life.damage_params.uniaxial_stress_eq_amp import (
     calc_stress_eq_amp_walker,
 )
 
+# Broadcasting test variables - different shapes
+_SA_1D = np.array([150.0, 500.0, 80.0, 200.0])
+_SM_1D = np.array([100.0, 150.0, 30.0, 0.0])
+_MAT_PARAM_1D = np.array([600.0, 700.0, 800.0, 900.0])
+_SA_2D = np.array([[100.0, 200.0], [150.0, 250.0]])
+_SM_2D = np.array([[0.0, 50.0], [100.0, 150.0]])
+# Shape (2, 4): last dim matches _SA_1D so they broadcast to (2, 4)
+_SM_2D_COMPAT = np.array([[0.0, 50.0, 75.0, 100.0], [10.0, 25.0, 30.0, 0.0]])
 
-@pytest.fixture
-def array_inputs() -> Tuple[NDArray[np.float64], NDArray[np.float64]]:
-    stress_amp = np.array([150.0, 500.0, 80.0, 200.0])
-    mean_stress = np.array([100.0, 150.0, 30.0, 0.0])
-    return stress_amp, mean_stress
+_ASME_EXPECTED = 180.0 / np.sqrt(1.0 - (100.0 / 500.0) ** 2)
 
 
-class TestASMEMeanStressCorrectionMethod:
-    def test_basic_calculation(self) -> None:
-        result = ASME_mean_stress_correction_method(180.0, 100.0, 500.0)
-        expected = 180.0 / np.sqrt(1.0 - (100.0 / 500.0) ** 2)
-        assert_allclose(result, expected)
-
-    def test_array_inputs(
+class TestCalcStressEqAmpAsme:
+    # Test numerical calculation for scalar inputs, and negative mean stress control
+    @pytest.mark.parametrize(
+        "sa, sm, ys, allow_neg_mean_stress, expected",
+        [
+            pytest.param(
+                180.0,
+                100.0,
+                500.0,
+                True,
+                _ASME_EXPECTED,
+                id="positive_mean_stress",
+            ),
+            pytest.param(
+                180.0,
+                -100.0,
+                500.0,
+                True,
+                _ASME_EXPECTED,
+                id="negative_mean_stress_with_correction",
+            ),
+            pytest.param(180.0, 0.0, 500.0, True, 180.0, id="zero_mean_stress"),
+            pytest.param(
+                180.0,
+                -100.0,
+                500.0,
+                False,
+                180.0,
+                id="negative_mean_stress_no_correction",
+            ),
+            pytest.param(
+                180.0,
+                100.0,
+                500.0,
+                False,
+                _ASME_EXPECTED,
+                id="positive_mean_stress_allow_neg_false",
+            ),
+        ],
+    )
+    def test_calculation(
         self,
-        array_inputs: Tuple[NDArray[np.float64], NDArray[np.float64]],
+        sa: float,
+        sm: float,
+        ys: float,
+        allow_neg_mean_stress: bool,
+        expected: float,
     ) -> None:
-        stress_amp, mean_stress = array_inputs
-        result = ASME_mean_stress_correction_method(stress_amp, mean_stress, 700.0)
-        assert result.shape == (4,)
-
-    def test_invalid_yield_strength(self) -> None:
-        with pytest.raises(ValueError):
-            for ys in [0.0, -500.0]:
-                ASME_mean_stress_correction_method(100.0, 50.0, ys)
-
-    def test_mean_stress_yield_strength_comparison_error(self) -> None:
-        with pytest.raises(ValueError):
-            for ms in [500.0, -500.0, 600.0, -600.0]:
-                ASME_mean_stress_correction_method(100.0, ms, 500.0)
-
-    def test_negative_mean_stress_no_correction(self) -> None:
-        result = ASME_mean_stress_correction_method(
-            180.0, -100.0, 500.0, allow_neg_mean_stress=False
+        result = calc_stress_eq_amp_asme(
+            sa, sm, ys, allow_neg_mean_stress=allow_neg_mean_stress
         )
-        expected = 180.0
         assert_allclose(result, expected)
 
-
-class TestCalcStressEqAmpASME:
-    def test_basic_calculation(self) -> None:
-        result = calc_stress_eq_amp_ASME(180.0, 100.0, 500.0)
-        expected = 180.0 / np.sqrt(1.0 - (100.0 / 500.0) ** 2)
-        assert_allclose(result, expected)
-
-    def test_array_inputs(
+    # Test broadcasting behavior for various combinations of 1D and 2D array inputs
+    @pytest.mark.parametrize(
+        "sa, sm, mp",
+        [
+            pytest.param(_SA_1D, 100.0, 700.0, id="sa_1d-sm_scalar-mp_scalar"),
+            pytest.param(150.0, _SM_1D, 700.0, id="sa_scalar-sm_1d-mp_scalar"),
+            pytest.param(150.0, 100.0, _MAT_PARAM_1D, id="sa_scalar-sm_scalar-mp_1d"),
+            pytest.param(_SA_1D, _SM_1D, _MAT_PARAM_1D, id="all_1d"),
+            pytest.param(_SA_2D, _SM_2D, 700.0, id="sa_2d-sm_2d-mp_scalar"),
+            pytest.param(150.0, _SM_2D, 700.0, id="sa_scalar-sm_2d-mp_scalar"),
+            pytest.param(_SA_1D, _SM_2D_COMPAT, 700.0, id="sa_1d-sm_2d-mp_scalar"),
+        ],
+    )
+    def test_broadcasting(
         self,
-        array_inputs: Tuple[NDArray[np.float64], NDArray[np.float64]],
+        sa: ArrayLike | np.float64,
+        sm: ArrayLike | np.float64,
+        mp: ArrayLike | np.float64,
     ) -> None:
-        stress_amp, mean_stress = array_inputs
-        result = calc_stress_eq_amp_ASME(stress_amp, mean_stress, 700.0)
-        assert result.shape == (4,)
+        result = calc_stress_eq_amp_asme(sa, sm, mp)
+        expected_shape = np.broadcast_shapes(
+            np.asarray(sa).shape,
+            np.asarray(sm).shape,
+            np.asarray(mp).shape,
+        )
+        assert result.shape == expected_shape
 
-    def test_invalid_yield_strength(self) -> None:
+    # Test ValueError and Warning conditions
+    @pytest.mark.parametrize("ys", [0.0, -500.0])
+    def test_invalid_yield_strength(self, ys: float) -> None:
         with pytest.raises(ValueError):
-            for ys in [0.0, -500.0]:
-                calc_stress_eq_amp_ASME(100.0, 50.0, ys)
+            calc_stress_eq_amp_asme(100.0, 50.0, ys)
 
-    def test_mean_stress_yield_strength_comparison_error(self) -> None:
+    @pytest.mark.parametrize("ms", [600.0, -600.0])
+    def test_mean_stress_exceeds_yield_strength_error(self, ms: float) -> None:
         with pytest.raises(ValueError):
-            for ms in [500.0, -500.0, 600.0, -600.0]:
-                calc_stress_eq_amp_ASME(100.0, ms, 500.0)
+            calc_stress_eq_amp_asme(100.0, ms, 500.0)
+
+    @pytest.mark.parametrize("ms", [500.0, -500.0])
+    def test_mean_stress_close_to_yield_strength_error(self, ms: float) -> None:
+        with pytest.raises(ValueError):
+            calc_stress_eq_amp_asme(100.0, ms, 500.0)
 
 
 class TestCalcStressEqAmpBagci:
