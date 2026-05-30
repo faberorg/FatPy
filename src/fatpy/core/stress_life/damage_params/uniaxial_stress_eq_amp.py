@@ -34,13 +34,18 @@ def _asme_correction_method(
     return asme_eq_amp
 
 
+# Preset tolerances for all np.isclose() functions in mean stress correction methods
+_RTOL = 0.001
+_ATOL = 1e-5
+
+
 def calc_stress_eq_amp_asme(
     stress_amp: ArrayLike | np.float64,
     mean_stress: ArrayLike | np.float64,
     yield_strength: ArrayLike | np.float64,
     allow_neg_mean_stress: bool = True,
-    rtol: float = 0.0001,
-    atol: float = 1e-7,
+    rtol: float = _RTOL,
+    atol: float = _ATOL,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using ASME criterion.
 
@@ -135,6 +140,8 @@ def calc_stress_eq_amp_bagci(
     mean_stress: ArrayLike | np.float64,
     yield_strength: ArrayLike | np.float64,
     allow_neg_mean_stress: bool = True,
+    rtol: float = _RTOL,
+    atol: float = _ATOL,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Bagci criterion.
 
@@ -155,6 +162,10 @@ def calc_stress_eq_amp_bagci(
             Defaults to True. If set to False, the equivalent stress amplitude will be
             set equal to the original stress amplitude for cases where the mean stress
             is negative, ignoring the correction.
+        rtol: Relative tolerance for checking if mean stress magnitude is close to
+            yield strength.
+        atol: Absolute tolerance for checking if mean stress magnitude is close to
+            yield strength.
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
@@ -163,8 +174,9 @@ def calc_stress_eq_amp_bagci(
     Raises:
         Warning: If mean stress magnitude exceeds yield strength ($|\sigma_m| > R_e$).
         ValueError: If yield strength is not positive ($R_e > 0$).
-        ValueError: If mean stress magnitude is equal to yield strength,
-            resulting in infinite equivalent stress amplitude ($\sigma_m = R_e$).
+        ValueError: If mean stress magnitude is close to yield strength
+            (within tolerance), the equivalent stress amplitude tends to infinity.
+            ($\left|\frac{\sigma_m}{R_e}\right| \approx 1.0$ within tolerance).
     """
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
     mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
@@ -176,12 +188,13 @@ def calc_stress_eq_amp_bagci(
     # Check if mean stress approaches or exceeds material parameter
     ratio = np.abs(mean_stress_arr) / yield_strength_arr
 
-    if np.any(ratio == 1.0):
+    if np.any(np.isclose(ratio, 1.0, rtol=rtol, atol=atol)):
         raise ValueError(
-            "Mean stress magnitude equals yield strength this would result in "
+            "Mean stress magnitude is close to yield strength, this results in "
             "infinite equivalent stress amplitude."
         )
-    elif np.any(ratio > 1.0):
+
+    if np.any(ratio > 1.0):
         warnings.warn(
             "Mean stress magnitude exceeds yield strength.",
             UserWarning,
@@ -223,6 +236,8 @@ def calc_stress_eq_amp_gerber(
     mean_stress: ArrayLike | np.float64,
     ult_tensile_strength: ArrayLike | np.float64,
     allow_neg_mean_stress: bool = True,
+    rtol: float = _RTOL,
+    atol: float = _ATOL,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Gerber criterion.
 
@@ -245,6 +260,10 @@ def calc_stress_eq_amp_gerber(
             Defaults to True. If set to False, the equivalent stress amplitude will be
             set equal to the original stress amplitude for cases where the mean stress
             is negative, ignoring the correction.
+        rtol: Relative tolerance for checking if mean stress magnitude is close to
+            ultimate tensile strength.
+        atol: Absolute tolerance for checking if mean stress magnitude is close to
+            ultimate tensile strength.
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
@@ -254,9 +273,9 @@ def calc_stress_eq_amp_gerber(
         Warning: If mean stress magnitude exceeds ultimate tensile strength
             ($|\sigma_m| > \sigma_{UTS}$).
         ValueError: If ultimate tensile strength is not positive ($\sigma_{UTS} > 0$).
-        ValueError: If mean stress magnitude is equal to ultimate tensile strength,
-            resulting in infinite equivalent stress amplitude
-            ($\sigma_m = \sigma_{UTS}$).
+        ValueError: If mean stress magnitude is close to ultimate tensile strength
+            (within tolerance), the equivalent stress amplitude tends to infinity.
+            ($\left|\frac{\sigma_m}{\sigma_{UTS}}\right| \approx 1.0$ within tolerance).
 
     """
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
@@ -269,12 +288,13 @@ def calc_stress_eq_amp_gerber(
     # Check if mean stress approaches or exceeds material parameter
     ratio = np.abs(mean_stress_arr) / ult_tensile_strength_arr
 
-    if np.any(ratio == 1.0):
+    if np.any(np.isclose(ratio, 1.0, rtol=rtol, atol=atol)):
         raise ValueError(
-            "Mean stress magnitude equals ultimate tensile strength this would "
-            "result in infinite equivalent stress amplitude."
+            "Mean stress magnitude is close to ultimate tensile strength, "
+            "this results in infinite equivalent stress amplitude."
         )
-    elif np.any(ratio > 1.0):
+
+    if np.any(ratio > 1.0):
         warnings.warn(
             "Mean stress magnitude exceeds ultimate tensile strength. ",
             UserWarning,
@@ -314,6 +334,8 @@ def calc_stress_eq_amp_goodman(
     mean_stress: ArrayLike | np.float64,
     ult_tensile_strength: ArrayLike | np.float64,
     allow_neg_mean_stress: bool = True,
+    rtol: float = _RTOL,
+    atol: float = _ATOL,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Goodman criterion.
 
@@ -335,6 +357,10 @@ def calc_stress_eq_amp_goodman(
             Defaults to True. If set to False, the equivalent stress amplitude will be
             set equal to the original stress amplitude for cases where the mean stress
             is negative, ignoring the correction.
+        rtol: Relative tolerance for checking if mean stress magnitude is close to
+            ultimate tensile strength.
+        atol: Absolute tolerance for checking if mean stress magnitude is close to
+            ultimate tensile strength.
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
@@ -344,8 +370,9 @@ def calc_stress_eq_amp_goodman(
         Warning: If mean stress magnitude exceeds ultimate tensile strength
             ($|\sigma_m| > \sigma_{UTS}$).
         ValueError: If ultimate tensile strength is not positive ($\sigma_{UTS} > 0$).
-        ValueError: If mean stress is equal to ultimate tensile strength, resulting in
-            infinite equivalent stress amplitude ($\sigma_m = \sigma_{UTS}$).
+        ValueError: If mean stress magnitude is close to ultimate tensile strength
+            (within tolerance), the equivalent stress amplitude tends to infinity.
+            ($\left|\frac{\sigma_m}{\sigma_{UTS}}\right| \approx 1.0$ within tolerance).
     """
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
     mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
@@ -355,14 +382,15 @@ def calc_stress_eq_amp_goodman(
         raise ValueError("Ultimate tensile strength must be positive")
 
     # Check if mean stress approaches or exceeds material parameter
-    ratio = mean_stress_arr / ult_tensile_strength_arr
+    ratio = abs(mean_stress_arr) / ult_tensile_strength_arr
 
-    if np.any(ratio == 1.0):
+    if np.any(np.isclose(ratio, 1.0, rtol=rtol, atol=atol)):
         raise ValueError(
-            "Mean stress equals ultimate tensile strength this would result in "
-            "infinite equivalent stress amplitude."
+            "Mean stress magnitude is close to ultimate tensile strength, "
+            "this results in infinite equivalent stress amplitude."
         )
-    elif np.any(abs(ratio) > 1.0):
+
+    if np.any(ratio > 1.0):
         warnings.warn(
             "Mean stress magnitude exceeds ultimate tensile strength. ",
             UserWarning,
@@ -387,6 +415,8 @@ def calc_stress_eq_amp_half_slope(
     mean_stress: ArrayLike | np.float64,
     ult_tensile_strength: ArrayLike | np.float64,
     allow_neg_mean_stress: bool = True,
+    rtol: float = _RTOL,
+    atol: float = _ATOL,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using a half-slope mean stress correction.
 
@@ -408,6 +438,10 @@ def calc_stress_eq_amp_half_slope(
             Defaults to True. If set to False, the equivalent stress amplitude will be
             set equal to the original stress amplitude for cases where the mean stress
             is negative, ignoring the correction.
+        rtol: Relative tolerance for checking if mean stress magnitude is close to
+            ultimate tensile strength.
+        atol: Absolute tolerance for checking if mean stress magnitude is close to
+            ultimate tensile strength.
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
@@ -417,9 +451,10 @@ def calc_stress_eq_amp_half_slope(
         Warning: If mean stress magnitude exceeds the ultimate tensile strength
             ($|\sigma_m| > \sigma_{UTS}$).
         ValueError: If ultimate tensile strength is not positive ($\sigma_{UTS} > 0$).
-        ValueError: If mean stress is equal to double of the ultimate tensile strength,
-            resulting in infinite equivalent stress amplitude
-            ($\sigma_m = 2 \cdot \sigma_{UTS}$).
+        ValueError: If mean stress magnitude is close to double of the ultimate tensile
+            strength, (within tolerance), the equivalent stress amplitude tends to
+            infinity. ($\left|\frac{\sigma_m}{\sigma_{UTS}}\right| \approx 2.0$ within
+            tolerance).
 
     """
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
@@ -430,14 +465,14 @@ def calc_stress_eq_amp_half_slope(
         raise ValueError("Ultimate tensile strength must be positive")
 
     # Check if mean stress approaches or exceeds material parameter
-    ratio = mean_stress_arr / ult_tensile_strength_arr
+    ratio = np.abs(mean_stress_arr) / ult_tensile_strength_arr
 
-    if np.any(ratio == 2.0):
+    if np.any(np.isclose(ratio, 2.0, rtol=rtol, atol=atol)):
         raise ValueError(
-            "Mean stress equals to double of the ultimate tensile strength this would "
-            "result in infinite equivalent stress amplitude."
+            "Mean stress magnitude is close to double of the ultimate tensile strength,"
+            " this results in infinite equivalent stress amplitude."
         )
-    elif np.any(abs(ratio) > 1.0):
+    elif np.any(ratio > 1.0):
         warnings.warn(
             "Mean stress magnitude exceeds the ultimate tensile strength. ",
             UserWarning,
@@ -462,6 +497,8 @@ def calc_stress_eq_amp_linear(
     mean_stress: ArrayLike | np.float64,
     stress_param_m: ArrayLike | np.float64,
     allow_neg_mean_stress: bool = True,
+    rtol: float = _RTOL,
+    atol: float = _ATOL,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using a linear mean stress correction.
 
@@ -483,6 +520,10 @@ def calc_stress_eq_amp_linear(
             Defaults to True. If set to False, the equivalent stress amplitude will be
             set equal to the original stress amplitude for cases where the mean stress
             is negative, ignoring the correction.
+        rtol: Relative tolerance for checking if mean stress magnitude is close to
+            stress parameter M.
+        atol: Absolute tolerance for checking if mean stress magnitude is close to
+            stress parameter M.
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
@@ -492,8 +533,9 @@ def calc_stress_eq_amp_linear(
         Warning: If mean stress magnitude exceeds material stress parameter M
             ($|\sigma_m| > M$).
         ValueError: If material stress parameter M is not positive ($M > 0$).
-        ValueError: If mean stress is equal to material stress parameter M, resulting in
-            infinite equivalent stress amplitude ($\sigma_m = M$).
+        ValueError: If mean stress magnitude is close to stress parameter M
+            (within tolerance), the equivalent stress amplitude tends to infinity.
+            ($\left|\frac{\sigma_m}{M}\right| \approx 1.0$ within tolerance).
     """
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
     mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
@@ -503,14 +545,15 @@ def calc_stress_eq_amp_linear(
         raise ValueError("Material stress parameter M must be positive")
 
     # Check if mean stress approaches or exceeds material parameter
-    ratio = mean_stress_arr / stress_param_m_arr
+    ratio = abs(mean_stress_arr) / stress_param_m_arr
 
-    if np.any(ratio == 1.0):
+    if np.any(np.isclose(ratio, 1.0, rtol=rtol, atol=atol)):
         raise ValueError(
-            "Mean stress equals material stress parameter M this would result in "
-            "infinite equivalent stress amplitude."
+            "Mean stress magnitude is close to stress parameter M, "
+            "this results in infinite equivalent stress amplitude."
         )
-    elif np.any(abs(ratio) > 1.0):
+
+    if np.any(ratio > 1.0):
         warnings.warn(
             "Mean stress magnitude exceeds material stress parameter M. ",
             UserWarning,
@@ -530,16 +573,13 @@ def calc_stress_eq_amp_linear(
     return eq_stress_amp_arr
 
 
-# todo! Check the name of the material parameter,issue calls it a true fracture stress
-# todo! but the paper calls it a fatigue strength coeficient,
-# todo! exel calls it a fat_strength_coef
-
-
 def calc_stress_eq_amp_morrow(
     stress_amp: ArrayLike | np.float64,
     mean_stress: ArrayLike | np.float64,
     fat_strength_coef: ArrayLike | np.float64,
     allow_neg_mean_stress: bool = True,
+    rtol: float = _RTOL,
+    atol: float = _ATOL,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Morrow criterion.
 
@@ -560,7 +600,11 @@ def calc_stress_eq_amp_morrow(
         allow_neg_mean_stress: A flag to control the calculation method.
             Defaults to True. If set to False, the equivalent stress amplitude will be
             set equal to the original stress amplitude for cases where the mean stress
-            is negative, ignoring the correction.
+            is negative, ignoring the correction
+        rtol: Relative tolerance for checking if mean stress magnitude is close to
+            fatigue strength coefficient.
+        atol: Absolute tolerance for checking if mean stress magnitude is close to
+            fatigue strength coefficient.
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
@@ -570,8 +614,9 @@ def calc_stress_eq_amp_morrow(
         Warning: If mean stress magnitude exceeds fatigue strength coefficient
             ($|\sigma_m| > \sigma_{f}'$).
         ValueError: If fatigue strength coefficient is not positive ($\sigma_{f}' > 0$).
-        ValueError: If mean stress is equal to fatigue strength coefficient, resulting
-            in infinite equivalent stress amplitude ($\sigma_m = \sigma_{f}'$).
+        ValueError: If mean stress magnitude is close to fatigue strength coefficient
+            (within tolerance), the equivalent stress amplitude tends to infinity.
+            ($\left|\frac{\sigma_m}{\sigma_{f}'}\right| \approx 1.0$ within tolerance).
     """
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
     mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
@@ -581,14 +626,14 @@ def calc_stress_eq_amp_morrow(
         raise ValueError("Fatigue strength coefficient must be positive")
 
     # Check if mean stress approaches or exceeds material parameter
-    ratio = mean_stress_arr / fat_strength_coef_arr
+    ratio = np.abs(mean_stress_arr) / fat_strength_coef_arr
 
-    if np.any(ratio == 1.0):
+    if np.any(np.isclose(ratio, 1.0, rtol=rtol, atol=atol)):
         raise ValueError(
-            "Mean stress equals fatigue strength coefficient this would result in "
-            "infinite equivalent stress amplitude."
+            "Mean stress magnitude is close to fatigue strength coefficient, "
+            "this results in infinite equivalent stress amplitude."
         )
-    elif np.any(np.abs(ratio) > 1.0):
+    elif np.any(ratio > 1.0):
         warnings.warn(
             "Mean stress magnitude exceeds fatigue strength coefficient. ",
             UserWarning,
@@ -613,6 +658,8 @@ def calc_stress_eq_amp_soderberg(
     mean_stress: ArrayLike | np.float64,
     yield_strength: ArrayLike | np.float64,
     allow_neg_mean_stress: bool = True,
+    rtol: float = _RTOL,
+    atol: float = _ATOL,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Soderberg criterion.
 
@@ -633,6 +680,10 @@ def calc_stress_eq_amp_soderberg(
             Defaults to True. If set to False, the equivalent stress amplitude will be
             set equal to the original stress amplitude for cases where the mean stress
             is negative, ignoring the correction.
+        rtol: Relative tolerance for checking if mean stress magnitude is close to
+            yield strength.
+        atol: Absolute tolerance for checking if mean stress magnitude is close to
+            yield strength.
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
@@ -641,8 +692,9 @@ def calc_stress_eq_amp_soderberg(
     Raises:
         Warning: If mean stress magnitude exceeds yield strength ($|\sigma_m| > R_e$).
         ValueError: If yield strength is not positive ($R_e > 0$).
-        ValueError: If mean stress is equal to yield strength, resulting in
-            infinite equivalent stress amplitude ($\sigma_m = R_e$).
+        ValueError: If mean stress magnitude is close to yield strength
+            (within tolerance), the equivalent stress amplitude tends to infinity.
+            ($\left|\frac{\sigma_m}{R_e}\right| \approx 1.0$ within tolerance).
     """
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
     mean_stress_arr = np.asarray(mean_stress, dtype=np.float64)
@@ -652,14 +704,14 @@ def calc_stress_eq_amp_soderberg(
         raise ValueError("Yield strength must be positive")
 
     # Check if mean stress approaches or exceeds material parameter
-    ratio = mean_stress_arr / yield_strength_arr
+    ratio = np.abs(mean_stress_arr) / yield_strength_arr
 
-    if np.any(ratio == 1.0):
+    if np.any(np.isclose(ratio, 1.0, rtol=rtol, atol=atol)):
         raise ValueError(
-            "Mean stress equals yield strength this would result in "
+            "Mean stress magnitude is close to yield strength, this results in "
             "infinite equivalent stress amplitude."
         )
-    elif np.any(np.abs(ratio) > 1.0):
+    elif np.any(ratio > 1.0):
         warnings.warn(
             "Mean stress magnitude exceeds yield strength. ",
             UserWarning,
@@ -701,6 +753,8 @@ def calc_stress_eq_amp_smith(
     mean_stress: ArrayLike | np.float64,
     ult_tensile_strength: ArrayLike | np.float64,
     allow_neg_mean_stress: bool = True,
+    rtol: float = _RTOL,
+    atol: float = _ATOL,
 ) -> NDArray[np.float64]:
     r"""Calculate equivalent stress amplitude using Smith criterion.
 
@@ -723,6 +777,10 @@ def calc_stress_eq_amp_smith(
             Defaults to True. If set to False, the equivalent stress amplitude will be
             set equal to the original stress amplitude for cases where the mean stress
             is negative, ignoring the correction.
+        rtol: Relative tolerance for checking if mean stress magnitude is close to
+            ultimate tensile strength.
+        atol: Absolute tolerance for checking if mean stress magnitude is close to
+            ultimate tensile strength.
 
     Returns:
         Array of equivalent stress amplitudes. Shape follows NumPy broadcasting
@@ -732,8 +790,9 @@ def calc_stress_eq_amp_smith(
         Warning: If mean stress magnitude exceeds ultimate tensile strength
             ($\sigma_m > \sigma_{UTS}$).
         ValueError: If ultimate tensile strength is not positive ($\sigma_{UTS} > 0$).
-        ValueError: If mean stress is equal to ultimate tensile strength, resulting in
-            infinite equivalent stress amplitude ($\sigma_{m} = \sigma_{UTS}$).
+        ValueError: If mean stress magnitude is close to ultimate tensile strength
+            (within tolerance), the equivalent stress amplitude tends to infinity.
+            ($\left|\frac{\sigma_m}{\sigma_{UTS}}\right| \approx 1.0$ within tolerance).
 
     """
     stress_amp_arr = np.asarray(stress_amp, dtype=np.float64)
@@ -744,13 +803,14 @@ def calc_stress_eq_amp_smith(
         raise ValueError("Ultimate tensile strength must be positive")
 
     # Check if mean stress approaches or exceeds material parameter
-    ratio = mean_stress_arr / ult_tensile_strength_arr
-    if np.any(ratio == 1.0):
+    ratio = np.abs(mean_stress_arr / ult_tensile_strength_arr)
+
+    if np.any(np.isclose(ratio, 1.0, rtol=rtol, atol=atol)):
         raise ValueError(
-            "Mean stress equals ultimate tensile strength this would result in "
-            "infinite equivalent stress amplitude."
+            "Mean stress magnitude is close to ultimate tensile strength, "
+            "this results in infinite equivalent stress amplitude."
         )
-    elif np.any(np.abs(ratio) > 1.0):
+    elif np.any(ratio > 1.0):
         warnings.warn(
             "Mean stress magnitude exceeds ultimate tensile strength. ",
             UserWarning,
@@ -770,7 +830,6 @@ def calc_stress_eq_amp_smith(
     return eq_stress_amp_arr
 
 
-# TODO use Walker instead and set the gamma parameter to 0.5?
 def _swt_correction_method(
     stress_amp: ArrayLike | np.float64,
     mean_stress: ArrayLike | np.float64,
@@ -878,15 +937,15 @@ def calc_stress_eq_amp_walker(
         The Walker equivalent stress amplitude is calculated as:
 
         $$
-        \displaystyle\sigma_{aeq}=\left(\sigma_a+\sigma_m\right)^{1-\gamma'} \cdot
-            \sigma_a^{\gamma'}
+        \displaystyle\sigma_{aeq}=\left(\sigma_a+\sigma_m\right)^{1-\gamma} \cdot
+            \sigma_a^{\gamma}
         $$
 
     Args:
         stress_amp: Array-like of stress amplitudes. Leading dimensions are preserved.
         mean_stress: Array-like of mean stresses. Must be broadcastable with
             stress_amp. Leading dimensions are preserved.
-        walker_param: Array-like of Walker exponents ($\gamma'$'). Must be broadcastable
+        walker_param: Array-like of Walker exponents ($\gamma$). Must be broadcastable
             with stress_amp and mean_stress. Leading dimensions are preserved.
         allow_neg_mean_stress: A flag to control the calculation method.
             Defaults to True. If set to False, the equivalent stress amplitude will be
@@ -900,7 +959,7 @@ def calc_stress_eq_amp_walker(
     Raises:
         ValueError: If stress amplitude is negative ($\sigma_a < 0$).
         ValueError: If the validity condition $\sigma_a + \sigma_m >0$ is not satisfied.
-        ValueError: When the condition $\gamma'$ in [0, 1] is not satisfied.
+        ValueError: When the condition $\gamma$ in [0, 1] is not satisfied.
 
     ??? note "Validity Condition"
         The Walker method is valid when $\sigma_a + \sigma_m > 0$, ensuring that the
@@ -928,8 +987,16 @@ def calc_stress_eq_amp_walker(
     # Check validity of Walker parameter: γ' in range [0, 1]
     invalid_condition = (walker_param_arr < 0) | (walker_param_arr > 1)
     if np.any(invalid_condition):
-        raise ValueError(r"Walker parameter ($\gamma'$') must be in the range [0, 1]. ")
+        raise ValueError(r"Walker parameter ($\gamma$) must be in the range [0, 1]. ")
 
-    return (stress_amp_arr + mean_stress_arr) ** (
-        1 - walker_param_arr
-    ) * stress_amp_arr**walker_param_arr
+    eq_stress_amp_arr = _walker_correction_method(
+        stress_amp_arr, mean_stress_arr, walker_param_arr
+    )
+
+    # If allow_neg_mean_stress is False, set equivalent stress amplitude = to original
+    if not allow_neg_mean_stress:
+        eq_stress_amp_arr = np.where(
+            mean_stress_arr < 0, stress_amp_arr, eq_stress_amp_arr
+        )
+
+    return eq_stress_amp_arr
