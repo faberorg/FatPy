@@ -4,7 +4,7 @@ Tests cover input validation, mathematical correctness, and edge cases for all
 four equivalent stress amplitude calculation methods: SWT, Goodman, Gerber, and Morrow.
 """
 
-from typing import ClassVar
+from typing import Any, Callable, ClassVar
 
 import numpy as np
 import pytest
@@ -56,7 +56,7 @@ class _BaseEqAmpTests:
     - raise ValueError or Warn when |mean_stress| exceeds material param
     """
 
-    correction_method: ClassVar
+    correction_method: ClassVar[Callable[..., Any]]
     expected: ClassVar[float]  # expected result for (_SA, +_SM, _MAT_PARAM)
     neg_sm_expected: ClassVar[float]  # expected result for (_SA, -_SM, _MAT_PARAM)
 
