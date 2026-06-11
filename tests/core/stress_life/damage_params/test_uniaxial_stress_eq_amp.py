@@ -53,7 +53,8 @@ class _BaseEqAmpTests:
     - accept (stress_amp, mean_stress, material_param, allow_neg_mean_stress)
     - raise ValueError for invalid (≤0) material param
     - raise ValueError when |mean_stress| is close to material param (isclose)
-    - raise ValueError or Warn when |mean_stress| exceeds material param
+    - raise ValueError or Warning when |mean_stress| exceeds material param
+    - raise Warning when stress_amp is negative
     """
 
     correction_method: ClassVar[Callable[..., Any]]
@@ -186,6 +187,11 @@ class _BaseEqAmpTests:
     def test_mean_stress_exceeds_param(self, ms: float) -> None:
         with pytest.warns(UserWarning):
             self.correction_method(100.0, ms, 500.0)
+
+    @pytest.mark.parametrize("sa", [-100.0, -0.001])
+    def test_negative_stress_amp_warning(self, sa: float) -> None:
+        with pytest.warns(UserWarning):
+            self.correction_method(sa, 50.0, 500.0)
 
 
 # --- Concrete test classes ---

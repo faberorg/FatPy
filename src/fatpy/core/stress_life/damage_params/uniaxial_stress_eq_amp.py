@@ -73,6 +73,7 @@ def calc_stress_eq_amp_asme(
             yield strength.
 
     Raises:
+        Warning: If stress amplitude is negative ($\sigma_a < 0$).
         ValueError: If yield strength is not positive ($R_e > 0$).
         ValueError: If mean stress magnitude exceeds yield strength,
             which would produce a negative value under the square root.
@@ -105,6 +106,13 @@ def calc_stress_eq_amp_asme(
         raise ValueError(
             "Mean stress magnitude is close to yield strength, this results in "
             "infinite equivalent stress amplitude."
+        )
+
+    if np.any(stress_amp_arr < 0):
+        warnings.warn(
+            "Stress amplitude is negative.",
+            UserWarning,
+            stacklevel=2,
         )
 
     eq_stress_amp_arr = _asme_correction_method(
@@ -173,6 +181,7 @@ def calc_stress_eq_amp_bagci(
 
     Raises:
         Warning: If mean stress magnitude exceeds yield strength ($|\sigma_m| > R_e$).
+        Warning: If stress amplitude is negative ($\sigma_a < 0$).
         ValueError: If yield strength is not positive ($R_e > 0$).
         ValueError: If mean stress magnitude is close to yield strength
             (within tolerance), the equivalent stress amplitude tends to infinity.
@@ -197,6 +206,13 @@ def calc_stress_eq_amp_bagci(
     if np.any(ratio > 1.0):
         warnings.warn(
             "Mean stress magnitude exceeds yield strength.",
+            UserWarning,
+            stacklevel=2,
+        )
+
+    if np.any(stress_amp_arr < 0):
+        warnings.warn(
+            "Stress amplitude is negative.",
             UserWarning,
             stacklevel=2,
         )
@@ -272,6 +288,7 @@ def calc_stress_eq_amp_gerber(
     Raises:
         Warning: If mean stress magnitude exceeds ultimate tensile strength
             ($|\sigma_m| > \sigma_{UTS}$).
+        Warning: If stress amplitude is negative ($\sigma_a < 0$).
         ValueError: If ultimate tensile strength is not positive ($\sigma_{UTS} > 0$).
         ValueError: If mean stress magnitude is close to ultimate tensile strength
             (within tolerance), the equivalent stress amplitude tends to infinity.
@@ -297,6 +314,13 @@ def calc_stress_eq_amp_gerber(
     if np.any(ratio > 1.0):
         warnings.warn(
             "Mean stress magnitude exceeds ultimate tensile strength. ",
+            UserWarning,
+            stacklevel=2,
+        )
+
+    if np.any(stress_amp_arr < 0):
+        warnings.warn(
+            "Stress amplitude is negative.",
             UserWarning,
             stacklevel=2,
         )
@@ -369,6 +393,7 @@ def calc_stress_eq_amp_goodman(
     Raises:
         Warning: If mean stress magnitude exceeds ultimate tensile strength
             ($|\sigma_m| > \sigma_{UTS}$).
+        Warning: If stress amplitude is negative ($\sigma_a < 0$).
         ValueError: If ultimate tensile strength is not positive ($\sigma_{UTS} > 0$).
         ValueError: If mean stress magnitude is close to ultimate tensile strength
             (within tolerance), the equivalent stress amplitude tends to infinity.
@@ -393,6 +418,13 @@ def calc_stress_eq_amp_goodman(
     if np.any(ratio > 1.0):
         warnings.warn(
             "Mean stress magnitude exceeds ultimate tensile strength. ",
+            UserWarning,
+            stacklevel=2,
+        )
+
+    if np.any(stress_amp_arr < 0):
+        warnings.warn(
+            "Stress amplitude is negative.",
             UserWarning,
             stacklevel=2,
         )
@@ -450,6 +482,7 @@ def calc_stress_eq_amp_half_slope(
     Raises:
         Warning: If mean stress magnitude exceeds the ultimate tensile strength
             ($|\sigma_m| > \sigma_{UTS}$).
+        Warning: If stress amplitude is negative ($\sigma_a < 0$).
         ValueError: If ultimate tensile strength is not positive ($\sigma_{UTS} > 0$).
         ValueError: If mean stress magnitude is close to double of the ultimate tensile
             strength, (within tolerance), the equivalent stress amplitude tends to
@@ -472,9 +505,17 @@ def calc_stress_eq_amp_half_slope(
             "Mean stress magnitude is close to double of the ultimate tensile strength,"
             " this results in infinite equivalent stress amplitude."
         )
-    elif np.any(ratio > 1.0):
+
+    if np.any(ratio > 1.0):
         warnings.warn(
             "Mean stress magnitude exceeds the ultimate tensile strength. ",
+            UserWarning,
+            stacklevel=2,
+        )
+
+    if np.any(stress_amp_arr < 0):
+        warnings.warn(
+            "Stress amplitude is negative.",
             UserWarning,
             stacklevel=2,
         )
@@ -532,6 +573,7 @@ def calc_stress_eq_amp_linear(
     Raises:
         Warning: If mean stress magnitude exceeds material stress parameter M
             ($|\sigma_m| > M$).
+        Warning: If stress amplitude is negative ($\sigma_a < 0$).
         ValueError: If material stress parameter M is not positive ($M > 0$).
         ValueError: If mean stress magnitude is close to stress parameter M
             (within tolerance), the equivalent stress amplitude tends to infinity.
@@ -556,6 +598,13 @@ def calc_stress_eq_amp_linear(
     if np.any(ratio > 1.0):
         warnings.warn(
             "Mean stress magnitude exceeds material stress parameter M. ",
+            UserWarning,
+            stacklevel=2,
+        )
+
+    if np.any(stress_amp_arr < 0):
+        warnings.warn(
+            "Stress amplitude is negative.",
             UserWarning,
             stacklevel=2,
         )
@@ -613,6 +662,7 @@ def calc_stress_eq_amp_morrow(
     Raises:
         Warning: If mean stress magnitude exceeds fatigue strength coefficient
             ($|\sigma_m| > \sigma_{f}'$).
+        Warning: If stress amplitude is negative ($\sigma_a < 0$).
         ValueError: If fatigue strength coefficient is not positive ($\sigma_{f}' > 0$).
         ValueError: If mean stress magnitude is close to fatigue strength coefficient
             (within tolerance), the equivalent stress amplitude tends to infinity.
@@ -633,9 +683,17 @@ def calc_stress_eq_amp_morrow(
             "Mean stress magnitude is close to fatigue strength coefficient, "
             "this results in infinite equivalent stress amplitude."
         )
-    elif np.any(ratio > 1.0):
+
+    if np.any(ratio > 1.0):
         warnings.warn(
             "Mean stress magnitude exceeds fatigue strength coefficient. ",
+            UserWarning,
+            stacklevel=2,
+        )
+
+    if np.any(stress_amp_arr < 0):
+        warnings.warn(
+            "Stress amplitude is negative.",
             UserWarning,
             stacklevel=2,
         )
@@ -691,6 +749,7 @@ def calc_stress_eq_amp_soderberg(
 
     Raises:
         Warning: If mean stress magnitude exceeds yield strength ($|\sigma_m| > R_e$).
+        Warning: If stress amplitude is negative ($\sigma_a < 0$).
         ValueError: If yield strength is not positive ($R_e > 0$).
         ValueError: If mean stress magnitude is close to yield strength
             (within tolerance), the equivalent stress amplitude tends to infinity.
@@ -711,9 +770,17 @@ def calc_stress_eq_amp_soderberg(
             "Mean stress magnitude is close to yield strength, this results in "
             "infinite equivalent stress amplitude."
         )
-    elif np.any(ratio > 1.0):
+
+    if np.any(ratio > 1.0):
         warnings.warn(
             "Mean stress magnitude exceeds yield strength. ",
+            UserWarning,
+            stacklevel=2,
+        )
+
+    if np.any(stress_amp_arr < 0):
+        warnings.warn(
+            "Stress amplitude is negative.",
             UserWarning,
             stacklevel=2,
         )
@@ -789,6 +856,7 @@ def calc_stress_eq_amp_smith(
     Raises:
         Warning: If mean stress magnitude exceeds ultimate tensile strength
             ($\sigma_m > \sigma_{UTS}$).
+        Warning: If stress amplitude is negative ($\sigma_a < 0$).
         ValueError: If ultimate tensile strength is not positive ($\sigma_{UTS} > 0$).
         ValueError: If mean stress magnitude is close to ultimate tensile strength
             (within tolerance), the equivalent stress amplitude tends to infinity.
@@ -810,9 +878,17 @@ def calc_stress_eq_amp_smith(
             "Mean stress magnitude is close to ultimate tensile strength, "
             "this results in infinite equivalent stress amplitude."
         )
-    elif np.any(ratio > 1.0):
+
+    if np.any(ratio > 1.0):
         warnings.warn(
             "Mean stress magnitude exceeds ultimate tensile strength. ",
+            UserWarning,
+            stacklevel=2,
+        )
+
+    if np.any(stress_amp_arr < 0):
+        warnings.warn(
+            "Stress amplitude is negative.",
             UserWarning,
             stacklevel=2,
         )
