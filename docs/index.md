@@ -17,26 +17,26 @@ material science.
 
 #### Core Modules
 
-- **Stress-Life**  
+- **Stress-Life**
     Stress-based fatigue assessment methods for estimating fatigue damage with corrections for various effects (stress concentration, size, surface quality, etc.)
-- **Strain-Life**  
+- **Strain-Life**
     Fatigue analysis using strain amplitude and cycles to failure relationships (ε-N approaches) such as Coffin-Manson and Basquin laws, suited for low-cycle and transitional fatigue regimes
-- **Energy-Life**  
+- **Energy-Life**
     Fatigue analysis methods based on the relationship between strain energy density and number of cycles to failure
-- **Damage Cumulation**  
+- **Damage Cumulation**
     Various fatigue damage accumulation rules for variable amplitude loading, including linear models (Palmgren-Miner) and advanced non-linear approaches accounting for load sequence effects
-- **Decompositions**  
+- **Decompositions**
     Methods for breaking down complex load signals into cycles, containing both uniaxial and multiaxial procedures
-- **Plane-Based Methods**  
+- **Plane-Based Methods**
     Methods for processing stress tensor paths on material planes, providing infrastructure for critical-plane and integral prediction approaches
 
 #### Supporting Modules
 
-- **Material Laws**  
+- **Material Laws**
     Functions dealing with various material constitutive laws and behavior models
-- **Structural Mechanics**  
+- **Structural Mechanics**
     Stress analysis and transformation utilities
-- **Utils**  
+- **Utils**
     General utilities for mesh handling, signal processing, and data manipulation
 
 ## :fontawesome-solid-download: Installation
@@ -60,7 +60,7 @@ material science.
         To install package and add dependency to your project .toml file use:
 
         ```bash
-        uv add fatpy # Install from PyPI and add dependency 
+        uv add fatpy # Install from PyPI and add dependency
         ```
 
 For detailed installation options, see the [Installation Guide :octicons-arrow-right-24:](development/install.md)
@@ -99,13 +99,13 @@ interested in coding, testing, documentation, or providing feedback, your partic
 
 ### Getting Involved
 
-- **Explore the Repository**:  
+- **Explore the Repository**:
 Visit our [:fontawesome-brands-github: GitHub repository](https://github.com/faberorg/fatpy) to access the source code.
 
-- **Contribute**:  
+- **Contribute**:
 Follow our [:fontawesome-solid-handshake: Contribution Guidelines](development/contributing.md) to help improve FatPy.
 
-- **Collaborate**:  
+- **Collaborate**:
 Join our [:fontawesome-solid-comment-dots: Discussions](https://github.com/faberorg/fatpy/discussions) or [:fontawesome-solid-bug: Report issues](https://github.com/faberorg/fatpy/issues).
 
 By participating, you'll be part of a collaborative effort to advance the field of material fatigue analysis.

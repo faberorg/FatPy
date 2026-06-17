@@ -28,13 +28,13 @@ Check out these resources:
 
 Use GitHub as a main way to collaborate, discuss and improve the FatPy package.
 
-- **Explore the Repository**:  
+- **Explore the Repository**:
 Visit our [:fontawesome-brands-github: GitHub repository](https://github.com/faberorg/fatpy) to access the source code.
 
-- **Contribute**:  
+- **Contribute**:
 Follow our [:fontawesome-solid-handshake: Contribution Guidelines](development/contributing.md) to help improve FatPy.
 
-- **Collaborate**:  
+- **Collaborate**:
 Join our [:fontawesome-solid-comment-dots: Discussions](https://github.com/faberorg/fatpy/discussions) or [:fontawesome-solid-bug: Report issues](https://github.com/faberorg/fatpy/issues).
 
 ---
@@ -48,6 +48,6 @@ You can also contact our team directly! Here is a list of active members:
 
 ---
 
-Thank you for reaching out and contributing your ideas!  
-Your feedback and suggestions help us grow and improve.  
+Thank you for reaching out and contributing your ideas!
+Your feedback and suggestions help us grow and improve.
 We appreciate your involvement in the FatPy and FABER communities!
