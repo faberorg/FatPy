@@ -10,16 +10,72 @@ from abc import ABC, abstractmethod
 import numpy as np
 from numpy.typing import ArrayLike
 
+def _power_law():
+    pass
+
 
 class SN_Curve(ABC):
-    """Abstract base class for stress-life (S-N) curve models."""
+    """Abstract base class for stress-life (S-N) curve models.
+    
+    Parameters:
+    - data_points
+    - log N - standard deviation
+    - log S - standard deviation
+    - T - T-score/ratio
+
+    """
+
+    def __init__(self) -> None:
+        self._data_points = np.asarray([])
+        self._standard_dev_log_N = float
+        self._S_log_S = float
+        self._T = float
+        self._SN_curve_params = dict()
+
+    @property
+    def data_points(self) -> ArrayLike:
+        """Return calibration data points used by the model."""
+    pass
+
+    @property
+    def S_log_N(self) -> ArrayLike:
+        """Return equivalent stress values at N cycles used by the model."""
+    pass
+
+    @property.setter
+    def S_log_N(self, value: float) -> None:
+        # added functionality for setting the property (like value checking)
+        pass
+
+
+    @property
+    def S_log_S(self) -> ArrayLike:
+        """Return equivalent stress values at N cycles used by the model."""
+    pass
+
+    @property
+    def T(self) -> ArrayLike:
+        """Return equivalent stress values at N cycles used by the model."""
+    pass
+
+    @property
+    @abstractmethod
+    def SN_curve_params(self,param_1,param_2,probability=50):
+        # self._SN_curve_params.append("probability",[param1,param2])
+        # ("50",[C,w])
+        # ("5",[param1,param2])
+        #("95",[param1,param2])
+    pass
+
+    # Usecase:
+    # sn_curve_object.get_life(stress,probability = 50) -> life at given probability
 
     @abstractmethod
-    def stress_amp(self, life: ArrayLike) -> ArrayLike:
-        """Calculate stress amplitude from fatigue life.
+    def get_stress(self, n_cycles: ArrayLike, probability: float = 50) -> ArrayLike:
+        """Calculate stress from fatigue life.
 
         Parameters:
-        life : ArrayLike
+        n_cycles : ArrayLike
             The fatigue life (N) in cycles.
 
         Returns:
@@ -29,12 +85,12 @@ class SN_Curve(ABC):
         pass
 
     @abstractmethod
-    def life(self, stress_amp: ArrayLike) -> ArrayLike:
+    def get_life(self, stress: ArrayLike, probability:float=50) -> ArrayLike:
         """Calculate fatigue life from stress amplitude.
 
         Parameters:
         stress_amp : ArrayLike
-            The stress amplitude (σ_a) in MPa.
+            The stress (σ) in MPa.
 
         Returns:
         ArrayLike
@@ -42,36 +98,54 @@ class SN_Curve(ABC):
         """
         pass
 
+    @abstractmethod
+    def least_square_curve_fitting(self,n_iterations , eps) -> None:
+        # it should update the self._SN_curve_params (or rather call the method for updating)
+        pass
+
+    @abstractmethod
+    def get_params_at_probability(self, new_probability)-> None:
+        # 1. check if the probability is already there
+        # what is the result
+        pass
+
+    @abstractmethod
+    def plot_SN_curve(self, probability=50,ranges_for_x_and_y)
+        pass
 
 class WholerPowerLaw(SN_Curve):
     """Wöhler (S-N) curve model using a power law relationship."""
 
-    def __init__(self, SN_C: float, SN_w: float):
+    def __init__(self) -> None:
         """Initialize the Wöhler power law model.
 
         Parameters:
-        SN_C : float
-            Material constant representing the power law coefficient (MPa^SN_w).
-        SN_w : float
+        power_law_coef : float
+            Material constant representing the power law coefficient (MPa^power_law_exp).
+        power_law_exp : float
             Material constant representing the power law exponent.
 
         Raises:
         ValueError
             If any parameter is not positive.
         """
-        if SN_C <= 0:
-            raise ValueError(f"SN_C must be positive, got {SN_C}")
-        if SN_w <= 0:
-            raise ValueError(f"SN_w must be positive, got {SN_w}")
+        super().__init__()
 
-        self.SN_C = SN_C
-        self.SN_w = SN_w
+        if power_law_coef <= 0:
+            raise ValueError(f"power_law_coef must be positive, got {power_law_coef}")
+        if power_law_exp <= 0:
+            raise ValueError(f"power_law_exp must be positive, got {power_law_exp}")
 
-    def stress_amp(self, life: ArrayLike) -> ArrayLike:
+        self.power_law_coef = power_law_coef
+        self.power_law_exp = power_law_exp
+        self._data_points = np.asarray([] if data_points is None else data_points)
+        self._S_eqN = np.asarray([] if S_eqN is None else S_eqN)
+
+    def stress_amp(self, n_cycles: ArrayLike) -> ArrayLike:
         """Calculate stress amplitude from fatigue life using the Wöhler power law.
 
         Parameters:
-        life : ArrayLike
+        n_cycles : ArrayLike
             The fatigue life (N) in cycles. Must be positive.
 
         Returns:
@@ -80,13 +154,13 @@ class WholerPowerLaw(SN_Curve):
 
         Raises:
         ValueError
-            If life contains non-positive values.
+            If n_cycles contains non-positive values.
         """
-        life_array = np.asarray(life)
-        if np.any(life_array <= 0):
-            raise ValueError("life must contain only positive values")
+        n_cycles_array = np.asarray(n_cycles)
+        if np.any(n_cycles_array <= 0):
+            raise ValueError("n_cycles must contain only positive values")
 
-        return (self.SN_C / life_array) ** (1 / self.SN_w)
+        return (self.power_law_coef / n_cycles_array) ** (1 / self.power_law_exp)
 
     def life(self, stress_amp: ArrayLike) -> ArrayLike:
         """Calculate fatigue life from stress amplitude using the Wöhler power law.
